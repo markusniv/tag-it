@@ -48,7 +48,7 @@ const CustomNavBar = ({ state, descriptors, navigation, position }) => {
           else if (route.name === "Settings") iconName = "settings";
           else if (route.name === "Login") iconName = "login";
           return (
-            <View style={route.name == "CreateView" ? styles.createHolder : ""}>
+            <View style={route.name == "CreateView" ? styles.createHolder : ""} key={route.name}>
               <TouchableOpacity onPress={onPress}>
                 {route.name === "CreateView" ? (
                   <Icon
