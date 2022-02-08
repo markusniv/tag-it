@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import {Text, View, StyleSheet} from "react-native";
-import {Button} from "react-native-elements";
+import {Button, } from "react-native-elements";
 import {MainContext} from "../contexts/MainContext";
 
 const Login = () => {

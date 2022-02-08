@@ -1,11 +1,13 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import {Text, SafeAreaView, StyleSheet} from "react-native";
+import List from "../components/List";
 
 const Home = () => {
+  const tab = "Home";
   return (
-    <View style={styles.container}>
-      <Text>Home screen</Text>
-    </View>
+    <SafeAreaView>
+      <List tab={tab} />
+    </SafeAreaView>
   );
 };
 
