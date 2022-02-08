@@ -1,0 +1,8 @@
+{
+  "dark_mode_bg": "#2F2B2B",
+  "dark_mode_header": "#242632",
+  "dark_mode_header_tint": "white",
+  "light_mode_bg": "white",
+  "light_mode_header": "white",
+  "light_mode_header_tint": "black"
+}

@@ -5,12 +5,12 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { Icon } from "react-native-elements";
+import {Icon} from "react-native-elements";
 
 /** Import necessary views here */
 
 // This script is currently for bottom nav design testing purposes only.
-const CustomNavBar = ({ state, descriptors, navigation, position }) => {
+const CustomNavBar = ({state, descriptors, navigation, position}) => {
 
 
   return (
@@ -46,6 +46,7 @@ const CustomNavBar = ({ state, descriptors, navigation, position }) => {
           else if (route.name === "Notifications") iconName = "notifications";
           else if (route.name === "Profile") iconName = "person";
           else if (route.name === "Settings") iconName = "settings";
+          if (route.name === "Post") return;
           return (
             <View style={route.name == "CreateView" ? styles.createHolder : ""} key={route.name}>
               <TouchableOpacity onPress={onPress}>
