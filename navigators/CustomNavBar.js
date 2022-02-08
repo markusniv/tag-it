@@ -46,7 +46,6 @@ const CustomNavBar = ({ state, descriptors, navigation, position }) => {
           else if (route.name === "Notifications") iconName = "notifications";
           else if (route.name === "Profile") iconName = "person";
           else if (route.name === "Settings") iconName = "settings";
-          else if (route.name === "Login") iconName = "login";
           return (
             <View style={route.name == "CreateView" ? styles.createHolder : ""} key={route.name}>
               <TouchableOpacity onPress={onPress}>
@@ -88,6 +87,8 @@ const CustomNavBar = ({ state, descriptors, navigation, position }) => {
 const styles = StyleSheet.create({
   navBarContainer: {
     justifyContent: "flex-end",
+    left: 0,
+    right: 0,
     height: 100,
     position: "absolute",
     bottom: 0,
