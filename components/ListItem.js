@@ -1,9 +1,8 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import React, {useContext} from "react";
 import {
   ListItem as NBListItem,
   Text,
-  Button,
   Image,
 } from "react-native-elements";
 import {MainContext} from "../contexts/MainContext";
@@ -27,42 +26,36 @@ const ListItem = ({ singleMedia, navigation }) => {
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
   return (
     <NBListItem containerStyle={{backgroundColor: "transparent"}} bottomDivider >
-      <NBListItem.Content
+      <NBListItem.Content>
+        <TouchableOpacity 
         style={styles.container}
-      >
-
-        <View style={styles.postInfo}>
-            <Image containerStyle={styles.postInfoImage} />
-            <View style={styles.postInfoText}>
-            <Text style={{color: headerTintColor}}>t/placeholder</Text>
-            <Text style={{color: headerTintColor}}>Posted by /user/mattimeikäläinen</Text>
-            </View>
-        </View>
-  
-        <View style={styles.postTitle}>
-          <Text style={{color: headerTintColor, fontSize: 25, paddingBottom: 10}}>{singleMedia.title}</Text>
-          <Text style={{color: headerTintColor, fontSize: 10, paddingBottom: 5}}>Posted 4 hours ago</Text>
-        </View>
-        <Image
-          resizeMode="cover"
-          containerStyle={styles.image}
-          source={{
-            uri: `${url}${singleMedia.thumbnails.w160}`,
-          }}
-        />
-
-
-
-  {/*       <Button
-          title="View"
-          containerStyle={{ width: 75, height: 50, marginVertical: 5 }}
-          onPress={() => {
-            navigation.navigate("Post", {
-              media: { singleMedia },
-            });
-          }}
-        /> */}
+        onPress={() => {
+          navigation.navigate("Post", {
+            media: { singleMedia },
+          });
+        }}>
+          <View style={styles.postInfo}>
+              <Image containerStyle={styles.postInfoImage} />
+              <View style={styles.postInfoText}>
+              <Text style={{color: headerTintColor}}>t/placeholder</Text>
+              <Text style={{color: headerTintColor}}>Posted by /user/mattimeikäläinen</Text>
+              </View>
+          </View>
+    
+          <View style={styles.postTitle}>
+            <Text style={{color: headerTintColor, fontSize: 25, paddingBottom: 10}}>{singleMedia.title}</Text>
+            <Text style={{color: headerTintColor, fontSize: 10, paddingBottom: 5}}>Posted 4 hours ago</Text>
+          </View>
+          <Image
+            resizeMode="cover"
+            containerStyle={styles.image}
+            source={{
+              uri: `${url}${singleMedia.thumbnails.w160}`,
+            }}
+          />
+        </TouchableOpacity>
       </NBListItem.Content>
+
     </NBListItem>
   );
 };
@@ -78,6 +71,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
+    height: "100%",
   },
   postInfo: {
     width: "100%",
