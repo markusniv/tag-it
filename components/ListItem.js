@@ -1,40 +1,104 @@
-import {StyleSheet, View} from "react-native";
-import React from "react";
-import PropTypes from "prop-types";
-import {ListItem as NBListItem, Text, ListItemProps, Button, Image} from 'react-native-elements';
+import { StyleSheet, View } from "react-native";
+import React, {useContext} from "react";
+import {
+  ListItem as NBListItem,
+  Text,
+  Button,
+  Image,
+} from "react-native-elements";
+import {MainContext} from "../contexts/MainContext";
+import colors from "../global/colors.json";
 
-const ListItem = ({singleMedia, navigation}) => {
+const ListItem = ({ singleMedia, navigation }) => {
+  const {darkMode} = useContext(MainContext);
+
+  let bgColor, headerColor, headerTintColor, highlightColor = colors.highlight_color;
+
+  if (darkMode) {
+    bgColor = colors.dark_mode_bg;
+    headerColor = colors.dark_mode_header;
+    headerTintColor = colors.dark_mode_header_tint;
+  } else {
+    bgColor = colors.light_mode_bg;
+    headerColor = colors.light_mode_header;
+    headerTintColor = colors.light_mode_header_tint;
+  }
+
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
   return (
-    <NBListItem
-      bottomDivider>
-      <NBListItem.Content style={{flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+    <NBListItem containerStyle={{backgroundColor: "transparent"}} bottomDivider >
+      <NBListItem.Content
+        style={styles.container}
+      >
+
+        <View style={styles.postInfo}>
+            <Image containerStyle={styles.postInfoImage} />
+            <View style={styles.postInfoText}>
+            <Text style={{color: headerTintColor}}>t/placeholder</Text>
+            <Text style={{color: headerTintColor}}>Posted by /user/mattimeikäläinen</Text>
+            </View>
+        </View>
+  
+        <View style={styles.postTitle}>
+          <Text style={{color: headerTintColor, fontSize: 25, paddingBottom: 10}}>{singleMedia.title}</Text>
+          <Text style={{color: headerTintColor, fontSize: 10, paddingBottom: 5}}>Posted 4 hours ago</Text>
+        </View>
         <Image
-          containerStyle={{width: 80, height: 80}}
+          resizeMode="cover"
+          containerStyle={styles.image}
           source={{
             uri: `${url}${singleMedia.thumbnails.w160}`,
           }}
         />
-        <View style={{flex: 1}}>
-          <Text style={{padding: 2, paddingLeft: 10, fontSize: 24}}>
-            {singleMedia.title}
-          </Text>
-          <Text style={{padding: 2, paddingLeft: 10}}>{singleMedia.description}</Text>
 
-        </View>
-        <Button title="View" containerStyle={{width: 75, height: 50, marginVertical: 5}} onPress={
-          () => {
-            navigation.navigate('Post', {
-              media: {singleMedia},
+
+
+  {/*       <Button
+          title="View"
+          containerStyle={{ width: 75, height: 50, marginVertical: 5 }}
+          onPress={() => {
+            navigation.navigate("Post", {
+              media: { singleMedia },
             });
           }}
-        />
+        /> */}
       </NBListItem.Content>
     </NBListItem>
-
   );
 };
 
-
+const styles = StyleSheet.create({
+  image: {
+    flex: 1,
+    width: "100%",
+    height: 200,
+  },
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  postInfo: {
+    width: "100%",
+    height: 60,
+    flexDirection: "row",
+  },
+  postInfoText: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  postInfoImage: {
+    width: 60,
+    height: 60,
+    backgroundColor: "blue",
+    marginRight: 20,
+    borderRadius: 30,
+  },
+  postTitle: {
+    width: "100%",
+    marginTop: 10,
+  }
+});
 
 export default ListItem;

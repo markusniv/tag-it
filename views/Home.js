@@ -16,7 +16,7 @@ const Home = ({navigation}) => {
   const tab = "Home";
   return (
     <SafeAreaView>
-      <View style={{backgroundColor: bgColor, width: '100%', height: '100%', }}>
+      <View style={{backgroundColor: bgColor, width: '100%', height: '100%'}}>
         <List navigation={navigation} tab={tab} />
       </View>
     </SafeAreaView >

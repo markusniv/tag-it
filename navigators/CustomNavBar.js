@@ -91,9 +91,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 100,
-    position: "absolute",
+    position: "relative",
     bottom: 0,
-    marginTop: 55,
+    marginTop: -45,
   },
   background: {
     height: 55,
