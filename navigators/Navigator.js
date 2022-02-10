@@ -39,6 +39,7 @@ const StackScreen = () => {
         headerShown: false,
       }} />}
       <Stack.Screen name="Login" component={Login} options={{
+        headerShown: false,
         headerStyle: {
           backgroundColor: headerColor,
         },
