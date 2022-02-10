@@ -41,6 +41,8 @@ const getColors = () => {
   return { bgColor, headerColor, headerTintColor, highlightColor };
 };
 
+
+
 const HomeTopNavigator = () => {
   const colors = getColors();
 
@@ -89,9 +91,8 @@ const StackScreen = () => {
 
 const BottomNav = () => {
   const { isLoggedIn } = useContext(MainContext);
-
+ 
   const colors = getColors();
-
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -103,7 +104,7 @@ const BottomNav = () => {
         options={{
           headerStyle: {
             backgroundColor: colors.headerColor,
-            height: 100,
+            height: 130,
           },
           header:() => (
           <View 
@@ -114,7 +115,9 @@ const BottomNav = () => {
             paddingBottom: 20,
             alignItems: "center", 
             backgroundColor: colors.headerColor,
-            }}>
+            }}
+            collapsable={true}>
+      
             <SearchBar 
             containerStyle={{
               width: "70%", 
@@ -126,7 +129,7 @@ const BottomNav = () => {
             }} 
             inputContainerStyle={{height: "100%", borderRadius: 15, backgroundColor: "white"}}
             />
-            <Text style={{color: colors.headerTintColor, fontSize: 20}}>Home</Text>
+            <Text style={{color: colors.headerTintColor, fontSize: 20}}>Home</Text>            
           </View>
           ),
           headerTintColor: colors.headerTintColor,

@@ -5,7 +5,8 @@ import MyListItem from "./MyListItem";
 import {useMedia} from "../hooks/ApiHooks";
 import PropTypes from "prop-types";
 import {MainContext} from '../contexts/MainContext';
-
+import Animated
+ from "react-native-reanimated";
 import colors from "../global/colors.json";
 
 const List = ({navigation, tab}) => {
@@ -22,17 +23,18 @@ const List = ({navigation, tab}) => {
   return (
     <>
       {(tab === "Home") ? (
-        <FlatList
+        <Animated.FlatList
           style={{backgroundColor: bgColor}}
           data={mediaArray}
           keyExtractor={(item, index) => index.toString()}
+          
           renderItem={
             ({item}) => <ListItem
               navigation={navigation}
               singleMedia={item} />}
         />
       ) : (
-        <FlatList
+        <Animated.FlatList
           style={{backgroundColor: bgColor}}
           data={userMediaArray}
           keyExtractor={(item, index) => index.toString()}

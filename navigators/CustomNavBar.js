@@ -7,9 +7,6 @@ import {
 } from "react-native";
 import {Icon} from "react-native-elements";
 
-/** Import necessary views here */
-
-// This script is currently for bottom nav design testing purposes only.
 const CustomNavBar = ({state, descriptors, navigation, position}) => {
 
 
