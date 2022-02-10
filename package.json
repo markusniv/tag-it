@@ -27,11 +27,7 @@
     "react-native-reanimated": "^2.4.1",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
-<<<<<<< HEAD
-    "react-native-svg": "12.1.1",
-=======
     "react-native-tab-view": "^3.1.1",
->>>>>>> bc54888b4217d203acdc74462a24d45f64690a66
     "react-native-web": "0.17.1",
     "sav": "^1.0.42",
     "save": "^2.4.0"
