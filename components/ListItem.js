@@ -5,6 +5,8 @@ import {ListItem as NBListItem, Text, ListItemProps, Button, Image} from 'react-
 
 const ListItem = ({singleMedia, navigation}) => {
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
+  console.log(singleMedia);
+
   return (
     <NBListItem
       bottomDivider>
