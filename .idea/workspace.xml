@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="43f1d4a9-7dcf-4dc6-97d9-e078993d1702" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/views/Login.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="24ovVubBnk3b6RqBLM8IHkROOmp" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Janik\Desktop\WebDev_year2\tag-it\mobile-app\images" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="43f1d4a9-7dcf-4dc6-97d9-e078993d1702" name="Default Changelist" comment="" />
+      <created>1644309780299</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1644309780299</updated>
+      <workItem from="1644309781416" duration="15205000" />
+      <workItem from="1644395288458" duration="3568000" />
+      <workItem from="1644478177095" duration="3629000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1010" y="447" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1644326289585">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1010" y="447" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/-2560.0.2048.1120/0.0.2560.1400@0.0.2560.1400" timestamp="1644326289585" />
+    <state x="1006" y="389" key="FileChooserDialogImpl" timestamp="1644395768910">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="-1755" y="311" key="FileChooserDialogImpl/-2560.0.2048.1120/0.0.2560.1400@-2560.0.2048.1120" timestamp="1644312505373" />
+    <state x="1006" y="389" key="FileChooserDialogImpl/-2560.0.2048.1120/0.0.2560.1400@0.0.2560.1400" timestamp="1644395768910" />
+    <state width="2539" height="305" key="GridCell.Tab.0.bottom" timestamp="1644390114926">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2027" height="305" key="GridCell.Tab.0.bottom/-2560.0.2048.1120/0.0.2560.1400@-2560.0.2048.1120" timestamp="1644325210725" />
+    <state width="2539" height="305" key="GridCell.Tab.0.bottom/-2560.0.2048.1120/0.0.2560.1400@0.0.2560.1400" timestamp="1644390114926" />
+    <state width="2539" height="305" key="GridCell.Tab.0.center" timestamp="1644390114925">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2027" height="305" key="GridCell.Tab.0.center/-2560.0.2048.1120/0.0.2560.1400@-2560.0.2048.1120" timestamp="1644325210725" />
+    <state width="2539" height="305" key="GridCell.Tab.0.center/-2560.0.2048.1120/0.0.2560.1400@0.0.2560.1400" timestamp="1644390114925" />
+    <state width="2539" height="305" key="GridCell.Tab.0.left" timestamp="1644390114925">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2027" height="305" key="GridCell.Tab.0.left/-2560.0.2048.1120/0.0.2560.1400@-2560.0.2048.1120" timestamp="1644325210725" />
+    <state width="2539" height="305" key="GridCell.Tab.0.left/-2560.0.2048.1120/0.0.2560.1400@0.0.2560.1400" timestamp="1644390114925" />
+    <state width="2539" height="305" key="GridCell.Tab.0.right" timestamp="1644390114926">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2027" height="305" key="GridCell.Tab.0.right/-2560.0.2048.1120/0.0.2560.1400@-2560.0.2048.1120" timestamp="1644325210725" />
+    <state width="2539" height="305" key="GridCell.Tab.0.right/-2560.0.2048.1120/0.0.2560.1400@0.0.2560.1400" timestamp="1644390114926" />
+  </component>
+</project>

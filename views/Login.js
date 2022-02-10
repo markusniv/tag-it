@@ -1,29 +1,59 @@
-import React, {useContext} from "react";
-import {Text, View, StyleSheet} from "react-native";
-import {Button, } from "react-native-elements";
-import {MainContext} from "../contexts/MainContext";
+import React from 'react';
+import {
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
+  Keyboard,
+  View,
+} from 'react-native';
+import PropTypes from 'prop-types';
 
-const Login = ({navigation}) => {
+import LoginForm from "../components/LoginForm";
 
-  const {isLoggedIn, setIsLoggedIn} = useContext(MainContext);
-  const login = () => {
-    setIsLoggedIn(true);
-    navigation.navigate("Tabs");
-  }
-
+const Login = () => {
   return (
-    <View style={styles.container}>
-     { <Button title="Log In" onPress={login} />}
-    </View>
-  );
+    <TouchableOpacity
+      style={{flex: 1}}
+      activeOpacity={1}
+      onPress={() => Keyboard.dismiss()}
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : ''}
+        style={styles.container}
+      >
+        <View style={styles.form}>
+
+            <LoginForm/>
+
+        </View>
+      </KeyboardAvoidingView>
+    </TouchableOpacity>
+);
 };
+
+
+
+
+
 
 const styles = StyleSheet.create({
   container: {
-
-    height: '100%',
-    width: '100%',
-  }
+  flex: 1,
+  padding: 16,
+},
+  appTitle: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+  form: {
+  flex: 8,
+},
 });
+
+Login.propTypes = {
+  navigation: PropTypes.object,
+};
 
 export default Login;
