@@ -14,6 +14,7 @@ import {MainContext} from "../contexts/MainContext";
 
 import colors from "../global/colors.json";
 import Welcome from "../views/Welcome";
+import Register from "../views/Register";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -43,6 +44,13 @@ const StackScreen = () => {
       }} />
       <Stack.Screen name="Tabs" component={BottomNav} options={{
         headerShown: false,
+      }} />
+      <Stack.Screen name="Register" component={Register} options={{
+        headerShown: false,
+        headerStyle: {
+          backgroundColor: headerColor,
+        },
+        headerTintColor: 'white',
       }} />
       <Stack.Screen name="Login" component={Login} options={{
         headerShown: false,

@@ -11,8 +11,7 @@ import PropTypes from "prop-types";
 const LoginForm = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {postLogin} = useLogin();
-  //TODO: change navigation to "Register" when register is made.
-  const register = () => navigation.navigate("Settings")
+  const register = () => navigation.navigate("Register");
 
   const {
     control,
@@ -83,7 +82,7 @@ const LoginForm = ({navigation}) => {
         />
       </View>
       {errors.password && <Text>This is required.</Text>}
-      <Text onPress={register} style={styles.registerHere}> Not a user yet? Register here!</Text>
+      <Text onPress={register} style={styles.registerHere} navigation={navigation}> Not a user yet? Register here!</Text>
 
       <Button title="Login"
               onPress={handleSubmit(onSubmit)}
