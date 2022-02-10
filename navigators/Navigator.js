@@ -13,6 +13,7 @@ import Settings from "../views/Settings";
 import {MainContext} from "../contexts/MainContext";
 
 import colors from "../global/colors.json";
+import Welcome from "../views/Welcome";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -34,10 +35,15 @@ const StackScreen = () => {
   }
 
   return (
-    <Stack.Navigator>
-      {<Stack.Screen name="Tabs" component={BottomNav} options={{
+    <Stack.Navigator
+      initialRouteName="Welcome"
+    >
+      <Stack.Screen name="Welcome" component={Welcome} options={{
         headerShown: false,
-      }} />}
+      }} />
+      <Stack.Screen name="Tabs" component={BottomNav} options={{
+        headerShown: false,
+      }} />
       <Stack.Screen name="Login" component={Login} options={{
         headerShown: false,
         headerStyle: {
@@ -46,7 +52,7 @@ const StackScreen = () => {
         headerTintColor: 'white',
       }} />
       {/*       <Stack.Screen name="Register" />
-      <Stack.Screen name="Welcome" /> */}
+       */}
     </Stack.Navigator>
   );
 };
