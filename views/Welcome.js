@@ -1,9 +1,36 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {SafeAreaView, View, StyleSheet, ImageBackground, Dimensions} from 'react-native';
 import {Image, Text} from 'react-native-elements';
 import {useFonts} from 'expo-font';
+import {MainContext} from "../contexts/MainContext";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useUser} from '../hooks/ApiHooks';
 
 const Welcome = ({navigation}) => {
+  const {setUser, setIsLoggedIn} = useContext(MainContext);
+
+  const checkToken = async () => {
+    const {getUserByToken} = useUser();
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      console.log(token);
+      const user = await getUserByToken(token);
+      console.log(user);
+      if (!user) {
+        return new Error('Failed to log in!');
+      }
+      setUser(user);
+      setIsLoggedIn(true);
+      navigation.navigate('Tabs');
+    } catch (e) {
+      return new Error(e.message);
+    }
+  }
+
+  useEffect(() => {
+    checkToken();
+  }, []);
+
   const [loaded] = useFonts({
     AdventPro: require('../assets/fonts/AdventPro.ttf'),
   });
@@ -14,6 +41,7 @@ const Welcome = ({navigation}) => {
 
   const logIn = () => navigation.navigate("Login");
   const register = () => navigation.navigate("Register");
+  const skip = () => navigation.navigate("Tabs");
 
   return (
     <SafeAreaView style={styles.container}>
@@ -52,7 +80,15 @@ const Welcome = ({navigation}) => {
         }}
           onPress={register}>Register new account</Text>
       </View>
-
+      <View style={styles.skip}>
+        <Text style={{
+          color: 'white',
+          fontSize: 20,
+          fontFamily: 'AdventPro',
+        }} onPress={skip}>
+          Skip
+        </Text>
+      </View>
     </SafeAreaView>
   );
 }
@@ -77,13 +113,18 @@ const styles = StyleSheet.create({
   center: {
     flex: 2,
     justifyContent: 'flex-start',
-    marginTop: 80
   },
   bottom: {
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginTop: 100,
+  },
+  skip: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    right: 70,
+    top: 50,
   }
 })
 

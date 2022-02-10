@@ -1,17 +1,14 @@
 import React, {useContext} from "react";
-import {Text, View, StyleSheet} from "react-native";
-import {Button} from "react-native-elements";
+import {View, StyleSheet} from "react-native";
+import {Button, Text} from "react-native-elements";
 import {MainContext} from "../contexts/MainContext";
 
 const Profile = () => {
   const {isLoggedIn, setIsLoggedIn} = useContext(MainContext);
-  const logout = () => {
-    setIsLoggedIn(false);
-  }
 
   return (
     <View style={styles.container}>
-      <Button title="Log Out" onPress={logout} />
+      <Text>Profile view</Text>
     </View>
   );
 };
