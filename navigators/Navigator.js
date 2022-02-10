@@ -10,6 +10,7 @@ import Login from "../views/Login";
 import Profile from "../views/Profile";
 import Create from "../views/Create";
 import Post from "../views/Post";
+import Popular from "../views/Popular";
 import { View, Text } from "react-native";
 import Notifications from "../views/Notifications";
 import Settings from "../views/Settings";
@@ -56,7 +57,7 @@ const HomeTopNavigator = () => {
       }}
     >
       <HomeTopTab.Screen name="Recent" component={Home} />
-      <HomeTopTab.Screen name="Popular" component={Home} />
+      <HomeTopTab.Screen name="Popular" component={Popular}/>
     </HomeTopTab.Navigator>
   );
 };
@@ -88,8 +89,8 @@ const StackScreen = () => {
 };
 
 const BottomNav = () => {
-  const { isLoggedIn } = useContext(MainContext);
- 
+  const { isLoggedIn, setSearchInput, searchInput } = useContext(MainContext);
+
   const colors = getColors();
   return (
     <Tab.Navigator
@@ -126,6 +127,8 @@ const BottomNav = () => {
               backgroundColor: "transparent",
             }} 
             inputContainerStyle={{height: "100%", borderRadius: 15, backgroundColor: "white"}}
+            value={searchInput}
+            onChangeText={setSearchInput}
             />
             <Text style={{color: colors.headerTintColor, fontSize: 20}}>Home</Text>            
           </View>
