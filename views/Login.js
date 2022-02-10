@@ -16,7 +16,7 @@ const Login = () => {
     <TouchableOpacity
       style={{flex: 1}}
       activeOpacity={1}
-      onPress={() => Keyboard.dismiss()}
+      onPress={() => Keyboard.dismiss()}  
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : ''}
@@ -40,7 +40,6 @@ const Login = () => {
 const styles = StyleSheet.create({
   container: {
   flex: 1,
-  padding: 16,
 },
   appTitle: {
   flex: 1,
