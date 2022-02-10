@@ -41,7 +41,7 @@ const LoginForm = ({navigation}) => {
   return (
     <View style={styles.container}>
 
-      <Image source={require('../images/mobile_background2_tagit.png')} style={styles.logo}/>
+      <Image source={require('../images/logo.png')} resizeMode={'contain'} style={styles.logo} />
       <Text style={styles.loginText}> Login </Text>
       <View style={styles.inputForm}>
         <Controller
@@ -86,19 +86,19 @@ const LoginForm = ({navigation}) => {
       <Text onPress={register} style={styles.registerHere}> Not a user yet? Register here!</Text>
 
       <Button title="Login"
-              onPress={handleSubmit(onSubmit)}
-              titleStyle={{
-                fontSize: 22,
-              }}
-              containerStyle={{
-                position: 'absolute',
-                borderRadius: 10,
-                bottom: '8%',
-                alignSelf: 'center',
-                width: '90%',
-                height: 70,
-              }}
-              buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}}/>
+        onPress={handleSubmit(onSubmit)}
+        titleStyle={{
+          fontSize: 22,
+        }}
+        containerStyle={{
+          position: 'absolute',
+          borderRadius: 10,
+          bottom: '8%',
+          alignSelf: 'center',
+          width: '90%',
+          height: 70,
+        }}
+        buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}} />
 
 
     </View>

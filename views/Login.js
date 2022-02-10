@@ -20,7 +20,7 @@ const Login = ({navigation}) => {
       activeOpacity={1}
       onPress={() => Keyboard.dismiss()}
     >
-      <ImageBackground source={require('../images/mobile_background2_tagit.png')} style={styles.background}
+      <ImageBackground source={require('../images/mobile_background2_tagit.png')} resizeMode={'contain'} style={styles.background}
         resizeMode={'cover'} />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : ''}
