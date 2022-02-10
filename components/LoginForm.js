@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {ImageBackground, View, StyleSheet} from 'react-native';
+import {ImageBackground, View, StyleSheet, Image} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {MainContext} from '../contexts/MainContext';
 import {useLogin} from '../hooks/ApiHooks';
@@ -8,10 +8,11 @@ import {Button, Input, Text} from 'react-native-elements';
 import PropTypes from "prop-types";
 
 
-
 const LoginForm = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {postLogin} = useLogin();
+  //TODO: change navigation to "Register" when register is made.
+  const register = () => navigation.navigate("Settings")
 
   const {
     control,
@@ -40,62 +41,64 @@ const LoginForm = ({navigation}) => {
   return (
     <View style={styles.container}>
 
+      <Image source={require('../images/mobile_background2_tagit.png')} style={styles.logo}/>
+      <Text style={styles.loginText}> Login </Text>
+      <View style={styles.inputForm}>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              autoCapitalize="none"
+              placeholder="Username"
+            />
+          )}
+          name="username"
+        />
+        {errors.username && <Text>This is required.</Text>}
 
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            autoCapitalize="none"
-            placeholder="Username"
-          />
-        )}
-        name="username"
-      />
-      {errors.username && <Text>This is required.</Text>}
-
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            autoCapitalize="none"
-            secureTextEntry={true}
-            placeholder="Password"
-          />
-        )}
-        name="password"
-      />
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              autoCapitalize="none"
+              secureTextEntry={true}
+              placeholder="Password"
+            />
+          )}
+          name="password"
+        />
+      </View>
       {errors.password && <Text>This is required.</Text>}
-      <Button title={"Not a user yet? Register here!"}
-        containerStyle={{
-          position: 'absolute',
-          top: 400,
-          alignSelf: "center",
-        }}
-        buttonStyle={{backgroundColor: '#2F2B2B', }}
-      />
+      <Text onPress={register} style={styles.registerHere}> Not a user yet? Register here!</Text>
+
       <Button title="Login"
-        onPress={handleSubmit(onSubmit)}
-        containerStyle={{
-          position: 'absolute',
-          borderRadius: 10,
-          top: 500,
-          alignSelf: 'center',
-          width: '90%',
-          height: 70,
-        }}
-        buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}} />
+              onPress={handleSubmit(onSubmit)}
+              titleStyle={{
+                fontSize: 22,
+              }}
+              containerStyle={{
+                position: 'absolute',
+                borderRadius: 10,
+                bottom: '8%',
+                alignSelf: 'center',
+                width: '90%',
+                height: 70,
+              }}
+              buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}}/>
 
 
     </View>
@@ -108,10 +111,38 @@ LoginForm.propTypes = {
 };
 
 const styles = StyleSheet.create({
-
   container: {
     height: '100%',
     width: '100%',
+  },
+  input: {
+    color: 'white',
+  },
+  inputForm: {
+    width: '90%',
+    top: '18%',
+    left: '5%',
+    color: 'white',
+  },
+  logo: {
+    height: 150,
+    width: 250,
+    alignSelf: 'center',
+    top: 50,
+  },
+  registerHere: {
+    color: 'white',
+    fontSize: 18,
+    position: 'absolute',
+    bottom: '35%',
+    marginLeft: '7%',
+    textDecorationLine: 'underline',
+  },
+  loginText: {
+    color: 'white',
+    fontSize: 25,
+    top: '15%',
+    marginLeft: '7%',
   }
 })
 
