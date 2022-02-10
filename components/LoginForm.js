@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 
 
 
-const LoginForm = () => {
+const LoginForm = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {postLogin} = useLogin();
 
@@ -31,6 +31,7 @@ const LoginForm = () => {
       await AsyncStorage.setItem('userToken', userData.token);
       setUser(userData.user);
       setIsLoggedIn(true);
+      navigation.navigate("Tabs");
     } catch (error) {
       console.error(error);
     }
@@ -39,8 +40,7 @@ const LoginForm = () => {
   return (
     <View style={styles.container}>
 
-      <ImageBackground source={require('../images/mobile_background2_tagit.png')} style={styles.background}
-      resizeMode={'cover'}/>
+
       <Controller
         control={control}
         rules={{
@@ -78,24 +78,24 @@ const LoginForm = () => {
       />
       {errors.password && <Text>This is required.</Text>}
       <Button title={"Not a user yet? Register here!"}
-      containerStyle={{
-        position: 'absolute',
-        top: 400,
-        alignSelf: "center",
-      }}
-      buttonStyle={{backgroundColor: '#2F2B2B',}}
+        containerStyle={{
+          position: 'absolute',
+          top: 400,
+          alignSelf: "center",
+        }}
+        buttonStyle={{backgroundColor: '#2F2B2B', }}
       />
       <Button title="Login"
-              onPress={handleSubmit(onSubmit)}
-      containerStyle={{
-        position: 'absolute',
-        borderRadius: 10,
-        top: 500,
-        alignSelf: 'center',
-        width: '90%',
-        height: 70,
-      }}
-      buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}}/>
+        onPress={handleSubmit(onSubmit)}
+        containerStyle={{
+          position: 'absolute',
+          borderRadius: 10,
+          top: 500,
+          alignSelf: 'center',
+          width: '90%',
+          height: 70,
+        }}
+        buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}} />
 
 
     </View>
@@ -108,12 +108,7 @@ LoginForm.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  background: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    bottom: 0,
-  },
+
   container: {
     height: '100%',
     width: '100%',

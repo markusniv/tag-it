@@ -1,5 +1,7 @@
 import React from 'react';
 import {
+  Dimensions,
+  ImageBackground,
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
@@ -11,25 +13,27 @@ import PropTypes from 'prop-types';
 
 import LoginForm from "../components/LoginForm";
 
-const Login = () => {
+const Login = ({navigation}) => {
   return (
     <TouchableOpacity
       style={{flex: 1}}
       activeOpacity={1}
-      onPress={() => Keyboard.dismiss()}  
+      onPress={() => Keyboard.dismiss()}
     >
+      <ImageBackground source={require('../images/mobile_background2_tagit.png')} style={styles.background}
+        resizeMode={'cover'} />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : ''}
         style={styles.container}
       >
         <View style={styles.form}>
 
-            <LoginForm/>
+          <LoginForm navigation={navigation} />
 
         </View>
       </KeyboardAvoidingView>
     </TouchableOpacity>
-);
+  );
 };
 
 
@@ -39,16 +43,23 @@ const Login = () => {
 
 const styles = StyleSheet.create({
   container: {
-  flex: 1,
-},
+    flex: 1,
+  },
   appTitle: {
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
-},
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   form: {
-  flex: 8,
-},
+    flex: 8,
+  },
+  background: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
 });
 
 Login.propTypes = {
