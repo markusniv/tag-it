@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import CustomNavBar from "./CustomNavBar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -29,24 +29,28 @@ const getColors = () => {
   let bgColor,
     headerColor,
     headerTintColor,
+    searchColor,
     highlightColor = colors.highlight_color;
 
   if (darkMode) {
     bgColor = colors.dark_mode_bg;
     headerColor = colors.dark_mode_header;
     headerTintColor = colors.dark_mode_header_tint;
+    searchColor = colors.light_mode_bg;
   } else {
     bgColor = colors.light_mode_bg;
     headerColor = colors.light_mode_header;
     headerTintColor = colors.light_mode_header_tint;
+    searchColor = colors.dark_mode_bg;
   }
-  return { bgColor, headerColor, headerTintColor, highlightColor };
+  return { bgColor, headerColor, headerTintColor, highlightColor, searchColor };
 };
 
 
 
 const HomeTopNavigator = () => {
   const colors = getColors();
+  const {setSearchInput} = useContext(MainContext);
 
   return (
     <HomeTopTab.Navigator
@@ -55,6 +59,7 @@ const HomeTopNavigator = () => {
         tabBarLabelStyle: { color: colors.headerTintColor },
         tabBarIndicatorStyle: { backgroundColor: colors.highlightColor },
       }}
+      screenListeners={() => setSearchInput("")}
     >
       <HomeTopTab.Screen name="Recent" component={Home} />
       <HomeTopTab.Screen name="Popular" component={Popular}/>
@@ -126,7 +131,7 @@ const BottomNav = () => {
               borderTopColor: "transparent",
               backgroundColor: "transparent",
             }} 
-            inputContainerStyle={{height: "100%", borderRadius: 15, backgroundColor: "white"}}
+            inputContainerStyle={{height: "100%", borderRadius: 15, backgroundColor: colors.searchColor}}
             value={searchInput}
             onChangeText={setSearchInput}
             />

@@ -8,8 +8,8 @@ const tag = data.tag;
 
 const useMedia = (update) => {
 
-  const [mediaArray, setMediaArray] = useState({hits: []});
-  const [userMediaArray, setUserMediaArray] = useState({hits: []});
+  const [mediaArray, setMediaArray] = useState(JSON);
+  const [userMediaArray, setUserMediaArray] = useState(JSON);
 
   const getMedia = async () => {
     const url = apiUrl + "media/";

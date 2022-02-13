@@ -27,10 +27,21 @@ const ListItem = ({ singleMedia, navigation }) => {
   console.log(singleMedia);
 
   return (
-    <NBListItem containerStyle={{backgroundColor: "transparent"}} bottomDivider >
+    <NBListItem containerStyle={{backgroundColor: "transparent", padding: 10, paddingBottom: 5}} >
       <NBListItem.Content>
         <TouchableOpacity 
-        style={styles.container}
+        style={{    
+          flex: 1,
+          flexDirection: "column",
+          justifyContent: "center",
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          elevation: 10,
+          borderRadius: 5,
+          padding: 10,
+          backgroundColor: bgColor,
+        }}
         onPress={() => {
           navigation.navigate("Post", {
             media: { singleMedia },
@@ -49,12 +60,13 @@ const ListItem = ({ singleMedia, navigation }) => {
             <Text style={{color: headerTintColor, fontSize: 10, paddingBottom: 5}}>Posted 4 hours ago</Text>
           </View>
           <Image
-            resizeMode="cover"
+            resizeMode="contain"
             containerStyle={styles.image}
             source={{
-              uri: `${url}${singleMedia.thumbnails.w160}`,
+              uri: `${url}${singleMedia.thumbnails.w640}`,
             }}
           />
+         
         </TouchableOpacity>
       </NBListItem.Content>
 
@@ -72,9 +84,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
     width: "100%",
     height: "100%",
+    display: "flex",
+    elevation: 10,
+    borderRadius: 5,
+    padding: 10,
   },
   postInfo: {
     width: "100%",
