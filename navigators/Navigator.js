@@ -1,22 +1,23 @@
-import React, { useContext, useEffect } from "react";
+import React, {useContext, useEffect} from "react";
 import CustomNavBar from "./CustomNavBar";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { SearchBar } from "react-native-elements";
+import {NavigationContainer} from "@react-navigation/native";
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
+import {SearchBar} from "react-native-elements";
 import Home from "../views/Home";
 import Login from "../views/Login";
 import Profile from "../views/Profile";
 import Create from "../views/Create";
 import Post from "../views/Post";
 import Popular from "../views/Popular";
-import { View, Text } from "react-native";
+import {View, Text, StatusBar} from "react-native";
 import Notifications from "../views/Notifications";
 import Settings from "../views/Settings";
-import { MainContext } from "../contexts/MainContext";
+import {MainContext} from "../contexts/MainContext";
 import colors from "../global/colors.json";
 import Welcome from "../views/Welcome";
+import {useFonts} from "expo-font";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -24,7 +25,7 @@ const Stack = createNativeStackNavigator();
 const HomeTopTab = createMaterialTopTabNavigator();
 
 const getColors = () => {
-  const { darkMode } = useContext(MainContext);
+  const {darkMode} = useContext(MainContext);
 
   let bgColor,
     headerColor,
@@ -43,7 +44,7 @@ const getColors = () => {
     headerTintColor = colors.light_mode_header_tint;
     searchColor = colors.dark_mode_bg;
   }
-  return { bgColor, headerColor, headerTintColor, highlightColor, searchColor };
+  return {bgColor, headerColor, headerTintColor, highlightColor, searchColor};
 };
 
 
@@ -52,17 +53,25 @@ const HomeTopNavigator = () => {
   const colors = getColors();
   const {setSearchInput} = useContext(MainContext);
 
+  const [loaded] = useFonts({
+    AdventPro: require('../assets/fonts/AdventPro.ttf'),
+  });
+
+  if (!loaded) {
+    return null;
+  }
+
   return (
     <HomeTopTab.Navigator
       screenOptions={{
-        tabBarStyle: { backgroundColor: colors.headerColor },
-        tabBarLabelStyle: { color: colors.headerTintColor },
-        tabBarIndicatorStyle: { backgroundColor: colors.highlightColor },
+        tabBarStyle: {backgroundColor: colors.headerColor},
+        tabBarLabelStyle: {color: colors.headerTintColor},
+        tabBarIndicatorStyle: {backgroundColor: colors.highlightColor},
       }}
       screenListeners={() => setSearchInput("")}
     >
       <HomeTopTab.Screen name="Recent" component={Home} />
-      <HomeTopTab.Screen name="Popular" component={Popular}/>
+      <HomeTopTab.Screen name="Popular" component={Popular} />
     </HomeTopTab.Navigator>
   );
 };
@@ -94,7 +103,7 @@ const StackScreen = () => {
 };
 
 const BottomNav = () => {
-  const { isLoggedIn, setSearchInput, searchInput } = useContext(MainContext);
+  const {isLoggedIn, setSearchInput, searchInput} = useContext(MainContext);
 
   const colors = getColors();
   return (
@@ -110,33 +119,34 @@ const BottomNav = () => {
             backgroundColor: colors.headerColor,
             height: 130,
           },
-          header:() => (
-          <View 
-          style={{width: "100%", 
-            height: 130, 
-            justifyContent: "space-around",
-            paddingTop: 20,
-            paddingBottom: 20,
-            alignItems: "center", 
-            backgroundColor: colors.headerColor,
-            }}
-            collapsable={true}>
-      
-            <SearchBar 
-            containerStyle={{
-              width: "70%", 
-              height: 55, 
-              justifyContent: "center", 
-              borderBottomColor: "transparent", 
-              borderTopColor: "transparent",
-              backgroundColor: "transparent",
-            }} 
-            inputContainerStyle={{height: "100%", borderRadius: 15, backgroundColor: colors.searchColor}}
-            value={searchInput}
-            onChangeText={setSearchInput}
-            />
-            <Text style={{color: colors.headerTintColor, fontSize: 20}}>Home</Text>            
-          </View>
+          header: () => (
+            <View
+              style={{
+                width: "100%",
+                height: 130,
+                justifyContent: "space-around",
+                paddingTop: 20,
+                paddingBottom: 20,
+                alignItems: "center",
+                backgroundColor: colors.headerColor,
+              }}
+              collapsable={true}>
+
+              <SearchBar
+                containerStyle={{
+                  width: "70%",
+                  height: 55,
+                  justifyContent: "center",
+                  borderBottomColor: "transparent",
+                  borderTopColor: "transparent",
+                  backgroundColor: "transparent",
+                }}
+                inputContainerStyle={{height: "100%", borderRadius: 15, backgroundColor: colors.searchColor}}
+                value={searchInput}
+                onChangeText={setSearchInput}
+              />
+              <Text style={{color: colors.headerTintColor, fontSize: 20}}>Home</Text>
+            </View>
           ),
           headerTintColor: colors.headerTintColor,
         }}
@@ -155,11 +165,12 @@ const BottomNav = () => {
       )}
       {isLoggedIn && (
         <Tab.Screen
-          name="CreateView"
+          name="Create"
           component={Create}
           options={{
             headerStyle: {
               backgroundColor: colors.headerColor,
+              height: StatusBar.currentHeight,
             },
             headerTintColor: colors.headerTintColor,
           }}
