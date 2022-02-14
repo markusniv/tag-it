@@ -4,8 +4,11 @@ import {useForm, Controller} from 'react-hook-form';
 import {useUser} from '../hooks/ApiHooks';
 import {Input, Button, Text} from 'react-native-elements';
 
+
+
 const RegisterForm = ({navigation}) => {
   const {postUser, checkUsername} = useUser();
+  const login = () => navigation.navigate("Login");
 
   const {
     control,
@@ -37,8 +40,8 @@ const RegisterForm = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-
-      <Image source={require('../images/mobile_background2_tagit.png')} style={styles.logo}/>
+      <Image source={require('../images/placeholder_logo.png')} style={styles.logo}/>
+      <Text style={{color: 'white', fontSize: 30, marginLeft: '7%', position: "absolute", top: '32%'}}>Register</Text>
       <Text style={styles.loginText}> Login </Text>
       <View style={styles.inputForm}>
       <Controller
@@ -146,25 +149,8 @@ const RegisterForm = ({navigation}) => {
       />
       {errors.email && <Text>This is required.</Text>}
 
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-          minLength: {value: 3, message: "Full name has to be at least 3 characters long"}
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            autoCapitalize="words"
-            placeholder="Full name"
-          />
-        )}
-        name="full_name"
-      />
       </View>
+      <Text onPress={login} style={styles.loginHere} navigation={navigation}>Already a user? Login here!</Text>
       <Button title="Register"
               onPress={handleSubmit(onSubmit)}
               buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}}
@@ -188,6 +174,7 @@ const styles = StyleSheet.create({
   container: {
     height: '100%',
     width: '100%',
+    color: 'white',
   },
 
   inputForm: {
@@ -200,11 +187,19 @@ const styles = StyleSheet.create({
     height: 150,
     width: 250,
     alignSelf: 'center',
-    top: 50,
+    top: 80,
   },
   input: {
     color: 'white',
   },
+  loginHere:{
+    color: 'white',
+    fontSize: 18,
+    position: 'absolute',
+    bottom: '25%',
+    marginLeft: '7%',
+    textDecorationLine: 'underline',
+  }
 })
 
 export default RegisterForm;
