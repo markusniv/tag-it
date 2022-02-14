@@ -11,7 +11,7 @@ const useMedia = (update) => {
 
   const [mediaArray, setMediaArray] = useState(JSON);
   const [userMediaArray, setUserMediaArray] = useState(JSON);
-  const {isLoggedIn} = useContext(MainContext);
+  const {isLoggedIn, user} = useContext(MainContext);
 
   const getMedia = async () => {
 
@@ -34,13 +34,12 @@ const useMedia = (update) => {
                 'x-access-token': token,
               },
             };
-            const likes = await getFavourites(item.file_id, options);
+            const likes = await getFavourites(item.file_id);
             const user = await getUserInfo(item.user_id, options);
 
             json.likes = likes;
             json.user = user;
           }
-
           
           return json;
         })
@@ -51,13 +50,28 @@ const useMedia = (update) => {
     }
   };
 
-  const getFavourites = async (id, options) => {
-    const response = await fetch(`${apiUrl}favourites/file/${id}`, options);
 
-    const favourites = await response.json();
-    return Object.keys(favourites).length;
+  // Fetches all the likes for the chosen post.
+  const getFavourites = async (id) => {
+    const token = await AsyncStorage.getItem('userToken');
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    let liked = false;
+    const response = await fetch(`${apiUrl}favourites/file/${id}`, options);
+    const json = await response.json();
+
+
+    await json.map(like => {if (like.user_id === user.user_id) liked = true });
+
+    return {amount: Object.keys(json).length, liked};
   };
 
+
+  // Fetches user info with the given id.
   const getUserInfo = async (id, options) => {
     const response = await fetch(`${apiUrl}users/${id}`, options);
 
@@ -192,6 +206,7 @@ const useMedia = (update) => {
       method: 'POST',
       headers: {
         'x-access-token': token,
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({file_id: id}),
     };
@@ -207,13 +222,34 @@ const useMedia = (update) => {
       console.log(`Failed to like post: ${e.message}`);
     }
   };
+  
+  // removes a like from a post.
+  const removeLike = async (id) => {
+    const token = await AsyncStorage.getItem('userToken');
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    try {
+      const response = await fetch(`${apiUrl}favourites/file/${id}`, options);
+      if (response.ok) {
+        console.log(`Removal of like from post_id ${id} was succesful`);
+        return true;
+      };
+      return false;
+    } catch (e) {
+      console.log(`Failed to remove like from post: ${e.message}`);
+    }
+  };
 
 
   useEffect(async () => {
     await getMedia();
     await getMyMedia();
   }, [update, isLoggedIn]);
-  return {mediaArray, userMediaArray, postMedia, deleteMedia, putMedia, likeMedia};
+  return {mediaArray, userMediaArray, postMedia, deleteMedia, putMedia, likeMedia, removeLike, getFavourites};
 };
 
 const useLogin = () => {
