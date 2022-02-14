@@ -79,7 +79,7 @@ const useMedia = (update) => {
     return user;
   };
 
-  const getMyMedia = async () => {
+/*   const getMyMedia = async () => {
     const token = await AsyncStorage.getItem('userToken');
     const url = apiUrl + "media/";
 
@@ -105,7 +105,7 @@ const useMedia = (update) => {
     } catch (e) {
       throw new Error(e.message);
     }
-  }
+  } */
 
   const postMedia = async (data) => {
     const token = await AsyncStorage.getItem('userToken');
@@ -247,7 +247,7 @@ const useMedia = (update) => {
 
   useEffect(async () => {
     await getMedia();
-    await getMyMedia();
+/*     await getMyMedia(); */
   }, [update, isLoggedIn]);
   return {mediaArray, userMediaArray, postMedia, deleteMedia, putMedia, likeMedia, removeLike, getFavourites};
 };

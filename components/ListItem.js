@@ -11,10 +11,15 @@ import colors from "../global/colors.json";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const ListItem = ({ singleMedia, navigation }) => {
-  const { darkMode, update } = useContext(MainContext);
+  const { darkMode, update, loggedIn } = useContext(MainContext);
   const {likeMedia, removeLike, getFavourites} = useMedia(update);
-  const [currentLikes, setCurrentLikes] = useState(singleMedia.likes);
-  const [liked, setLiked] = useState(singleMedia.likes.liked);
+  const [currentLikes, setCurrentLikes] = useState(false);
+  const [liked, setLiked] = useState(false);
+
+  if (loggedIn) {
+    setCurrentLikes(singleMedia.likes);
+    setLiked(singleMedia.likes.liked);
+  }
 
   let bgColor,
     headerColor,
@@ -32,7 +37,6 @@ const ListItem = ({ singleMedia, navigation }) => {
   }
 
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
-/*   console.log(JSON.stringify(singleMedia)); */
   
   // Removes or adds a like depending on the liked status.
   const toggleLike = async () => {
