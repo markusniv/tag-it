@@ -1,14 +1,14 @@
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import {StyleSheet, View, TouchableOpacity} from "react-native";
+import React, {useContext, useEffect, useState} from "react";
 import {
   ListItem as NBListItem,
   Text,
   Image,
 } from "react-native-elements";
-import { MainContext } from "../contexts/MainContext";
-import { useMedia } from "../hooks/ApiHooks";
+import {MainContext} from "../contexts/MainContext";
+import {useMedia} from "../hooks/ApiHooks";
 import colors from "../global/colors.json";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 
 const ListItem = ({ singleMedia, navigation }) => {
   const { darkMode, update, loggedIn } = useContext(MainContext);
@@ -64,9 +64,9 @@ const ListItem = ({ singleMedia, navigation }) => {
     let yearDifference = Math.floor(monthDifference / 12);
 
     if (secondsDifference < 60) description = `Posted a few seconds ago`;
-    else if (minutesDifference < 60 && secondsDifference >= 60) 
-    description = `Posted ${minutesDifference} ${minutesDifference == 1 ? "minute" : "minutes"} ago`;
-    else if (hoursDifference > 0 && dayDifference < 1) description = `Posted ${hoursDifference} ${hoursDifference == 1 ? "hour" : "hours"} ago`;  
+    else if (minutesDifference < 60 && secondsDifference >= 60)
+      description = `Posted ${minutesDifference} ${minutesDifference == 1 ? "minute" : "minutes"} ago`;
+    else if (hoursDifference > 0 && dayDifference < 1) description = `Posted ${hoursDifference} ${hoursDifference == 1 ? "hour" : "hours"} ago`;
     else if (dayDifference > 1 && weekDifference < 1) description = `Posted ${dayDifference} ${dayDifference == 1 ? "day" : "days"} ago`;
     else if (weekDifference > 0 && monthDifference < 1) description = `Posted ${weekDifference} ${weekDifference == 1 ? "week" : "weeks"} ago`;
     else if (monthDifference > 0 && yearDifference < 1) description = `Posted ${monthDifference} ${monthDifference == 1 ? "month" : "months"} ago`;
@@ -101,9 +101,9 @@ const ListItem = ({ singleMedia, navigation }) => {
             <TouchableOpacity style={styles.postInfo}>
               <Image containerStyle={styles.postInfoImage} />
               <View style={styles.postInfoText}>
-                <Text style={{ color: headerTintColor }}>t/placeholder</Text>
+                <Text style={{color: headerTintColor}}>t/placeholder</Text>
                 {singleMedia.user && (
-                  <Text style={{ color: headerTintColor }}>
+                  <Text style={{color: headerTintColor}}>
                     Posted by /user/{singleMedia.user.username}
                   </Text>
                 )}
@@ -117,7 +117,7 @@ const ListItem = ({ singleMedia, navigation }) => {
           <TouchableOpacity style={styles.lowerContainer}
             onPress={() => {
               navigation.navigate("Post", {
-                media: { singleMedia },
+                media: {singleMedia},
               });
             }}>
             <View style={styles.postTitle}>
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
   },
-  likesContainer: { 
+  likesContainer: {
     justifyContent: "center",
     alignItems: "center",
   },
