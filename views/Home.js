@@ -7,7 +7,7 @@ import colors from "../global/colors.json";
 
 /** Used for displaying the Home screen, which contains a list of recently added and popular posts. */
 const Home = ({navigation}) => {
-  const {darkMode, update, searchInput, setSearchInput} = useContext(MainContext);
+  const {darkMode, update, searchInput} = useContext(MainContext);
   const {mediaArray} = useMedia(update);
 
   const [arr, setArr] = useState({});

@@ -1,7 +1,8 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext} from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import data from '../global/tag.json'
+import {MainContext} from "../contexts/MainContext";
 
 const apiUrl = "https://media.mw.metropolia.fi/wbma/";
 const tag = data.tag;
@@ -10,16 +11,37 @@ const useMedia = (update) => {
 
   const [mediaArray, setMediaArray] = useState(JSON);
   const [userMediaArray, setUserMediaArray] = useState(JSON);
+  const {isLoggedIn} = useContext(MainContext);
 
   const getMedia = async () => {
+
+    const token = await AsyncStorage.getItem('userToken');
     const url = apiUrl + "media/";
     try {
+
       const response = await fetch(`${apiUrl}tags/${tag}`);
       const array = await response.json();
       const json = await Promise.all(
         array.map(async (item) => {
           const response = await fetch(url + item.file_id);
           const json = await response.json();
+          
+          // Fetching likes for the file and adding it to the json object.
+          if (isLoggedIn) {
+            const options = {
+              method: 'GET',
+              headers: {
+                'x-access-token': token,
+              },
+            };
+            const likes = await getFavourites(item.file_id, options);
+            const user = await getUserInfo(item.user_id, options);
+
+            json.likes = likes;
+            json.user = user;
+          }
+
+          
           return json;
         })
       );
@@ -27,6 +49,20 @@ const useMedia = (update) => {
     } catch (e) {
       throw new Error(e.message);
     }
+  };
+
+  const getFavourites = async (id, options) => {
+    const response = await fetch(`${apiUrl}favourites/file/${id}`, options);
+
+    const favourites = await response.json();
+    return Object.keys(favourites).length;
+  };
+
+  const getUserInfo = async (id, options) => {
+    const response = await fetch(`${apiUrl}users/${id}`, options);
+
+    const user = await response.json();
+    return user;
   };
 
   const getMyMedia = async () => {
@@ -149,18 +185,42 @@ const useMedia = (update) => {
     }
   };
 
+  // Adds a like to a post, if the user has not liked it yet.
+  const likeMedia = async (id) => {
+    const token = await AsyncStorage.getItem('userToken');
+    const options = {
+      method: 'POST',
+      headers: {
+        'x-access-token': token,
+      },
+      body: JSON.stringify({file_id: id}),
+    };
+
+    try {
+      const response = await fetch(`${apiUrl}favourites`, options);
+      if (response.ok) {
+        console.log(`Liking of post_id ${id} was succesful`);
+        return true;
+      };
+      return false;
+    } catch (e) {
+      console.log(`Failed to like post: ${e.message}`);
+    }
+  };
+
+
   useEffect(async () => {
     await getMedia();
     await getMyMedia();
-  }, [update]);
-  return {mediaArray, userMediaArray, postMedia, deleteMedia, putMedia};
+  }, [update, isLoggedIn]);
+  return {mediaArray, userMediaArray, postMedia, deleteMedia, putMedia, likeMedia};
 };
 
 const useLogin = () => {
 
-  const postLogin = async (userCredentials) => { // user credentials format: {username: 'someUsername', password: 'somePassword'}
+  const postLogin = async (userCredentials) => {
+
     const options = {
-      // TODO: add method, headers and body for sending json data with POST
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -168,7 +228,7 @@ const useLogin = () => {
       body: JSON.stringify(userCredentials)
     };
     try {
-      // TODO: use fetch to send request to login endpoint and return the result as json, handle errors with try/catch and response.ok
+      
       const response = await fetch(apiUrl + "login", options);
       if (!response.ok) {
         return new Error('Failed to retrieve data!');
