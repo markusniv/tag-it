@@ -11,6 +11,7 @@ const List = ({ navigation, media }) => {
 
   if (darkMode) bgColor = colors.dark_mode_bg;
 
+
   return (
     <>
       <FlatList
