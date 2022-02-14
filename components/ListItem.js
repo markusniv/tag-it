@@ -1,4 +1,4 @@
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import {StyleSheet, View, TouchableOpacity} from "react-native";
 import React, {useContext} from "react";
 import {
   ListItem as NBListItem,
@@ -8,7 +8,7 @@ import {
 import {MainContext} from "../contexts/MainContext";
 import colors from "../global/colors.json";
 
-const ListItem = ({ singleMedia, navigation }) => {
+const ListItem = ({singleMedia, navigation}) => {
   const {darkMode} = useContext(MainContext);
 
   let bgColor, headerColor, headerTintColor, highlightColor = colors.highlight_color;
@@ -24,26 +24,25 @@ const ListItem = ({ singleMedia, navigation }) => {
   }
 
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
-  console.log(singleMedia);
 
   return (
     <NBListItem containerStyle={{backgroundColor: "transparent"}} bottomDivider >
       <NBListItem.Content>
-        <TouchableOpacity 
-        style={styles.container}
-        onPress={() => {
-          navigation.navigate("Post", {
-            media: { singleMedia },
-          });
-        }}>
+        <TouchableOpacity
+          style={styles.container}
+          onPress={() => {
+            navigation.navigate("Post", {
+              media: {singleMedia},
+            });
+          }}>
           <View style={styles.postInfo}>
-              <Image containerStyle={styles.postInfoImage} />
-              <View style={styles.postInfoText}>
+            <Image containerStyle={styles.postInfoImage} />
+            <View style={styles.postInfoText}>
               <Text style={{color: headerTintColor}}>t/placeholder</Text>
               <Text style={{color: headerTintColor}}>Posted by /user/mattimeikäläinen</Text>
-              </View>
+            </View>
           </View>
-    
+
           <View style={styles.postTitle}>
             <Text style={{color: headerTintColor, fontSize: 25, paddingBottom: 10}}>{singleMedia.title}</Text>
             <Text style={{color: headerTintColor, fontSize: 10, paddingBottom: 5}}>Posted 4 hours ago</Text>

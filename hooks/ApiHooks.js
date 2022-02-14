@@ -57,8 +57,10 @@ const useMedia = (update) => {
     }
   }
 
-  const postMedia = async (data) => {
+  const postMedia = async (data, userTag) => {
     const token = await AsyncStorage.getItem('userToken');
+    const realTag = tag + userTag;
+    console.log(realTag);
     const options = {
       method: 'POST',
       headers: {
@@ -76,12 +78,14 @@ const useMedia = (update) => {
 
       const json = await response.json();
 
-      const tBody = {
+      // Adding to the basic application tag, "tagit_"
+
+      let tBody = {
         file_id: json.file_id,
         tag: tag,
       };
 
-      const tOptions = {
+      let tOptions = {
         method: 'POST',
         headers: {
           'x-access-token': token,
@@ -90,11 +94,37 @@ const useMedia = (update) => {
         body: JSON.stringify(tBody)
       };
 
-      const tResponse = await fetch(apiUrl + "tags", tOptions);
+      let tResponse = await fetch(apiUrl + "tags", tOptions);
       if (!tResponse.ok) {
         return new Error('Failed to create a tag!');
       }
-      const tJson = await tResponse.json();
+      let tJson = await tResponse.json();
+
+      console.log(tJson);
+
+      // Adding to the user specified tag
+
+      tBody = {
+        file_id: json.file_id,
+        tag: realTag,
+      };
+
+      tOptions = {
+        method: 'POST',
+        headers: {
+          'x-access-token': token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(tBody)
+      };
+
+      tResponse = await fetch(apiUrl + "tags", tOptions);
+      if (!tResponse.ok) {
+        return new Error('Failed to create a tag!');
+      }
+      tJson = await tResponse.json();
+
+      console.log(tJson);
 
       return tJson;
     } catch (e) {
