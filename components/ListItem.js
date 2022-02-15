@@ -11,15 +11,13 @@ import colors from "../global/colors.json";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 
 const ListItem = ({ singleMedia, navigation }) => {
-  const { darkMode, update, loggedIn } = useContext(MainContext);
+  const { darkMode, update, isLoggedIn } = useContext(MainContext);
   const {likeMedia, removeLike, getFavourites} = useMedia(update);
-  const [currentLikes, setCurrentLikes] = useState(false);
+  const [currentLikes, setCurrentLikes] = useState({});
   const [liked, setLiked] = useState(false);
 
-  if (loggedIn) {
-    setCurrentLikes(singleMedia.likes);
-    setLiked(singleMedia.likes.liked);
-  }
+
+  console.log("Rendering item:", singleMedia.title);
 
   let bgColor,
     headerColor,
@@ -73,6 +71,17 @@ const ListItem = ({ singleMedia, navigation }) => {
     else if (yearDifference > 0) description = `Posted ${yearDifference} ${yearDifference == 1 ? "year" : "years"} ago`;
     return description;
   }
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setCurrentLikes(singleMedia.likes);
+      setLiked(singleMedia.likes.liked);
+    } else if (!isLoggedIn) {
+      setCurrentLikes({});
+      setLiked(false);
+    }
+    console.log("isLoggedIn at ListItem:", singleMedia.title, isLoggedIn);
+  }, [singleMedia])
 
   return (
     <NBListItem
@@ -144,10 +153,11 @@ const ListItem = ({ singleMedia, navigation }) => {
               resizeMode="contain"
               containerStyle={styles.image}
               source={{
-                uri: `${url}${singleMedia.thumbnails.w640}`,
+                uri: `${url}${singleMedia.thumbnails.w320}`,
               }}
             />
           </TouchableOpacity>
+     {/*      <Text>Testing</Text> */}
         </View>
       </NBListItem.Content>
     </NBListItem>

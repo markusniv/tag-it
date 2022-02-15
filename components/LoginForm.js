@@ -12,7 +12,7 @@ const LoginForm = ({navigation}) => {
   const {setIsLoggedIn, setUser, setUpdate} = useContext(MainContext);
   const {postLogin} = useLogin();
   //TODO: change navigation to "Register" when register is made.
-  const register = () => navigation.navigate("Settings")
+  const register = () => navigation.navigate("Settings");
 
   const {
     control,
