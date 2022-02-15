@@ -40,7 +40,7 @@ const RegisterForm = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../images/placeholder_logo.png')} style={styles.logo}/>
+      <Image source={require('../images/logo.png')} style={styles.logo}/>
       <Text style={styles.loginText}> Login </Text>
       <View style={styles.inputForm}>
       <Controller

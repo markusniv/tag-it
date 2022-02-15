@@ -96,7 +96,7 @@ const StackScreen = () => {
       <Stack.Screen name="Register" component={Register} options={{
         headerShown: false,
         headerStyle: {
-          backgroundColor: headerColor,
+          backgroundColor: colors.headerColor,
         },
         headerTintColor: 'white',
       }} />
