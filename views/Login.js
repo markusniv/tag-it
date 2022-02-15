@@ -7,7 +7,7 @@ import {
   Platform,
   TouchableOpacity,
   Keyboard,
-  View,
+  View, ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -16,10 +16,12 @@ import LoginForm from "../components/LoginForm";
 const Login = ({navigation}) => {
   return (
     <TouchableOpacity
-      style={{flex: 1}}
+      style={{flex: 1,
+        minHeight: Math.round(Dimensions.get('window').height)}}
       activeOpacity={1}
       onPress={() => Keyboard.dismiss()}
     >
+
       <ImageBackground source={require('../images/mobile_background2_tagit.png')} style={styles.background}
         resizeMode={'cover'} />
       <KeyboardAvoidingView
@@ -32,6 +34,7 @@ const Login = ({navigation}) => {
 
         </View>
       </KeyboardAvoidingView>
+
     </TouchableOpacity>
   );
 };

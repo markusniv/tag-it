@@ -40,7 +40,7 @@ const LoginForm = ({navigation}) => {
   return (
     <View style={styles.container}>
 
-      <Image source={require('../images/mobile_background2_tagit.png')} style={styles.logo}/>
+      <Image source={require('../images/placeholder_logo.png')} style={styles.logo}/>
       <Text style={styles.loginText}> Login </Text>
       <View style={styles.inputForm}>
         <Controller
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     height: 150,
     width: 250,
     alignSelf: 'center',
-    top: 50,
+    top: '10%',
   },
   registerHere: {
     color: 'white',

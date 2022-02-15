@@ -41,13 +41,12 @@ const RegisterForm = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Image source={require('../images/placeholder_logo.png')} style={styles.logo}/>
-      <Text style={{color: 'white', fontSize: 30, marginLeft: '7%', position: "absolute", top: '32%'}}>Register</Text>
       <Text style={styles.loginText}> Login </Text>
       <View style={styles.inputForm}>
       <Controller
         control={control}
         rules={{
-          required: {value: true, message: "This is required!"},
+          required: {value: true},
           minLength: {value: 3, message: "Username must be at least 3 characters long"},
           validate: async (value) => {
             try {
@@ -96,12 +95,12 @@ const RegisterForm = ({navigation}) => {
         )}
         name="password"
       />
-      {errors.password && <Text>This is required.</Text>}
+
 
       <Controller
         control={control}
         rules={{
-          required: {value: true, message: 'This is required.'},
+          required: {value: true},
           validate: (value) => {
             const {password} = getValues();
             if (value === password) {
@@ -147,7 +146,7 @@ const RegisterForm = ({navigation}) => {
         )}
         name="email"
       />
-      {errors.email && <Text>This is required.</Text>}
+
 
       </View>
       <Text onPress={login} style={styles.loginHere} navigation={navigation}>Already a user? Login here!</Text>
@@ -179,8 +178,9 @@ const styles = StyleSheet.create({
 
   inputForm: {
     width: '90%',
-    top: '18%',
+    top: '15%',
     left: '5%',
+    padding: 0,
     color: 'white',
   },
   logo: {
