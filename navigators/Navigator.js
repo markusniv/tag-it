@@ -67,6 +67,7 @@ const HomeTopNavigator = () => {
         tabBarStyle: {backgroundColor: colors.headerColor},
         tabBarLabelStyle: {color: colors.headerTintColor},
         tabBarIndicatorStyle: {backgroundColor: colors.highlightColor},
+        lazy: true,
       }}
       screenListeners={() => setSearchInput("")}
     >
