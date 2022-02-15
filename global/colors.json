@@ -4,5 +4,7 @@
   "dark_mode_header_tint": "white",
   "light_mode_bg": "white",
   "light_mode_header": "white",
-  "light_mode_header_tint": "black"
+  "light_mode_header_tint": "black",
+  "highlight_color": "red",
+  "button_color": "#FB4E4E"
 }

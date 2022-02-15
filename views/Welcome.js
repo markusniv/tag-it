@@ -57,7 +57,7 @@ const Welcome = ({navigation}) => {
         </Text>
       </View>
       <View style={styles.center}>
-        <Image source={require('../images/placeholder_logo.png')} resizeMode={'contain'} style={{width: '100%', height: '100%'}} />
+        <Image source={require('../images/logo.png')} resizeMode={'contain'} style={{width: '100%', height: '100%'}} />
       </View>
       <View style={styles.bottom}>
         <Text style={{

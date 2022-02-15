@@ -1,85 +1,117 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
   StyleSheet,
   View,
   Text,
   TouchableOpacity,
+  Keyboard
 } from "react-native";
 import {Icon} from "react-native-elements";
+import {useFonts} from "expo-font";
 
-/** Import necessary views here */
-
-// This script is currently for bottom nav design testing purposes only.
 const CustomNavBar = ({state, descriptors, navigation, position}) => {
 
+  const [keyboardShown, setKeyboardShown] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardShown(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardShown(false);
+      }
+    );
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
+  const [loaded] = useFonts({
+    AdventPro: require('../assets/fonts/AdventPro.ttf'),
+  });
+
+  if (!loaded) {
+    return null;
+  }
 
   return (
-    <View style={styles.navBarContainer}>
-      <View style={styles.background} />
-      <View
-        style={{
-          flexDirection: "row",
-          height: 55,
-          alignItems: "center",
-          width: "100%",
-          justifyContent: "space-around",
-        }}
-      >
-        {state.routes.map((route, index) => {
-          const isFocused = state.index === index;
+    <>
+      {!keyboardShown &&
+        <View style={styles.navBarContainer}>
+          <View style={styles.background} />
 
-          const onPress = () => {
-            const event = navigation.emit({
-              type: "tabPress",
-              target: route.key,
-              canPreventDefault: true,
-            });
+          <View
+            style={{
+              flexDirection: "row",
+              height: 55,
+              alignItems: "center",
+              width: "100%",
+              justifyContent: "space-around",
+            }}
+          >
+            {state.routes.map((route, index) => {
+              const isFocused = state.index === index;
 
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate(route.name);
-            }
-          };
+              const onPress = () => {
+                const event = navigation.emit({
+                  type: "tabPress",
+                  target: route.key,
+                  canPreventDefault: true,
+                });
 
-          let iconName = "add";
-          if (route.name === "CreateView") iconName = "add";
-          else if (route.name === "Home") iconName = "home";
-          else if (route.name === "Notifications") iconName = "notifications";
-          else if (route.name === "Profile") iconName = "person";
-          else if (route.name === "Settings") iconName = "settings";
-          if (route.name === "Post") return;
-          return (
-            <View style={route.name == "CreateView" ? styles.createHolder : ""} key={route.name}>
-              <TouchableOpacity onPress={onPress}>
-                {route.name === "CreateView" ? (
-                  <Icon
-                    style={isFocused ? styles.create_focused : styles.create}
-                    name={iconName}
-                    color={"white"}
-                    size={70}
-                  />
-                ) : (
-                  <View style={styles.btnContainer}>
-                    <View style={styles.btnHolder}>
+                if (!isFocused && !event.defaultPrevented) {
+                  navigation.navigate(route.name);
+                }
+              };
+
+              let iconName = "add";
+              if (route.name === "Create") iconName = "add";
+              else if (route.name === "Home") iconName = "home";
+              else if (route.name === "Notifications") iconName = "notifications";
+              else if (route.name === "Profile") iconName = "person";
+              else if (route.name === "Settings") iconName = "settings";
+              if (route.name === "Post") return;
+              return (
+                <View style={route.name == "Create" ? styles.createHolder : ""} key={route.name}>
+                  <TouchableOpacity onPress={onPress}>
+                    {route.name === "Create" ? (
                       <Icon
-                        style={styles.logo_tiny}
+                        style={isFocused ? styles.create_focused : styles.create}
                         name={iconName}
-                        color={isFocused ? "#FF0000" : "white"}
-                        size={isFocused ? 35 : 30}
+                        color={"white"}
+                        size={70}
                       />
-                      <Text
-                        style={isFocused ? styles.label_focused : styles.label}
-                      >
-                        {route.name}
-                      </Text>
-                    </View>
-                  </View>
-                )}
-              </TouchableOpacity>
-            </View>
-          );
-        })}
-      </View>
-    </View>
+                    ) : (
+                      <View style={styles.btnContainer}>
+                        <View style={styles.btnHolder}>
+                          <Icon
+                            style={styles.logo_tiny}
+                            name={iconName}
+                            color={isFocused ? "#FF0000" : "white"}
+                            size={isFocused ? 35 : 30}
+                          />
+                          <Text
+                            style={isFocused ? styles.label_focused : styles.label}
+                          >
+                            {route.name}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                </View>
+              );
+            })}
+          </View>
+        </View>
+      }
+    </>
   );
 };
 
@@ -91,9 +123,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 100,
-    position: "absolute",
+    position: "relative",
     bottom: 0,
-    marginTop: 55,
+    marginTop: -45,
   },
   background: {
     height: 55,
@@ -147,13 +179,15 @@ const styles = StyleSheet.create({
     width: 70,
   },
   label: {
-    fontSize: 10,
+    fontSize: 12,
     color: "white",
+    fontFamily: "AdventPro"
   },
   label_focused: {
-    fontSize: 11,
+    fontSize: 13,
     color: "#FF0000",
     margin: 0,
+    fontFamily: "AdventPro"
   },
 });
 

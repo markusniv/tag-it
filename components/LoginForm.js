@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 
 
 const LoginForm = ({navigation}) => {
-  const {setIsLoggedIn, setUser} = useContext(MainContext);
+  const {setIsLoggedIn, setUser, setUpdate} = useContext(MainContext);
   const {postLogin} = useLogin();
   const register = () => navigation.navigate("Register");
 
@@ -31,6 +31,7 @@ const LoginForm = ({navigation}) => {
       await AsyncStorage.setItem('userToken', userData.token);
       setUser(userData.user);
       setIsLoggedIn(true);
+      setUpdate(true);
       navigation.navigate("Tabs");
     } catch (error) {
       console.error(error);
@@ -40,7 +41,9 @@ const LoginForm = ({navigation}) => {
   return (
     <View style={styles.container}>
 
-      <Image source={require('../images/placeholder_logo.png')} style={styles.logo}/>
+
+      <Image source={require('../images/logo.png')} resizeMode={'contain'} style={styles.logo} />
+
       <Text style={styles.loginText}> Login </Text>
       <View style={styles.inputForm}>
         <Controller
@@ -85,19 +88,19 @@ const LoginForm = ({navigation}) => {
       <Text onPress={register} style={styles.registerHere} navigation={navigation}> Not a user yet? Register here!</Text>
 
       <Button title="Login"
-              onPress={handleSubmit(onSubmit)}
-              titleStyle={{
-                fontSize: 22,
-              }}
-              containerStyle={{
-                position: 'absolute',
-                borderRadius: 10,
-                bottom: '8%',
-                alignSelf: 'center',
-                width: '90%',
-                height: 70,
-              }}
-              buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}}/>
+        onPress={handleSubmit(onSubmit)}
+        titleStyle={{
+          fontSize: 22,
+        }}
+        containerStyle={{
+          position: 'absolute',
+          borderRadius: 10,
+          bottom: '8%',
+          alignSelf: 'center',
+          width: '90%',
+          height: 70,
+        }}
+        buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}} />
 
 
     </View>
