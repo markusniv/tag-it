@@ -1,4 +1,4 @@
-import { FlatList, View, ActivityIndicator, RefreshControl } from "react-native";
+import { FlatList, View, RefreshControl } from "react-native";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import ListItem from "./ListItem";
 import { MainContext } from "../contexts/MainContext";

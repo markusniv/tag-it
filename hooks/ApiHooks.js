@@ -389,4 +389,62 @@ const useUser = () => {
   return {getUserByToken, postUser, checkUser, getUserById};
 }
 
-export {useMedia, useLogin, useUser}
+
+/** Gets all the tags containing tagit_ .
+ * Currently there is no guest user, and the console will give an "tags.filter is not a function" error,
+ * if the user is not logged in.
+*/
+const getTags = async () => {
+  const token = await AsyncStorage.getItem('userToken');
+  try { 
+    const options = {
+      method: 'GET',
+      headers: {'x-access-token': token},
+    };
+    const response = await fetch(`${apiUrl}tags`, options);
+    const tags = await response.json();
+
+    const tagItTags = tags.filter(t => t.tag.includes(tag));
+    
+    const tagsWithDuplicates = getTagsWithPostAmount(tagItTags);
+    console.log("testing getTagsWithPostAmount:", tagsWithDuplicates);
+
+    if (response.ok) {
+      return tagsWithDuplicates;
+    } else {
+      throw new Error(userData.message);
+    }
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+/** Returns an array of tags displaying how many posts each tag has. */
+const getTagsWithPostAmount = (array) => {
+  
+  const firstItem = array[0];
+  firstItem.posts = 1;
+  let duplicates = [firstItem];
+
+  for (let i = 0; i < array.length; i++) {
+    if (!duplicates.some(item => item.tag === array[i].tag)) {
+      const newItem = array[i];
+      newItem.posts = 1;
+      duplicates.push(newItem);
+    } else {
+      duplicates.map(item => {if (item.tag === array[i].tag) item.posts++});
+    }
+  }
+
+  duplicates = duplicates.filter(item => item.tag !== "tagit_");
+
+  // Removing the "tagit_" portion of the tags.
+  duplicates.map(item => {
+      const splitTag = item.tag.split("_");
+      item.tag = splitTag[1].toLowerCase();
+  });
+
+  return duplicates;
+}
+
+export {useMedia, useLogin, useUser, getTags}

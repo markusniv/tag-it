@@ -39,8 +39,8 @@ const ListItem = ({ singleMedia, navigation }) => {
   // Removes or adds a like depending on the liked status.
   const toggleLike = async () => {
     setLiked(!liked);
-    if (liked) await removeLike(singleMedia.file_id);
-    else await likeMedia(singleMedia.file_id);
+    if (liked) removeLike(singleMedia.file_id);
+    else likeMedia(singleMedia.file_id);
     const newLikes = await getFavourites(singleMedia.file_id);
     setCurrentLikes(newLikes);
   }
