@@ -169,7 +169,7 @@ const Create = ({navigation}) => {
             }
 
           </View>
-          <View style={{flex: 2, width: "100%", height: 500, alignItems: "center"}}>
+          <View style={{flex: 2, width: "100%", height: 350, alignItems: "center", marginBottom: 15}}>
             <Controller
               control={control}
               rules={{
