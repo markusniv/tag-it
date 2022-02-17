@@ -15,7 +15,6 @@ const Login = ({navigation}) => {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss} >
       <SafeAreaView style={{
         flex: 1,
-        paddingTop: 20,
         alignItems: 'center',
         textAlign: 'center',
       }}>
