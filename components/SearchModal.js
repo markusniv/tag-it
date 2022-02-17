@@ -1,13 +1,13 @@
-import React, { useContext, useState, useCallback, useEffect } from "react";
+import React, {useContext, useState, useCallback, useEffect} from "react";
 import Modal from "react-native-modal";
-import { View, FlatList, Text, Keyboard, TouchableOpacity } from "react-native";
-import { SearchBar, Icon } from "react-native-elements";
-import { MainContext } from "../contexts/MainContext";
+import {View, FlatList, Text, Keyboard, TouchableOpacity} from "react-native";
+import {SearchBar, Icon} from "react-native-elements";
+import {MainContext} from "../contexts/MainContext";
 import colors from "../global/colors.json";
-import { getTags } from "../hooks/ApiHooks";
+import {getTags} from "../hooks/ApiHooks";
 
 const getColors = () => {
-  const { darkMode } = useContext(MainContext);
+  const {darkMode} = useContext(MainContext);
 
   let bgColor,
     headerColor,
@@ -26,10 +26,10 @@ const getColors = () => {
     headerTintColor = colors.light_mode_header_tint;
     searchColor = colors.dark_mode_bg;
   }
-  return { bgColor, headerColor, headerTintColor, highlightColor, searchColor };
+  return {bgColor, headerColor, headerTintColor, highlightColor, searchColor};
 };
 
-const SearchListItem = ({ item }) => {
+const SearchListItem = ({item}) => {
   const colors = getColors();
   return (
     <TouchableOpacity
@@ -45,9 +45,9 @@ const SearchListItem = ({ item }) => {
         <Text
           style={{
             fontSize: 20,
-            fontWeight: "bold",
             color: colors.headerTintColor,
             marginBottom: 2,
+            fontFamily: 'AdventPro',
           }}
         >
           t/{item.tag}
@@ -55,16 +55,16 @@ const SearchListItem = ({ item }) => {
         <Text
           style={{
             fontSize: 15,
-            fontWeight: "bold",
             color: colors.headerTintColor,
             marginBottom: 5,
+            fontFamily: 'AdventPro',
           }}
         >
           {item.posts} {item.posts == 1 ? "post" : "posts"}
         </Text>
       </View>
       <Icon
-        style={{ height: 50, width: 50 }}
+        style={{height: 50, width: 50}}
         name="arrow-forward"
         color={colors.headerTintColor}
         size={50}
@@ -101,7 +101,7 @@ const EmptyListIndicator = () => {
 
 const SearchModal = () => {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-  const { searching, setSearching } = useContext(MainContext);
+  const {searching, setSearching} = useContext(MainContext);
   const [currentInput, setCurrentInput] = useState("");
   const [tags, setTags] = useState([]);
   const [showedTags, setShowedTags] = useState([]);
@@ -110,7 +110,7 @@ const SearchModal = () => {
 
   /** Used in the renderItem prop inside the FlatList. */
   const renderItem = useCallback(
-    ({ item }) => <SearchListItem item={item} />,
+    ({item}) => <SearchListItem item={item} />,
     []
   );
 
@@ -151,7 +151,7 @@ const SearchModal = () => {
   const keyExtractor = useCallback((item, index) => index.toString(), []);
 
   return (
-    <View style={{ padidng: 0 }}>
+    <View style={{padidng: 0}}>
       <Modal
         animationIn="slideInDown"
         animationOut="slideOutUp"
@@ -193,6 +193,9 @@ const SearchModal = () => {
               padding: 0,
               marginTop: 0,
             }}
+            style={{
+              fontFamily: "AdventPro",
+            }}
             leftIconContainerStyle={null}
             placeholder="Search tags.."
             onBlur={() => {
@@ -211,13 +214,16 @@ const SearchModal = () => {
               filterTags(value);
             }}
           />
-          <Icon
-            style={{ height: 50, width: 40 }}
-            name="arrow-upward"
-            color="black"
-            size={50}
-            onPress={() => setSearching(false)}
-          />
+          <View style={{height: "100%", marginRight: 30, transform: [{rotate: '90deg'}]}}>
+            <Icon
+              name="back"
+              color="black"
+              type="antdesign"
+              size={35}
+              onPress={() => setSearching(false)}
+            />
+          </View>
+
         </View>
 
         <FlatList
