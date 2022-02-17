@@ -99,6 +99,7 @@ const LoginForm = ({navigation}) => {
         here!</Text>
 
       <Button title="Login"
+
               onPress={handleSubmit(onSubmit)}
               titleStyle={{
                 fontSize: 22,
@@ -112,6 +113,22 @@ const LoginForm = ({navigation}) => {
                 height: 70,
               }}
               buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}}/>
+
+        onPress={handleSubmit(onSubmit)}
+        titleStyle={{
+          fontSize: 22,
+          fontFamily: 'AdventPro',
+        }}
+        containerStyle={{
+          position: 'absolute',
+          borderRadius: 10,
+          bottom: '8%',
+          alignSelf: 'center',
+          width: '90%',
+          height: 70,
+        }}
+        buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%', }} />
+
 
 
     </View>
@@ -130,6 +147,7 @@ const styles = StyleSheet.create({
   },
   input: {
     color: 'white',
+    fontFamily: 'AdventPro',
   },
   inputForm: {
     width: '90%',
@@ -154,12 +172,14 @@ const styles = StyleSheet.create({
     bottom: 250,
     marginLeft: '7%',
     textDecorationLine: 'underline',
+    fontFamily: 'AdventPro',
   },
   loginText: {
     color: 'white',
     fontSize: 25,
     top: '15%',
     marginLeft: '7%',
+    fontFamily: 'AdventPro',
   }
 })
 

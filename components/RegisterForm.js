@@ -40,6 +40,7 @@ const RegisterForm = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+
       <View style={{ position: 'absolute', top: '5%', left: '5%', transform: [{rotateY: '180deg'}]}}>
         <Icon
           style={{height: 40, width: 40}}
@@ -49,25 +50,80 @@ const RegisterForm = ({navigation}) => {
           onPress={() => navigation.navigate("Welcome")}/>
       </View>
 
-      <Image source={require('../images/logo.png')} resizeMode={'contain'} style={styles.logo}/>
+
+      <Image resizeMode='contain' source={require('../images/logo.png')} style={styles.logo} />
+
       <View style={styles.inputForm}>
-      <Controller
-        control={control}
-        rules={{
-          required: {value: true},
-          minLength: {value: 3, message: "Username must be at least 3 characters long"},
-          validate: async (value) => {
-            try {
-              const available = await checkUsername(value);
-              if (available) {
+        <Controller
+          control={control}
+          rules={{
+            required: {value: true},
+            minLength: {value: 3, message: "Username must be at least 3 characters long"},
+            validate: async (value) => {
+              try {
+                const available = await checkUsername(value);
+                if (available) {
+                  return true;
+                } else {
+                  return "username is already taken!"
+                }
+              } catch (e) {
+                new Error("error");
+              }
+            },
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              autoCapitalize="none"
+              placeholder="Username"
+              errorMessage={errors.username && errors.username.message}
+            />
+          )}
+          name="username"
+        />
+        {errors.username && <Text>{errors.username.message}</Text>}
+
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+            minLength: {value: 5, message: "Password must be at least 5 characters long"},
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              autoCapitalize="none"
+              secureTextEntry={true}
+              placeholder="Password"
+            />
+          )}
+          name="password"
+        />
+
+
+        <Controller
+          control={control}
+          rules={{
+            required: {value: true},
+            validate: (value) => {
+              const {password} = getValues();
+              if (value === password) {
                 return true;
               } else {
-                return "username is already taken!"
+                return 'Passwords do not match.';
               }
-            } catch (e) {
+
+            }, catch (e) {
               new Error("error");
             }
-          },
+
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
@@ -159,10 +215,51 @@ const RegisterForm = ({navigation}) => {
         name="email"
       />
 
+            },
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              autoCapitalize="none"
+              secureTextEntry={true}
+              placeholder="Confirm Password"
+              errorMessage={
+                errors.confirmPassword && errors.confirmPassword.message
+              }
+            />
+          )}
+          name="confirmPassword"
+        />
+
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+            pattern: {value: /^\S+@\S+\.\S+$/, message: "Not email"}
+
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              autoCapitalize="none"
+              placeholder="Email"
+            />
+          )}
+          name="email"
+        />
+
+
 
       </View>
       <Text onPress={login} style={styles.loginHere} navigation={navigation}>Already a user? Login here!</Text>
       <Button title="Register"
+
               onPress={handleSubmit(onSubmit)}
               buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}}
               titleStyle={{
@@ -177,6 +274,22 @@ const RegisterForm = ({navigation}) => {
                 width: '90%',
                 height: 70,
               }}
+
+        onPress={handleSubmit(onSubmit)}
+        buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}}
+        titleStyle={{
+          fontSize: 22,
+          fontFamily: 'AdventPro',
+        }}
+        containerStyle={{
+          position: 'absolute',
+          borderRadius: 10,
+          bottom: '10%',
+          alignSelf: 'center',
+          width: '90%',
+          height: 70,
+        }}
+
       />
     </View>
   );
@@ -206,8 +319,9 @@ const styles = StyleSheet.create({
   },
   input: {
     color: 'white',
+    fontFamily: 'AdventPro',
   },
-  loginHere:{
+  loginHere: {
     color: 'white',
     fontSize: 18,
     position: 'absolute',
@@ -215,6 +329,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: '7%',
     textDecorationLine: 'underline',
+    fontFamily: 'AdventPro',
   }
 })
 

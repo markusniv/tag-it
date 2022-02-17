@@ -32,7 +32,7 @@ const Popular = ({navigation}) => {
 
   return (
     <SafeAreaView>
-    <ImageBackground resizeMode="cover" style={{width: "100%", height: "100%"}} source={require('../images/mobile_background2_tagit.png')}>
+    <ImageBackground resizeMode="cover" style={{width: "100%", height: "100%"}} source={require('../images/mobile_background_tagit.png')}>
         <List navigation={navigation} media={arr} />
       </ImageBackground>
     </SafeAreaView >
