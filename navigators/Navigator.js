@@ -197,6 +197,7 @@ const BottomNav = () => {
         options={{
           headerStyle: {
             backgroundColor: colors.headerColor,
+            height: StatusBar.currentHeight,
           },
           headerTintColor: colors.headerTintColor,
         }}
@@ -207,6 +208,7 @@ const BottomNav = () => {
         options={{
           headerStyle: {
             backgroundColor: colors.headerColor,
+            height: StatusBar.currentHeight,
           },
           headerTintColor: colors.headerTintColor,
         }}
