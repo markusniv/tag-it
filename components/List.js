@@ -1,5 +1,5 @@
 import { FlatList, View, RefreshControl } from "react-native";
-import React, { useCallback, useContext, useEffect, useState, memo } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import ListItem from "./ListItem";
 import { MainContext } from "../contexts/MainContext";
 import colors from "../global/colors.json";
