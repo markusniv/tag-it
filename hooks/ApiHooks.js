@@ -407,7 +407,6 @@ const getTags = async () => {
     const tagItTags = tags.filter(t => t.tag.includes(tag));
     
     const tagsWithDuplicates = getTagsWithPostAmount(tagItTags);
-    console.log("testing getTagsWithPostAmount:", tagsWithDuplicates);
 
     if (response.ok) {
       return tagsWithDuplicates;

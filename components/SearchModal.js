@@ -30,7 +30,6 @@ const getColors = () => {
 };
 
 const SearchListItem = ({ item }) => {
-  const { setSearching } = useContext(MainContext);
   const colors = getColors();
   return (
     <TouchableOpacity
@@ -75,6 +74,7 @@ const SearchListItem = ({ item }) => {
 };
 
 const EmptyListIndicator = () => {
+  const colors = getColors();
   return (
     <View
       style={{
@@ -85,7 +85,16 @@ const EmptyListIndicator = () => {
         alignItems: "center",
       }}
     >
-      <Text>No tags found</Text>
+      <Text
+        style={{
+          fontSize: 20,
+          fontWeight: "bold",
+          color: colors.headerTintColor,
+          marginBottom: 2,
+        }}
+      >
+        No tags found
+      </Text>
     </View>
   );
 };

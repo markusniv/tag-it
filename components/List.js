@@ -1,5 +1,5 @@
 import { FlatList, View, RefreshControl } from "react-native";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState, memo } from "react";
 import ListItem from "./ListItem";
 import { MainContext } from "../contexts/MainContext";
 import colors from "../global/colors.json";
@@ -45,6 +45,7 @@ const List = ({ navigation }) => {
 
     /* The below code is used for loading more posts when the FlatLists' end has been reached,
      and also filtering according to the search input. */
+    console.log("Rerendering List.js");
     if (Object.keys(mediaArray).length > 0) {
 
 

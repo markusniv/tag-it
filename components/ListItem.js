@@ -17,7 +17,7 @@ const ListItem = ({ singleMedia, navigation }) => {
   const [liked, setLiked] = useState(false);
 
 
-  console.log("Rendering item:", singleMedia.title);
+/*   console.log("Rendering item:", singleMedia.title); */
 
   let bgColor,
     headerColor,
@@ -80,7 +80,7 @@ const ListItem = ({ singleMedia, navigation }) => {
       setCurrentLikes({});
       setLiked(false);
     }
-    console.log("isLoggedIn at ListItem:", singleMedia.title, isLoggedIn);
+    console.log(`ListItem ${singleMedia.title} rerendered.`);
   }, [singleMedia])
 
   return (
