@@ -18,8 +18,9 @@ import { MainContext } from "../contexts/MainContext";
 import colors from "../global/colors.json";
 import Welcome from "../views/Welcome";
 import { useFonts } from "expo-font";
-import Modal from "react-native-modal";
 import SearchModal from "../components/SearchModal";
+import Register from "../views/Register";
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -81,32 +82,29 @@ const StackScreen = () => {
   const colors = getColors();
 
   return (
-    <Stack.Navigator initialRouteName="Welcome">
-      <Stack.Screen
-        name="Welcome"
-        component={Welcome}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="Tabs"
-        component={BottomNav}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{
-          headerShown: false,
-          headerStyle: {
-            backgroundColor: colors.headerColor,
-          },
-          headerTintColor: "white",
-        }}
-      />
+    <Stack.Navigator
+      initialRouteName="Welcome"
+    >
+      <Stack.Screen name="Welcome" component={Welcome} options={{
+        headerShown: false,
+      }} />
+      <Stack.Screen name="Tabs" component={BottomNav} options={{
+        headerShown: false,
+      }} />
+      <Stack.Screen name="Register" component={Register} options={{
+        headerShown: false,
+        headerStyle: {
+          backgroundColor: colors.headerColor,
+        },
+        headerTintColor: 'white',
+      }} />
+      <Stack.Screen name="Login" component={Login} options={{
+        headerShown: false,
+        headerStyle: {
+          backgroundColor: colors.headerColor,
+        },
+        headerTintColor: 'white',
+      }} />
       {/*       <Stack.Screen name="Register" />
        */}
     </Stack.Navigator>
