@@ -3,7 +3,7 @@ import {View, StyleSheet, Image} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {useUser} from '../hooks/ApiHooks';
 import {Input, Button, Text, Icon} from 'react-native-elements';
-
+import {MainContext} from "../contexts/MainContext";
 
 
 const RegisterForm = ({navigation}) => {
