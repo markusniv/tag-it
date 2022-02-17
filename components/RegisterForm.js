@@ -41,7 +41,7 @@ const RegisterForm = ({navigation}) => {
   return (
     <View style={styles.container}>
 
-      <View style={{ position: 'absolute', top: '5%', left: '5%', transform: [{rotateY: '180deg'}]}}>
+      <View style={{position: 'absolute', top: '5%', left: '5%', transform: [{rotateY: '180deg'}]}}>
         <Icon
           style={{height: 40, width: 40}}
           name='arrow-forward'
@@ -51,26 +51,27 @@ const RegisterForm = ({navigation}) => {
       </View>
 
 
-      <Image resizeMode='contain' source={require('../images/logo.png')} style={styles.logo} />
+      <Image resizeMode='contain' source={require('../images/logo.png')} style={styles.logo}/>
 
       <View style={styles.inputForm}>
+
+
         <Controller
           control={control}
           rules={{
             required: {value: true},
-            minLength: {value: 3, message: "Username must be at least 3 characters long"},
-            validate: async (value) => {
-              try {
-                const available = await checkUsername(value);
-                if (available) {
-                  return true;
-                } else {
-                  return "username is already taken!"
-                }
-              } catch (e) {
-                new Error("error");
+            validate: (value) => {
+              const {password} = getValues();
+              if (value === password) {
+                return true;
+              } else {
+                return 'Passwords do not match.';
               }
-            },
+
+            }, catch(e) {
+              new Error("error");
+            }
+
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <Input
@@ -78,6 +79,7 @@ const RegisterForm = ({navigation}) => {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
+              rightIcon={{name: 'person', color: 'white'}}
               autoCapitalize="none"
               placeholder="Username"
               errorMessage={errors.username && errors.username.message}
@@ -100,6 +102,7 @@ const RegisterForm = ({navigation}) => {
               onChangeText={onChange}
               value={value}
               autoCapitalize="none"
+              rightIcon={{name: 'vpn-key', color: 'white'}}
               secureTextEntry={true}
               placeholder="Password"
             />
@@ -119,102 +122,6 @@ const RegisterForm = ({navigation}) => {
               } else {
                 return 'Passwords do not match.';
               }
-
-            }, catch (e) {
-              new Error("error");
-            }
-
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            rightIcon={{name: 'person', color: 'white'}}
-            autoCapitalize="none"
-            placeholder="Username"
-            errorMessage={errors.username && errors.username.message}
-          />
-        )}
-        name="username"
-      />
-      {errors.username && <Text>{errors.username.message}</Text>}
-
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-          minLength: {value: 5, message: "Password must be at least 5 characters long"},
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            autoCapitalize="none"
-            rightIcon={{name: 'vpn-key', color: 'white'}}
-            secureTextEntry={true}
-            placeholder="Password"
-          />
-        )}
-        name="password"
-      />
-
-
-      <Controller
-        control={control}
-        rules={{
-          required: {value: true},
-          validate: (value) => {
-            const {password} = getValues();
-            if (value === password) {
-              return true;
-            } else {
-              return 'Passwords do not match.';
-            }
-          },
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            rightIcon={{name: 'vpn-key', color: 'white'}}
-            autoCapitalize="none"
-            secureTextEntry={true}
-            placeholder="Confirm Password"
-            errorMessage={
-              errors.confirmPassword && errors.confirmPassword.message
-            }
-          />
-        )}
-        name="confirmPassword"
-      />
-
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-          pattern: {value: /^\S+@\S+\.\S+$/, message:"Not email"}
-
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            rightIcon={{name: 'mail', color: 'white'}}
-            autoCapitalize="none"
-            placeholder="Email"
-          />
-        )}
-        name="email"
-      />
-
             },
           }}
           render={({field: {onChange, onBlur, value}}) => (
@@ -223,6 +130,7 @@ const RegisterForm = ({navigation}) => {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
+              rightIcon={{name: 'vpn-key', color: 'white'}}
               autoCapitalize="none"
               secureTextEntry={true}
               placeholder="Confirm Password"
@@ -247,13 +155,13 @@ const RegisterForm = ({navigation}) => {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
+              rightIcon={{name: 'mail', color: 'white'}}
               autoCapitalize="none"
               placeholder="Email"
             />
           )}
           name="email"
         />
-
 
 
       </View>
@@ -264,6 +172,7 @@ const RegisterForm = ({navigation}) => {
               buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}}
               titleStyle={{
                 fontSize: 22,
+                fontFamily: 'AdventPro',
               }}
               containerStyle={{
                 position: 'absolute',
@@ -273,24 +182,7 @@ const RegisterForm = ({navigation}) => {
                 alignSelf: 'center',
                 width: '90%',
                 height: 70,
-              }}
-
-        onPress={handleSubmit(onSubmit)}
-        buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}}
-        titleStyle={{
-          fontSize: 22,
-          fontFamily: 'AdventPro',
-        }}
-        containerStyle={{
-          position: 'absolute',
-          borderRadius: 10,
-          bottom: '10%',
-          alignSelf: 'center',
-          width: '90%',
-          height: 70,
-        }}
-
-      />
+              }}/>
     </View>
   );
 };

@@ -104,6 +104,7 @@ const LoginForm = ({navigation}) => {
               onPress={handleSubmit(onSubmit)}
               titleStyle={{
                 fontSize: 22,
+                fontFamily: 'AdventPro',
               }}
               containerStyle={{
                 position: 'absolute',
@@ -114,23 +115,6 @@ const LoginForm = ({navigation}) => {
                 height: 70,
               }}
               buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}}/>
-
-        onPress={handleSubmit(onSubmit)}
-        titleStyle={{
-          fontSize: 22,
-          fontFamily: 'AdventPro',
-        }}
-        containerStyle={{
-          position: 'absolute',
-          borderRadius: 10,
-          bottom: '8%',
-          alignSelf: 'center',
-          width: '90%',
-          height: 70,
-        }}
-        buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%', }} />
-
-
 
     </View>
   );
