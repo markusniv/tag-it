@@ -36,14 +36,16 @@ const useMedia = (update) => {
             };
             const likes = await getFavourites(item.file_id);
             const user = await getUserInfo(item.user_id, options);
+            const tags = await getMediaTags(item.file_id);
 
             json.likes = likes;
             json.user = user;
+            json.tags = tags;
           }
-          
           return json;
         })
       );
+      console.log(json);
       setMediaArray(json);
     } catch (e) {
       throw new Error(e.message);
@@ -74,10 +76,15 @@ const useMedia = (update) => {
   // Fetches user info with the given id.
   const getUserInfo = async (id, options) => {
     const response = await fetch(`${apiUrl}users/${id}`, options);
+    const tags = await response.json();
+    return tags;
+  };
 
+  const getMediaTags = async (id) => {
+    const response = await fetch(`${apiUrl}tags/file/${id}`);
     const user = await response.json();
     return user;
-  };
+  }
 
 /*   const getMyMedia = async () => {
     const token = await AsyncStorage.getItem('userToken');
