@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {useUser} from '../hooks/ApiHooks';
-import {Input, Button, Text} from 'react-native-elements';
+import {Input, Button, Text, Icon} from 'react-native-elements';
 
 
 
@@ -40,8 +40,16 @@ const RegisterForm = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../images/logo.png')} style={styles.logo}/>
-      <Text style={styles.loginText}> Login </Text>
+      <View style={{ position: 'absolute', top: '5%', left: '5%', transform: [{rotateY: '180deg'}]}}>
+        <Icon
+          style={{height: 40, width: 40}}
+          name='arrow-forward'
+          color={'white'}
+          size={40}
+          onPress={() => navigation.navigate("Welcome")}/>
+      </View>
+
+      <Image source={require('../images/logo.png')} resizeMode={'contain'} style={styles.logo}/>
       <View style={styles.inputForm}>
       <Controller
         control={control}
@@ -67,6 +75,7 @@ const RegisterForm = ({navigation}) => {
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
+            rightIcon={{name: 'person', color: 'white'}}
             autoCapitalize="none"
             placeholder="Username"
             errorMessage={errors.username && errors.username.message}
@@ -89,6 +98,7 @@ const RegisterForm = ({navigation}) => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
+            rightIcon={{name: 'vpn-key', color: 'white'}}
             secureTextEntry={true}
             placeholder="Password"
           />
@@ -116,6 +126,7 @@ const RegisterForm = ({navigation}) => {
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
+            rightIcon={{name: 'vpn-key', color: 'white'}}
             autoCapitalize="none"
             secureTextEntry={true}
             placeholder="Confirm Password"
@@ -140,6 +151,7 @@ const RegisterForm = ({navigation}) => {
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
+            rightIcon={{name: 'mail', color: 'white'}}
             autoCapitalize="none"
             placeholder="Email"
           />
@@ -159,7 +171,8 @@ const RegisterForm = ({navigation}) => {
               containerStyle={{
                 position: 'absolute',
                 borderRadius: 10,
-                bottom: '10%',
+                margin: 10,
+                bottom: '5%',
                 alignSelf: 'center',
                 width: '90%',
                 height: 70,
@@ -181,13 +194,15 @@ const styles = StyleSheet.create({
     top: '15%',
     left: '5%',
     padding: 0,
+    height: 550,
+    marginBottom: 40,
     color: 'white',
   },
   logo: {
     height: 150,
     width: 250,
     alignSelf: 'center',
-    top: 80,
+    top: '10%',
   },
   input: {
     color: 'white',
@@ -196,7 +211,8 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     position: 'absolute',
-    bottom: '25%',
+    bottom: '20%',
+    marginTop: 20,
     marginLeft: '7%',
     textDecorationLine: 'underline',
   }

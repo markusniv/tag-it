@@ -3,11 +3,8 @@ import {
   Dimensions,
   ImageBackground,
   StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableOpacity,
   Keyboard,
-  View, ScrollView,
+  View, ScrollView, SafeAreaView, TouchableWithoutFeedback,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -15,39 +12,37 @@ import LoginForm from "../components/LoginForm";
 
 const Login = ({navigation}) => {
   return (
-    <TouchableOpacity
-      style={{flex: 1,
-        minHeight: Math.round(Dimensions.get('window').height)}}
-      activeOpacity={1}
-      onPress={() => Keyboard.dismiss()}
-    >
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss} >
+      <SafeAreaView style={{
+        flex: 1,
+        paddingTop: 20,
+        alignItems: 'center',
+        textAlign: 'center',
+      }}>
+        <ScrollView style={{flex: 1, width: '100%'}} contentContainerStyle={{flexGrow: 1}}>
 
-      <ImageBackground source={require('../images/mobile_background2_tagit.png')} resizeMode={'contain'} style={styles.background}
+          <View style={styles.form}>
 
-        resizeMode={'cover'} />
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : ''}
-        style={styles.container}
-      >
-        <View style={styles.form}>
+            <ImageBackground source={require('../images/mobile_background2_tagit.png')}
+                             style={styles.background}
+                             resizeMode={'cover'}/>
 
-          <LoginForm navigation={navigation} />
 
-        </View>
-      </KeyboardAvoidingView>
+            <LoginForm navigation={navigation}/>
 
-    </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
-
-
-
-
 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: '100%',
+    width: '100%'
   },
   appTitle: {
     flex: 1,
@@ -55,7 +50,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   form: {
-    flex: 8,
+    flex: 1,
   },
   background: {
     width: Dimensions.get('window').width,
