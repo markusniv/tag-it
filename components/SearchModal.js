@@ -30,7 +30,7 @@ const getColors = () => {
 };
 
 const SearchListItem = ({item}) => {
-  const {setCurrentTag} = useContext(MainContext);
+  const {setCurrentTag, setSearching} = useContext(MainContext);
   const colors = getColors();
 
   return (
@@ -42,7 +42,10 @@ const SearchListItem = ({item}) => {
         flexDirection: "row",
         justifyContent: "space-between",
       }}
-      onPress={() => setCurrentTag(item.tag)}
+      onPress={() => {
+        setCurrentTag(item.tag)
+        setSearching(false);
+      }}
     >
       <View>
         <Text
@@ -104,7 +107,7 @@ const EmptyListIndicator = () => {
 
 const SearchModal = () => {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-  const {searching, setSearching} = useContext(MainContext);
+  const {searching, setSearching, currentTag} = useContext(MainContext);
   const [currentInput, setCurrentInput] = useState("");
   const [tags, setTags] = useState([]);
   const [showedTags, setShowedTags] = useState([]);
@@ -149,6 +152,7 @@ const SearchModal = () => {
       };
     });
   }, []);
+
 
   const keyExtractor = useCallback((item, index) => index.toString(), []);
 

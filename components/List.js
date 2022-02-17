@@ -7,6 +7,11 @@ import { useMedia } from "../hooks/ApiHooks";
 
 const LOAD_SIZE = 4;
 
+const sortRecent = (data) => {
+
+}
+
+
 const List = ({ navigation }) => {
   const {darkMode, update, searchInput, currentTag} = useContext(MainContext);
   const [loadCapacity, setLoadCapacity] = useState(LOAD_SIZE);

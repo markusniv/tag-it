@@ -10,7 +10,7 @@ import Profile from "../views/Profile";
 import Create from "../views/Create";
 import Post from "../views/Post";
 import Popular from "../views/Popular";
-import { View, Text, StatusBar, TouchableOpacity } from "react-native";
+import { View, Text, StatusBar } from "react-native";
 import { Icon } from "react-native-elements";
 import Notifications from "../views/Notifications";
 import Settings from "../views/Settings";
@@ -113,8 +113,6 @@ const StackScreen = () => {
           headerTintColor: "white",
         }}
       />
-      {/*       <Stack.Screen name="Register" />
-       */}
     </Stack.Navigator>
   );
 };
