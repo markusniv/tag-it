@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   background: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    height: '100%',
     position: 'absolute',
     top: 0,
     left: 0,
