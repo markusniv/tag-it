@@ -4,6 +4,7 @@ import {
   ListItem as NBListItem,
   Text,
   Image,
+  Icon,
 } from "react-native-elements";
 import {MainContext} from "../contexts/MainContext";
 import {useMedia} from "../hooks/ApiHooks";
@@ -108,9 +109,9 @@ const ListItem = ({singleMedia, navigation}) => {
         >
           <View style={styles.postInfoContainer}>
             <TouchableOpacity style={styles.postInfo}>
-              <Image containerStyle={styles.postInfoImage} />
+              <Icon size={45} name="person" style={styles.postInfoImage} color={headerTintColor}/>
               <View style={styles.postInfoText}>
-                <Text style={{color: headerTintColor, fontFamily: 'AdventPro', }}>t/placeholder</Text>
+                <Text style={{color: headerTintColor, fontFamily: 'AdventPro', }}>t/{singleMedia.tag}</Text>
                 {singleMedia.user && (
                   <Text style={{color: headerTintColor, fontFamily: 'AdventPro', }}>
                     Posted by /user/{singleMedia.user.username}
@@ -201,11 +202,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   postInfoImage: {
-    width: 60,
-    height: 60,
-    backgroundColor: "blue",
+    width: 55,
+    height: 55,
+    backgroundColor: "black",
     marginRight: 20,
     borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 0,
   },
   postTitle: {
     flex: 1,

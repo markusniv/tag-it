@@ -30,7 +30,9 @@ const getColors = () => {
 };
 
 const SearchListItem = ({item}) => {
+  const {setCurrentTag} = useContext(MainContext);
   const colors = getColors();
+
   return (
     <TouchableOpacity
       style={{
@@ -40,6 +42,7 @@ const SearchListItem = ({item}) => {
         flexDirection: "row",
         justifyContent: "space-between",
       }}
+      onPress={() => setCurrentTag(item.tag)}
     >
       <View>
         <Text
@@ -130,7 +133,6 @@ const SearchModal = () => {
     getTags().then((allTags) => {
       setTags(allTags);
       setShowedTags(allTags);
-      console.log("tags set: ", tags);
 
       const keyboardDidShowListener = Keyboard.addListener(
         "keyboardDidShow",

@@ -36,16 +36,19 @@ const useMedia = (update) => {
             };
             const likes = await getFavourites(item.file_id);
             const user = await getUserInfo(item.user_id, options);
-            const tags = await getMediaTags(item.file_id);
+            let tags = await getMediaTags(item.file_id);
 
+            tags = tags.filter(t => t.tag != "tagit_");
+            if (tags[0] == undefined) tags = "main";
+            else tags = tags[0].tag.split("_")[1];
+         
             json.likes = likes;
             json.user = user;
-            json.tags = tags;
+            json.tag = tags;
           }
           return json;
         })
       );
-      console.log(json);
       setMediaArray(json);
     } catch (e) {
       throw new Error(e.message);

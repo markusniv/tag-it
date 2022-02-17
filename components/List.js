@@ -8,7 +8,7 @@ import { useMedia } from "../hooks/ApiHooks";
 const LOAD_SIZE = 4;
 
 const List = ({ navigation }) => {
-  const {darkMode, update, searchInput} = useContext(MainContext);
+  const {darkMode, update, searchInput, currentTag} = useContext(MainContext);
   const [loadCapacity, setLoadCapacity] = useState(LOAD_SIZE);
   const [displayedMedia, setDisplayedMedia] = useState({});
   const {mediaArray} = useMedia(update);
@@ -20,7 +20,11 @@ const List = ({ navigation }) => {
 
   // Used for getting a given amount of JSON data from an JSON object.
   const sliceData = (array, capacity) => {
-    const sliced = array.filter((item, idx) => (idx < capacity));
+    
+    let withTags = array;
+    if (currentTag !== "") withTags = array.filter(item => item.tag === currentTag);
+
+    const sliced = withTags.filter((item, idx) => (idx < capacity));
     return sliced;
   }
 
@@ -62,7 +66,7 @@ const List = ({ navigation }) => {
       setDisplayedMedia(sliceData(filteredArray, loadCapacity));
     }
 
-  }, [searchInput, mediaArray, loadCapacity]);
+  }, [searchInput, mediaArray, loadCapacity, currentTag]);
 
 
   return (
