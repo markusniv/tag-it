@@ -7,7 +7,6 @@ import {useMedia} from '../hooks/ApiHooks';
 import * as ImagePicker from 'expo-image-picker';
 import {MainContext} from '../contexts/MainContext';
 import {useFocusEffect} from '@react-navigation/native';
-import {useFonts} from 'expo-font';
 
 import colors from "../global/colors.json";
 import {Icon} from 'react-native-elements/dist/icons/Icon';
@@ -75,14 +74,6 @@ const Create = ({navigation}) => {
       keyboardDidShowListener.remove();
     };
   }, []);
-
-  const [loaded] = useFonts({
-    AdventPro: require('../assets/fonts/AdventPro.ttf'),
-  });
-
-  if (!loaded) {
-    return null;
-  }
 
   const onSubmit = async (data) => {
     if (!file.uri) {

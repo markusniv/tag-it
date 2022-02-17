@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {SafeAreaView, View, StyleSheet, ImageBackground, Dimensions} from 'react-native';
 import {Image, Text} from 'react-native-elements';
-import {useFonts} from 'expo-font';
 import {MainContext} from "../contexts/MainContext";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useUser} from '../hooks/ApiHooks';
@@ -30,15 +29,6 @@ const Welcome = ({navigation}) => {
   useEffect(() => {
     checkToken();
   }, []);
-
-  const [loaded] = useFonts({
-    AdventPro: require('../assets/fonts/AdventPro.ttf'),
-  });
-
-  if (!loaded) {
-    return null;
-  }
-
   const logIn = () => navigation.navigate("Login");
   const register = () => navigation.navigate("Register");
   const skip = () => navigation.navigate("Tabs");

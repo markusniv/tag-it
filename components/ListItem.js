@@ -10,14 +10,14 @@ import {useMedia} from "../hooks/ApiHooks";
 import colors from "../global/colors.json";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 
-const ListItem = ({ singleMedia, navigation }) => {
-  const { darkMode, update, isLoggedIn } = useContext(MainContext);
+const ListItem = ({singleMedia, navigation}) => {
+  const {darkMode, update, isLoggedIn} = useContext(MainContext);
   const {likeMedia, removeLike, getFavourites} = useMedia(update);
   const [currentLikes, setCurrentLikes] = useState({});
   const [liked, setLiked] = useState(false);
 
 
-/*   console.log("Rendering item:", singleMedia.title); */
+  /*   console.log("Rendering item:", singleMedia.title); */
 
   let bgColor,
     headerColor,
@@ -35,7 +35,7 @@ const ListItem = ({ singleMedia, navigation }) => {
   }
 
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
-  
+
   // Removes or adds a like depending on the liked status.
   const toggleLike = async () => {
     setLiked(!liked);
@@ -110,9 +110,9 @@ const ListItem = ({ singleMedia, navigation }) => {
             <TouchableOpacity style={styles.postInfo}>
               <Image containerStyle={styles.postInfoImage} />
               <View style={styles.postInfoText}>
-                <Text style={{color: headerTintColor}}>t/placeholder</Text>
+                <Text style={{color: headerTintColor, fontFamily: 'AdventPro', }}>t/placeholder</Text>
                 {singleMedia.user && (
-                  <Text style={{color: headerTintColor}}>
+                  <Text style={{color: headerTintColor, fontFamily: 'AdventPro', }}>
                     Posted by /user/{singleMedia.user.username}
                   </Text>
                 )}
@@ -120,7 +120,7 @@ const ListItem = ({ singleMedia, navigation }) => {
             </TouchableOpacity>
             {currentLikes.amount >= 0 && <TouchableOpacity style={styles.likesContainer} onPress={toggleLike}>
               <MaterialCommunityIcons name="arrow-up-bold-outline" color={currentLikes.liked ? highlightColor : headerTintColor} size={50} />
-              <Text style={{color: currentLikes.liked ? highlightColor : headerTintColor, fontSize: 15}}>{currentLikes.amount}</Text>
+              <Text style={{color: currentLikes.liked ? highlightColor : headerTintColor, fontSize: 15, fontFamily: 'AdventPro', }}>{currentLikes.amount}</Text>
             </TouchableOpacity>}
           </View>
           <TouchableOpacity style={styles.lowerContainer}
@@ -135,6 +135,7 @@ const ListItem = ({ singleMedia, navigation }) => {
                   color: headerTintColor,
                   fontSize: 25,
                   paddingBottom: 10,
+                  fontFamily: 'AdventPro',
                 }}
               >
                 {singleMedia.title}
@@ -142,8 +143,9 @@ const ListItem = ({ singleMedia, navigation }) => {
               <Text
                 style={{
                   color: headerTintColor,
-                  fontSize: 10,
+                  fontSize: 13,
                   paddingBottom: 5,
+                  fontFamily: 'AdventPro',
                 }}
               >
                 {getTimeAddedString()}
@@ -157,7 +159,6 @@ const ListItem = ({ singleMedia, navigation }) => {
               }}
             />
           </TouchableOpacity>
-     {/*      <Text>Testing</Text> */}
         </View>
       </NBListItem.Content>
     </NBListItem>
