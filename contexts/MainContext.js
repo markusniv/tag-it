@@ -9,6 +9,7 @@ const MainProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [update, setUpdate] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [searching, setSearching] = useState(false);
 
   return (
     <MainContext.Provider
@@ -23,6 +24,8 @@ const MainProvider = ({ children }) => {
         setDarkMode,
         searchInput,
         setSearchInput,
+        searching,
+        setSearching,
       }}
     >
       {children}

@@ -1,26 +1,25 @@
-import React, {useContext, useEffect} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CustomNavBar from "./CustomNavBar";
-import {NavigationContainer} from "@react-navigation/native";
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
-import {SearchBar} from "react-native-elements";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Home from "../views/Home";
 import Login from "../views/Login";
 import Profile from "../views/Profile";
 import Create from "../views/Create";
 import Post from "../views/Post";
 import Popular from "../views/Popular";
-import {View, Text, StatusBar} from "react-native";
+import { View, Text, StatusBar, TouchableOpacity } from "react-native";
+import { Icon } from "react-native-elements";
 import Notifications from "../views/Notifications";
 import Settings from "../views/Settings";
-import {MainContext} from "../contexts/MainContext";
+import { MainContext } from "../contexts/MainContext";
 import colors from "../global/colors.json";
 import Welcome from "../views/Welcome";
-
+import { useFonts } from "expo-font";
+import SearchModal from "../components/SearchModal";
 import Register from "../views/Register";
-
-import {useFonts} from "expo-font";
 
 
 const Tab = createBottomTabNavigator();
@@ -29,7 +28,7 @@ const Stack = createNativeStackNavigator();
 const HomeTopTab = createMaterialTopTabNavigator();
 
 const getColors = () => {
-  const {darkMode} = useContext(MainContext);
+  const { darkMode } = useContext(MainContext);
 
   let bgColor,
     headerColor,
@@ -48,17 +47,15 @@ const getColors = () => {
     headerTintColor = colors.light_mode_header_tint;
     searchColor = colors.dark_mode_bg;
   }
-  return {bgColor, headerColor, headerTintColor, highlightColor, searchColor};
+  return { bgColor, headerColor, headerTintColor, highlightColor, searchColor };
 };
-
-
 
 const HomeTopNavigator = () => {
   const colors = getColors();
-  const {setSearchInput} = useContext(MainContext);
+  const { setSearchInput } = useContext(MainContext);
 
   const [loaded] = useFonts({
-    AdventPro: require('../assets/fonts/AdventPro.ttf'),
+    AdventPro: require("../assets/fonts/AdventPro.ttf"),
   });
 
   if (!loaded) {
@@ -68,9 +65,10 @@ const HomeTopNavigator = () => {
   return (
     <HomeTopTab.Navigator
       screenOptions={{
-        tabBarStyle: {backgroundColor: colors.headerColor},
-        tabBarLabelStyle: {color: colors.headerTintColor},
-        tabBarIndicatorStyle: {backgroundColor: colors.highlightColor},
+        tabBarStyle: { backgroundColor: colors.headerColor },
+        tabBarLabelStyle: { color: colors.headerTintColor },
+        tabBarIndicatorStyle: { backgroundColor: colors.highlightColor },
+        lazy: true,
       }}
       screenListeners={() => setSearchInput("")}
     >
@@ -114,7 +112,11 @@ const StackScreen = () => {
 };
 
 const BottomNav = () => {
-  const {isLoggedIn, setSearchInput, searchInput} = useContext(MainContext);
+  const { isLoggedIn, setSearching } = useContext(MainContext);
+
+  useEffect(() => {
+    console.log("BottomNav useEffect called.");
+  }, []);
 
   const colors = getColors();
   return (
@@ -141,22 +143,23 @@ const BottomNav = () => {
                 alignItems: "center",
                 backgroundColor: colors.headerColor,
               }}
-              collapsable={true}>
-
-              <SearchBar
-                containerStyle={{
-                  width: "70%",
-                  height: 55,
-                  justifyContent: "center",
-                  borderBottomColor: "transparent",
-                  borderTopColor: "transparent",
-                  backgroundColor: "transparent",
-                }}
-                inputContainerStyle={{height: "100%", borderRadius: 15, backgroundColor: colors.searchColor}}
-                value={searchInput}
-                onChangeText={setSearchInput}
+            >
+              <View style={{width: "100%", padding: 10, alignItems: "flex-end"}}>
+              <Icon
+                style={{ height: 50, width: 50 }}
+                name="search"
+                color={"white"}
+                size={40}
+                onPress={() => setSearching(true)}
               />
-              <Text style={{color: colors.headerTintColor, fontSize: 20}}>Home</Text>
+              </View>
+             
+
+              <SearchModal />
+
+              <Text style={{ color: colors.headerTintColor, fontSize: 20 }}>
+                Home
+              </Text>
             </View>
           ),
           headerTintColor: colors.headerTintColor,
