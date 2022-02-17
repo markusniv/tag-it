@@ -7,7 +7,7 @@ import {useMedia} from "../hooks/ApiHooks";
 
 const LOAD_SIZE = 4;
 
-const List = ({navigation}) => {
+const CommentList = ({navigation}) => {
   const {darkMode, update, searchInput} = useContext(MainContext);
   const [loadCapacity, setLoadCapacity] = useState(LOAD_SIZE);
   const [displayedMedia, setDisplayedMedia] = useState({});
@@ -45,7 +45,7 @@ const List = ({navigation}) => {
 
     /* The below code is used for loading more posts when the FlatLists' end has been reached,
      and also filtering according to the search input. */
-    console.log("Rerendering List.js");
+
     if (Object.keys(mediaArray).length > 0) {
 
 
@@ -88,7 +88,7 @@ const List = ({navigation}) => {
   );
 };
 
-export default List;
+export default CommentList;
 
 
 
