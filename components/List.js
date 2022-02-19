@@ -29,10 +29,10 @@ const List = ({ navigation }) => {
 
   // Used for getting a given amount of JSON data from an JSON object.
   const sliceData = (array, capacity) => {
-    let withTags = array;
+    let withTags = sortRecent(array);
     if (currentTag !== "") withTags = array.filter(item => item.tag === currentTag);
     const sliced = withTags.filter((item, idx) => (idx < capacity));
-    return sortRecent(sliced);
+    return sliced;
   }
 
   // Renders the list items inside the FlatList.
@@ -63,7 +63,7 @@ const List = ({ navigation }) => {
      and also filtering according to the search input. */
     console.log("Rerendering List.js");
     if (Object.keys(mediaArray).length > 0) {
-      
+
       const sliced = sliceData(mediaArray, loadCapacity); 
       setDisplayedMedia(sliced);
 
