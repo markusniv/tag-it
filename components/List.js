@@ -13,7 +13,7 @@ const sortRecent = (data) => {
 
 
 const List = ({ navigation }) => {
-  const {darkMode, update, searchInput, currentTag} = useContext(MainContext);
+  const {darkMode, update, searchInput, currentTag, setUpdate} = useContext(MainContext);
   const [loadCapacity, setLoadCapacity] = useState(LOAD_SIZE);
   const [displayedMedia, setDisplayedMedia] = useState({});
   const {mediaArray} = useMedia(update);
@@ -48,6 +48,10 @@ const List = ({ navigation }) => {
       if (loadCapacity + LOAD_SIZE >= mediaLength) setLoadCapacity(mediaLength);
       else if (loadCapacity + LOAD_SIZE < mediaLength) setLoadCapacity(loadCapacity + LOAD_SIZE);
     } 
+  }
+
+  const onRefresh = () => {
+    setUpdate(true);
   }
 
   useEffect(() => {
@@ -88,7 +92,8 @@ const List = ({ navigation }) => {
         maxToRenderPerBatch={2}
         refreshControl={
           <RefreshControl 
-          refreshing={loading}
+          refreshing={update}
+          onRefresh={onRefresh}
             />
         }
       />
