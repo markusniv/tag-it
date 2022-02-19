@@ -11,7 +11,7 @@ const useMedia = (update) => {
 
   const [mediaArray, setMediaArray] = useState(JSON);
   const [userMediaArray, setUserMediaArray] = useState(JSON);
-  const {isLoggedIn, user} = useContext(MainContext);
+  const {isLoggedIn, user, setUpdate} = useContext(MainContext);
 
   const getMedia = async () => {
 
@@ -50,6 +50,7 @@ const useMedia = (update) => {
         })
       );
       setMediaArray(json);
+      setUpdate(false);
     } catch (e) {
       throw new Error(e.message);
     }

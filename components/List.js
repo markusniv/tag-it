@@ -7,8 +7,12 @@ import { useMedia } from "../hooks/ApiHooks";
 
 const LOAD_SIZE = 4;
 
+/** Sorts the array of posts into a descending order according to the time_added date. */
 const sortRecent = (data) => {
-
+  let dataArray = data;
+  if (Object.keys(data).length > 0) 
+  dataArray = dataArray.sort((a, b) => new Date(b.time_added).getTime() - new Date(a.time_added).getTime());
+  return dataArray;
 }
 
 
@@ -25,14 +29,13 @@ const List = ({ navigation }) => {
 
   // Used for getting a given amount of JSON data from an JSON object.
   const sliceData = (array, capacity) => {
-    
     let withTags = array;
     if (currentTag !== "") withTags = array.filter(item => item.tag === currentTag);
-
     const sliced = withTags.filter((item, idx) => (idx < capacity));
-    return sliced;
+    return sortRecent(sliced);
   }
 
+  // Renders the list items inside the FlatList.
   const renderItem = useCallback(
      ({item}) => <ListItem navigation={navigation} singleMedia={item} />,
       []
@@ -60,12 +63,10 @@ const List = ({ navigation }) => {
      and also filtering according to the search input. */
     console.log("Rerendering List.js");
     if (Object.keys(mediaArray).length > 0) {
-
-
-      const sliced = sliceData(mediaArray, loadCapacity);
-      console.log("mediaArray length:", Object.keys(sliced).length);
-
+      
+      const sliced = sliceData(mediaArray, loadCapacity); 
       setDisplayedMedia(sliced);
+
       if (searchInput === "") {
         return; 
       }
