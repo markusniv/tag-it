@@ -7,7 +7,7 @@ import {
   Platform,
   TouchableOpacity,
   Keyboard,
-  View, StatusBar,
+  View, StatusBar, TouchableWithoutFeedback, SafeAreaView, ScrollView,
 } from 'react-native';
 
 
@@ -16,12 +16,15 @@ import RegisterForm from "../components/RegisterForm";
 
 const Register = ({navigation}) => {
   return (
-    <TouchableOpacity
-      style={{flex: 1,
-      minHeight: Math.round(Dimensions.get('window').height)}}
-      activeOpacity={1}
-      onPress={() => Keyboard.dismiss()}
-    >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+     <SafeAreaView style={{
+       flex: 1,
+       alignItems: 'center',
+       textAlign: 'center',
+     }}>
+       <ScrollView style={{flex: 1, width: '100%'}} contentContainerStyle={{flexGrow: 1}}>
+
+
 
       <ImageBackground source={require('../images/mobile_background2_tagit.png')} style={styles.background}
                        resizeMode={'cover'}/>
@@ -31,22 +34,24 @@ const Register = ({navigation}) => {
           <RegisterForm navigation={navigation}/>
 
         </View>
-
-    </TouchableOpacity>
+       </ScrollView>
+     </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
+    height: '100%',
+    width: '100%'
   },
   form: {
-    flex: 8,
+    flex: 1,
   },
   background: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    height: '100%',
     position: 'absolute',
     top: 0,
     left: 0,
