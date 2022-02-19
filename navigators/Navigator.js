@@ -11,7 +11,7 @@ import Create from "../views/Create";
 import Post from "../views/Post";
 import Popular from "../views/Popular";
 import { View, Text, StatusBar } from "react-native";
-import { Icon } from "react-native-elements";
+import { Icon, Divider } from "react-native-elements";
 import Notifications from "../views/Notifications";
 import Settings from "../views/Settings";
 import { MainContext } from "../contexts/MainContext";
@@ -188,6 +188,7 @@ const BottomNav = () => {
               >
                 {currentTag === "" ? "Home" : `t/${currentTag}`}
               </Text>
+
             </View>
           ),
           headerTintColor: colors.headerTintColor,

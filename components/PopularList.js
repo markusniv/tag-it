@@ -8,15 +8,15 @@ import { useMedia } from "../hooks/ApiHooks";
 const LOAD_SIZE = 4;
 
 /** Sorts the array of posts into a descending order according to the time_added date. */
-const sortRecent = (data) => {
+const sortPopular = (data) => {
   let dataArray = data;
   if (Object.keys(data).length > 0) 
-  dataArray = dataArray.sort((a, b) => new Date(b.time_added).getTime() - new Date(a.time_added).getTime());
+  dataArray = dataArray.sort((a, b) => b.likes - a.likes);
   return dataArray;
 }
 
 
-const List = ({ navigation }) => {
+const PopularList = ({ navigation }) => {
   const {darkMode, update, searchInput, currentTag, setUpdate} = useContext(MainContext);
   const [loadCapacity, setLoadCapacity] = useState(LOAD_SIZE);
   const [displayedMedia, setDisplayedMedia] = useState({});
@@ -28,7 +28,7 @@ const List = ({ navigation }) => {
 
   // Used for getting a given amount of JSON data from an JSON object.
   const sliceData = (array, capacity) => {
-    let withTags = sortRecent(array);
+    let withTags = sortPopular(array);
     if (currentTag !== "") withTags = array.filter(item => item.tag === currentTag);
     const sliced = withTags.filter((item, idx) => (idx < capacity));
     return sliced;
@@ -102,7 +102,7 @@ const List = ({ navigation }) => {
   );
 };
 
-export default List;
+export default PopularList;
 
 
 

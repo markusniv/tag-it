@@ -14,11 +14,11 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 const ListItem = ({singleMedia, navigation}) => {
   const {darkMode, update, isLoggedIn} = useContext(MainContext);
   const {likeMedia, removeLike, getFavourites} = useMedia(update);
-  const [currentLikes, setCurrentLikes] = useState({});
+  const [currentLikes, setCurrentLikes] = useState(0);
   const [liked, setLiked] = useState(false);
 
-
-  /*   console.log("Rendering item:", singleMedia.title); */
+/* 
+    console.log("Rendering item:", singleMedia); */
 
   let bgColor,
     headerColor,
@@ -43,7 +43,8 @@ const ListItem = ({singleMedia, navigation}) => {
     if (liked) removeLike(singleMedia.file_id);
     else likeMedia(singleMedia.file_id);
     const newLikes = await getFavourites(singleMedia.file_id);
-    setCurrentLikes(newLikes);
+    setCurrentLikes(newLikes.amount);
+    setLiked(newLikes.liked)
   }
 
   // Formats the time separation between the current date and the date the post was made.
@@ -76,12 +77,12 @@ const ListItem = ({singleMedia, navigation}) => {
   useEffect(() => {
     if (isLoggedIn) {
       setCurrentLikes(singleMedia.likes);
-      setLiked(singleMedia.likes.liked);
+      setLiked(singleMedia.postLiked);
     } else if (!isLoggedIn) {
-      setCurrentLikes({});
+      setCurrentLikes(0);
       setLiked(false);
     }
-    console.log(`ListItem ${singleMedia.title} rerendered.`);
+/*     console.log(`ListItem ${singleMedia.title} rerendered.`); */
   }, [singleMedia])
 
   return (
@@ -114,14 +115,14 @@ const ListItem = ({singleMedia, navigation}) => {
                 <Text style={{color: headerTintColor, fontFamily: 'AdventPro', }}>t/{singleMedia.tag}</Text>
                 {singleMedia.user && (
                   <Text style={{color: headerTintColor, fontFamily: 'AdventPro', }}>
-                    Posted by /user/{singleMedia.user.username}
+                    Posted by /user/{singleMedia.user}
                   </Text>
                 )}
               </View>
             </TouchableOpacity>
-            {currentLikes.amount >= 0 && <TouchableOpacity style={styles.likesContainer} onPress={toggleLike}>
-              <MaterialCommunityIcons name="arrow-up-bold-outline" color={currentLikes.liked ? highlightColor : headerTintColor} size={50} />
-              <Text style={{color: currentLikes.liked ? highlightColor : headerTintColor, fontSize: 15, fontFamily: 'AdventPro', }}>{currentLikes.amount}</Text>
+            {currentLikes >= 0 && <TouchableOpacity style={styles.likesContainer} onPress={toggleLike}>
+              <MaterialCommunityIcons name="arrow-up-bold-outline" color={liked ? highlightColor : headerTintColor} size={50} />
+              <Text style={{color: liked ? highlightColor : headerTintColor, fontSize: 15, fontFamily: 'AdventPro', }}>{currentLikes}</Text>
             </TouchableOpacity>}
           </View>
           <TouchableOpacity style={styles.lowerContainer}
@@ -156,7 +157,7 @@ const ListItem = ({singleMedia, navigation}) => {
               resizeMode="contain"
               containerStyle={styles.image}
               source={{
-                uri: `${url}${singleMedia.thumbnails.w320}`,
+                uri: `${url}${singleMedia.thumbnails}`,
               }}
             />
           </TouchableOpacity>

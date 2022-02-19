@@ -42,8 +42,19 @@ const useMedia = (update) => {
             if (tags[0] == undefined) tags = "main";
             else tags = tags[0].tag.split("_")[1];
          
-            json.likes = likes;
+            const thumbnails = json.thumbnails;
+
+            json.likes = likes.amount;
+            json.postLiked = likes.liked;
             json.user = user;
+
+            // Simplifying thumbnails data
+            json.thumbnails = thumbnails.w640;
+
+            // Open user data here
+            json.user = user.username;
+            json.user_email = user.email;
+            json.user_id = user.user_id;
             json.tag = tags;
           }
           return json;
@@ -80,14 +91,14 @@ const useMedia = (update) => {
   // Fetches user info with the given id.
   const getUserInfo = async (id, options) => {
     const response = await fetch(`${apiUrl}users/${id}`, options);
-    const tags = await response.json();
-    return tags;
+    const user = await response.json();
+    return user;
   };
 
   const getMediaTags = async (id) => {
     const response = await fetch(`${apiUrl}tags/file/${id}`);
-    const user = await response.json();
-    return user;
+    const tags = await response.json();
+    return tags;
   }
 
 /*   const getMyMedia = async () => {
