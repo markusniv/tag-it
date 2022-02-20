@@ -11,9 +11,9 @@ import Create from "../views/Create";
 import Post from "../views/Post";
 import Popular from "../views/Popular";
 import { View, Text, StatusBar } from "react-native";
-import { Icon, Divider } from "react-native-elements";
+import { Icon } from "react-native-elements";
 import Notifications from "../views/Notifications";
-import Settings from "../views/Settings";
+import SettingsWrapper from "../components/SettingWrapper";
 import { MainContext } from "../contexts/MainContext";
 import colors from "../global/colors.json";
 import Welcome from "../views/Welcome";
@@ -231,7 +231,7 @@ const BottomNav = () => {
       />
       <Tab.Screen
         name="Settings"
-        component={Settings}
+        component={SettingsWrapper}
         options={{
           headerStyle: {
             backgroundColor: colors.headerColor,
