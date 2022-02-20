@@ -34,24 +34,24 @@ const useMedia = (update) => {
                 'x-access-token': token,
               },
             };
+
+            // Fetching likes, user info and tags.
             const likes = await getFavourites(item.file_id);
             const user = await getUserInfo(item.user_id, options);
             let tags = await getMediaTags(item.file_id);
 
+            // Filtering "tagit_" tag from the array of tags.
             tags = tags.filter(t => t.tag != "tagit_");
             if (tags[0] == undefined) tags = "main";
             else tags = tags[0].tag.split("_")[1];
          
-            const thumbnails = json.thumbnails;
-
+            // Adding Like data to the JSON object
             json.likes = likes.amount;
             json.postLiked = likes.liked;
-            json.user = user;
 
-            // Simplifying thumbnails data
+            // Adding thumbnail and user data to the JSON object
+            const thumbnails = json.thumbnails;
             json.thumbnails = thumbnails.w640;
-
-            // Open user data here
             json.user = user.username;
             json.user_email = user.email;
             json.user_id = user.user_id;

@@ -70,7 +70,7 @@ const ConfirmLogoutModal = () => {
             }}
           >
             <Icon type="material-community" name="logout" size={60} color={colors.headerTintColor} />
-            <Text style={{ fontFamily: "AdventPro", fontSize: 25, color: colors.headerTintColor }}>Confirm logout?</Text>
+            <Text style={{ fontFamily: "AdventPro", fontSize: 25, color: colors.headerTintColor }}>Confirm log out?</Text>
           </View>
           <View
             style={{
