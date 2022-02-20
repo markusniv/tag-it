@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import Modal from "react-native-modal";
-import { View, Text, StyleSheet } from "react-native";
-import { Button } from "react-native-elements";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Button, Icon, Divider } from "react-native-elements";
 import { MainContext } from "../contexts/MainContext";
 import { LogoutContext } from "../contexts/LogoutContext";
 import colors from "../global/colors.json";
@@ -48,47 +48,75 @@ const ConfirmLogoutModal = () => {
           alignItems: "center",
           justifyContent: "center",
           margin: 0,
-          width: "100%",
-          height: "100%",
         }}
       >
         <View
           style={{
             width: "90%",
-            height: "30%",
-            maxHeight: 200,
-            alignItems: "center",
-            backgroundColor: colors.searchColor,
+            height: "50%",
+            maxHeight: 300,
+            backgroundColor: colors.headerColor,
             justifyContent: "center",
             alignItems: "center",
             borderRadius: 10,
+            paddingTop: 30,
           }}
         >
-          <Text>Logout?</Text>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "space-around",
+              alignItems: "center",
+            }}
+          >
+            <Icon type="material-community" name="logout" size={60} color={colors.headerTintColor} />
+            <Text style={{ fontFamily: "AdventPro", fontSize: 25, color: colors.headerTintColor }}>Confirm logout?</Text>
+          </View>
           <View
             style={{
               flexDirection: "row",
               width: "100%",
-              backgroundColor: "green",
+              flex: 1,
               justifyContent: "center",
-              alignItems: "center",
+              alignItems: "flex-end",
             }}
           >
-            <Button
-              title="Cancel"
-              containerStyle={styles.btnContainer}
-              buttonStyle={styles.btnStyle}
+            <TouchableOpacity
+              style={{
+                borderRadius: 10,
+                bottom: "8%",
+                width: "40%",
+                backgroundColor: "#FB4E4E",
+                justifyContent: "center",
+                alignItems: "center",
+                margin: 10,
+                height: 50,
+                elevation: 10,
+              }}
               onPress={() => setDisplayConfirmWindow(false)}
-            />
-               <Button
-              title="Confirm"
-              containerStyle={styles.btnContainer}
-              buttonStyle={styles.btnStyle}
+            >
+              <Text style={{ fontFamily: "AdventPro", fontSize: 20, color: colors.headerTintColor }}>Cancel</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={{
+                borderRadius: 10,
+                bottom: "8%",
+                width: "40%",
+                backgroundColor: "#FB4E4E",
+                justifyContent: "center",
+                alignItems: "center",
+                margin: 10,
+                height: 50,
+                elevation: 10,
+              }}
               onPress={() => {
                 setConfirmLogout(true);
                 setDisplayConfirmWindow(false);
               }}
-            />
+            >
+              <Text style={{ fontFamily: "AdventPro", fontSize: 20, color: colors.headerTintColor }}>Confirm</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -97,13 +125,6 @@ const ConfirmLogoutModal = () => {
 };
 
 const styles = StyleSheet.create({
-  btnContainer: {
-    borderRadius: 10,
-    bottom: "8%",
-    width: "20%",
-    maxWidth: 500,
-    height: 50,
-  },
   btnStyle: {
     backgroundColor: "#FB4E4E",
     width: "100%",

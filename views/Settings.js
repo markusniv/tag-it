@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Text, View, StyleSheet, ImageBackground } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Button, Switch } from "react-native-elements";
 import { MainContext } from "../contexts/MainContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -7,10 +7,11 @@ import colors from "../global/colors.json";
 import ConfirmLogoutModal from "../components/ConfirmLogoutModal";
 import { LogoutContext } from "../contexts/LogoutContext";
 
-
 const Settings = ({ navigation }) => {
-  const { isLoggedIn, setIsLoggedIn, darkMode, setDarkMode } = useContext(MainContext);
-  const { setDisplayConfirmWindow, confirmLogout, setConfirmLogout} = useContext(LogoutContext);
+  const { isLoggedIn, setIsLoggedIn, darkMode, setDarkMode } =
+    useContext(MainContext);
+  const { setDisplayConfirmWindow, confirmLogout, setConfirmLogout } =
+    useContext(LogoutContext);
 
   let bgColor,
     headerColor,
@@ -41,148 +42,153 @@ const Settings = ({ navigation }) => {
       logout();
       setConfirmLogout(false);
     }
-  }, [confirmLogout])
+  }, [confirmLogout]);
 
   const showConfirm = () => setDisplayConfirmWindow(true);
 
   const showLogin = () => navigation.navigate("Login");
 
   return (
-      <View
-        style={{
-          height: "100%",
-          width: "100%",
-          paddingVertical: 50,
-          justifyContent: "space-between",
-          backgroundColor: bgColor,
-        }}
-      >
-        <ConfirmLogoutModal />
+    <View
+      style={{
+        height: "100%",
+        width: "100%",
+        paddingVertical: 50,
+        justifyContent: "space-between",
+        paddingHorizontal: 20,
+        backgroundColor: bgColor,
+      }}
+    >
+      <ConfirmLogoutModal />
 
-        {/* Switch container */}
-        <View>
-          {/* Dark mode switch */}
-          <View style={styles.switchContainer}>
-            <Text
-              style={{
-                fontSize: 30,
-                fontFamily: "AdventPro",
-                color: headerTintColor,
-              }}
-            >
-              Dark mode
-            </Text>
-            <Switch
-              trackColor={{
-                false: colors.light_mode_header_tint,
-                true: highlightColor,
-              }}
-              thumbColor={searchColor}
-              value={darkMode}
-              onChange={() => setDarkMode(!darkMode)}
-              style={styles.switch}
-            />
-          </View>
-
-          {/* Notifications switch */}
-          <View style={styles.switchContainer}>
-            <Text
-              style={{
-                fontSize: 30,
-                fontFamily: "AdventPro",
-                color: headerTintColor,
-              }}
-            >
-              Notifications
-            </Text>
-            <Switch
-              trackColor={{
-                false: colors.light_mode_header_tint,
-                true: highlightColor,
-              }}
-              thumbColor={searchColor}
-              value={false}
-              style={styles.switch}
-            />
-          </View>
-
-          {/* Placeholder switch */}
-          <View style={styles.switchContainer}>
-            <Text
-              style={{
-                fontSize: 30,
-                fontFamily: "AdventPro",
-                color: headerTintColor,
-              }}
-            >
-              Placeholder 1
-            </Text>
-            <Switch
-              trackColor={{
-                false: colors.light_mode_header_tint,
-                true: highlightColor,
-              }}
-              thumbColor={searchColor}
-              value={false}
-              style={styles.switch}
-            />
-          </View>
-
-          {/* Placeholder switch */}
-          <View style={styles.switchContainer}>
-            <Text
-              style={{
-                fontSize: 30,
-                fontFamily: "AdventPro",
-                color: headerTintColor,
-              }}
-            >
-              Placeholder 2
-            </Text>
-            <Switch
-              trackColor={{
-                false: colors.light_mode_header_tint,
-                true: highlightColor,
-              }}
-              thumbColor={searchColor}
-              value={false}
-              style={styles.switch}
-            />
-          </View>
+      {/* Switch container */}
+      <View style={{alignItems: "center", justifyContent: "center"}}>
+        {/* Dark mode switch */}
+        <View style={styles.switchContainer}>
+          <Text
+            style={{
+              fontSize: 30,
+              fontFamily: "AdventPro",
+              color: headerTintColor,
+            }}
+          >
+            Dark mode
+          </Text>
+          <Switch
+            trackColor={{
+              false: colors.light_mode_header_tint,
+              true: highlightColor,
+            }}
+            thumbColor={searchColor}
+            value={darkMode}
+            onChange={() => setDarkMode(!darkMode)}
+            style={styles.switch}
+          />
         </View>
 
-        <Button
-          title={isLoggedIn ? "Log out" : "Log in"}
-          onPress={isLoggedIn ? showConfirm : showLogin}
-          containerStyle={{
-            borderRadius: 10,
-            bottom: "8%",
-            alignSelf: "center",
-            width: "80%",
-            maxWidth: 500,
-            height: 50,
-          }}
-          buttonStyle={{
-            backgroundColor: "#FB4E4E",
-            width: "100%",
-            height: "100%",
-          }}
-        />
+        {/* Notifications switch */}
+        <View style={styles.switchContainer}>
+          <Text
+            style={{
+              fontSize: 30,
+              fontFamily: "AdventPro",
+              color: headerTintColor,
+            }}
+          >
+            Notifications
+          </Text>
+          <Switch
+            trackColor={{
+              false: colors.light_mode_header_tint,
+              true: highlightColor,
+            }}
+            thumbColor={searchColor}
+            value={false}
+            style={styles.switch}
+          />
+        </View>
+
+        {/* Placeholder switch */}
+        <View style={styles.switchContainer}>
+          <Text
+            style={{
+              fontSize: 30,
+              fontFamily: "AdventPro",
+              color: headerTintColor,
+            }}
+          >
+            Placeholder 1
+          </Text>
+          <Switch
+            trackColor={{
+              false: colors.light_mode_header_tint,
+              true: highlightColor,
+            }}
+            thumbColor={searchColor}
+            value={false}
+            style={styles.switch}
+          />
+        </View>
+
+        {/* Placeholder switch */}
+        <View style={styles.switchContainer}>
+          <Text
+            style={{
+              fontSize: 30,
+              fontFamily: "AdventPro",
+              color: headerTintColor,
+            }}
+          >
+            Placeholder 2
+          </Text>
+          <Switch
+            trackColor={{
+              false: colors.light_mode_header_tint,
+              true: highlightColor,
+            }}
+            thumbColor={searchColor}
+            value={false}
+            style={styles.switch}
+          />
+        </View>
       </View>
+
+      <View style={{justifyContent: "center", alignItems: "center"}}>
+      <TouchableOpacity
+        style={{
+          borderRadius: 10,
+          bottom: "8%",
+          width: "80%",
+          maxWidth: 500,
+          height: 50,
+          backgroundColor: "#FB4E4E",
+          justifyContent: "center",
+          alignItems: "center",
+          margin: 10,
+          elevation: 10,
+        }}
+        onPress={isLoggedIn ? showConfirm : showLogin}
+      >
+        <Text
+          style={{
+            fontFamily: "AdventPro",
+            fontSize: 20,
+            color: headerTintColor,
+          }}
+        >
+          {isLoggedIn ? "Log out" : "Login"}
+        </Text>
+      </TouchableOpacity>
+      </View>
+
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    height: "100%",
-    width: "100%",
-    paddingVertical: 50,
-    justifyContent: "space-between",
-  },
   switchContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 20,
     alignItems: "center",
     width: "100%",
     paddingBottom: 20,
