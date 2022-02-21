@@ -17,8 +17,6 @@ const ListItem = ({singleMedia, navigation}) => {
   const [currentLikes, setCurrentLikes] = useState(0);
   const [liked, setLiked] = useState(false);
 
-/* 
-    console.log("Rendering item:", singleMedia); */
 
   let bgColor,
     headerColor,

@@ -10,8 +10,8 @@ import Profile from "../views/Profile";
 import Create from "../views/Create";
 import Post from "../views/Post";
 import Popular from "../views/Popular";
-import { View, Text, StatusBar } from "react-native";
-import { Icon } from "react-native-elements";
+import { View, Text, StatusBar, TouchableOpacity } from "react-native";
+import { Icon, Button } from "react-native-elements";
 import Notifications from "../views/Notifications";
 import SettingsWrapper from "../components/SettingWrapper";
 import { MainContext } from "../contexts/MainContext";
@@ -118,7 +118,8 @@ const StackScreen = () => {
 };
 
 const BottomNav = () => {
-  const { isLoggedIn, setSearching, currentTag, setCurrentTag } = useContext(MainContext);
+  const { isLoggedIn, setSearching, currentTag, setCurrentTag } =
+    useContext(MainContext);
 
   useEffect(() => {
     console.log("BottomNav useEffect called.");
@@ -156,18 +157,19 @@ const BottomNav = () => {
                   padding: 10,
                   flexDirection: "row",
                   alignItems: "center",
-                  justifyContent: currentTag === "" ? "flex-end" : "space-between"
+                  justifyContent:
+                    currentTag === "" ? "flex-end" : "space-between",
                 }}
               >
-                  {currentTag !== "" 
-                  && 
+                {currentTag !== "" && (
                   <Icon
-                    style={{height: 50, width: 50}}
+                    style={{ height: 50, width: 50 }}
                     name="arrow-back"
                     color={colors.headerTintColor}
                     size={40}
                     onPress={() => setCurrentTag("")}
-                  />}
+                  />
+                )}
                 <Icon
                   style={{ height: 50, width: 50 }}
                   name="search"
@@ -188,7 +190,6 @@ const BottomNav = () => {
               >
                 {currentTag === "" ? "Home" : `t/${currentTag}`}
               </Text>
-
             </View>
           ),
           headerTintColor: colors.headerTintColor,
@@ -226,6 +227,7 @@ const BottomNav = () => {
           headerStyle: {
             backgroundColor: colors.headerColor,
           },
+          headerTitleAlign: "center",
           headerTintColor: colors.headerTintColor,
         }}
       />
@@ -236,6 +238,7 @@ const BottomNav = () => {
           headerStyle: {
             backgroundColor: colors.headerColor,
           },
+          headerTitleAlign: "center",
           headerTintColor: colors.headerTintColor,
         }}
       />
