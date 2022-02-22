@@ -81,7 +81,7 @@ const List = ({ navigation }) => {
   return (
     <View>
       <FlatList
-        style={{ backgroundColor: "transparent" }}
+        style={{ backgroundColor: "transparent"}}
         showsVerticalScrollIndicator={false}
         data={displayedMedia}
         keyExtractor={keyExtractor}

@@ -16,7 +16,7 @@ const Home = ({ navigation }) => {
       <ImageBackground
         resizeMode="cover"
         style={{ width: "100%", height: "100%" }}
-        source={require("../images/mobile_background_tagit.png")}
+        source={require("../images/mobile_background3_tagit.png")}
       >
         <List navigation={navigation} />
       </ImageBackground>

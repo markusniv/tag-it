@@ -10,7 +10,7 @@ import Profile from "../views/Profile";
 import Create from "../views/Create";
 import Post from "../views/Post";
 import Popular from "../views/Popular";
-import { View, Text, StatusBar, TouchableOpacity } from "react-native";
+import { View, Text, StatusBar } from "react-native";
 import { Icon, Button } from "react-native-elements";
 import Notifications from "../views/Notifications";
 import SettingsWrapper from "../components/SettingWrapper";
@@ -229,6 +229,9 @@ const BottomNav = () => {
           },
           headerTitleAlign: "center",
           headerTintColor: colors.headerTintColor,
+          headerTitleStyle: {
+            fontFamily: "AdventPro",
+          }
         }}
       />
       <Tab.Screen
@@ -240,6 +243,9 @@ const BottomNav = () => {
           },
           headerTitleAlign: "center",
           headerTintColor: colors.headerTintColor,
+          headerTitleStyle: {
+            fontFamily: "AdventPro",
+          }
         }}
       />
       <Tab.Screen

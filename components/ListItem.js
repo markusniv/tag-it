@@ -72,11 +72,10 @@ const ListItem = ({singleMedia, navigation}) => {
   // Removes or adds a like depending on the liked status.
   const toggleLike = async () => {
     setLiked(!liked);
-    if (liked) removeLike(singleMedia.file_id);
-    else likeMedia(singleMedia.file_id);
+    if (liked) await removeLike(singleMedia.file_id);
+    else await likeMedia(singleMedia.file_id);
     const newLikes = await getFavourites(singleMedia.file_id);
     setCurrentLikes(newLikes.amount);
-    setLiked(newLikes.liked)
   }
 
 
@@ -88,15 +87,16 @@ const ListItem = ({singleMedia, navigation}) => {
       setCurrentLikes(0);
       setLiked(false);
     }
-/*     console.log(`ListItem ${singleMedia.title} rerendered.`); */
+  
+    console.log(`ListItem ${singleMedia.title} rerendered.`);
   }, [singleMedia])
 
   return (
     <NBListItem
       containerStyle={{
         backgroundColor: "transparent",
-        padding: 10,
-        paddingBottom: 5,
+        padding: 0,
+        paddingBottom: 1,
       }}
     >
       <NBListItem.Content>
@@ -108,10 +108,9 @@ const ListItem = ({singleMedia, navigation}) => {
             width: "100%",
             height: "100%",
             display: "flex",
-            borderRadius: 5,
+            borderRadius: 0,
             padding: 10,
             backgroundColor: bgColorFaded,
-        /*     borderWidth: 3, */
           }}
         >
           <View style={styles.postInfoContainer}>
@@ -167,7 +166,7 @@ const ListItem = ({singleMedia, navigation}) => {
               }}
             />
             <View style={{justifyContent: "center", alignItems: "center", width: "100%", height: 70, position: "absolute", bottom: 0, backgroundColor: "black", opacity: 0.9}}>
-              <Text style={{color: "white"}}>View full post</Text>
+              <Text style={{color: "white", fontFamily: "AdventPro"}}>View full post</Text>
             </View>
           </TouchableOpacity>
         </View>
