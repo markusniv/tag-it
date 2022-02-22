@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
 import {
   StyleSheet,
   View,
@@ -8,9 +8,34 @@ import {
 } from "react-native";
 import {Icon} from "react-native-elements";
 import {useFonts} from "expo-font";
+import colors from "../global/colors.json";
+import { MainContext } from "../contexts/MainContext";
+
+const getColors = () => {
+  const { darkMode } = useContext(MainContext);
+
+  let bgColor,
+    headerColor,
+    headerTintColor,
+    searchColor,
+    highlightColor = colors.highlight_color;
+
+  if (darkMode) {
+    bgColor = colors.dark_mode_bg;
+    headerColor = colors.dark_mode_header;
+    headerTintColor = colors.dark_mode_header_tint;
+    searchColor = colors.light_mode_bg;
+  } else {
+    bgColor = colors.light_mode_bg;
+    headerColor = colors.light_mode_header;
+    headerTintColor = colors.light_mode_header_tint;
+    searchColor = colors.dark_mode_bg;
+  }
+  return { bgColor, headerColor, headerTintColor, highlightColor, searchColor };
+};
 
 const CustomNavBar = ({state, descriptors, navigation, position}) => {
-
+  const colors = getColors();
   const [keyboardShown, setKeyboardShown] = useState(false);
 
   useEffect(() => {
@@ -44,7 +69,13 @@ const CustomNavBar = ({state, descriptors, navigation, position}) => {
     <>
       {!keyboardShown &&
         <View style={styles.navBarContainer}>
-          <View style={styles.background} />
+          <View style={{
+              height: 55,
+              width: "100%",
+              backgroundColor: colors.headerColor,
+              position: "absolute",
+              bottom: 0,  
+          }} />
 
           <View
             style={{
@@ -84,7 +115,7 @@ const CustomNavBar = ({state, descriptors, navigation, position}) => {
                       <Icon
                         style={isFocused ? styles.create_focused : styles.create}
                         name={iconName}
-                        color={"white"}
+                        color={colors.headerTintColor}
                         size={70}
                       />
                     ) : (
@@ -93,11 +124,22 @@ const CustomNavBar = ({state, descriptors, navigation, position}) => {
                           <Icon
                             style={styles.logo_tiny}
                             name={iconName}
-                            color={isFocused ? "#FF0000" : "white"}
+                            color={isFocused ? colors.highlightColor : colors.headerTintColor}
                             size={isFocused ? 35 : 30}
                           />
                           <Text
-                            style={isFocused ? styles.label_focused : styles.label}
+                            style={isFocused ? 
+                              {
+                                fontSize: 13,
+                                color: colors.highlightColor,
+                                margin: 0,
+                                fontFamily: "AdventPro"
+                              } : 
+                              {
+                                fontSize: 12,
+                                color: colors.headerTintColor,
+                                fontFamily: "AdventPro"
+                              }}
                           >
                             {route.name}
                           </Text>
