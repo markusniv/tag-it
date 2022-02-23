@@ -1,50 +1,65 @@
-import {StyleSheet, View, TouchableOpacity} from "react-native";
-import React, {useContext, useEffect, useState} from "react";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
 import {
   ListItem as NBListItem,
   Text,
   Image,
   Icon,
 } from "react-native-elements";
-import {MainContext} from "../contexts/MainContext";
-import {useMedia} from "../hooks/ApiHooks";
+import { MainContext } from "../contexts/MainContext";
+import { useMedia } from "../hooks/ApiHooks";
 import colors from "../global/colors.json";
-import {MaterialCommunityIcons} from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-  // Formats the time separation between the current date and the date the post was made.
-  const getTimeAddedString = (time) => {
-    let description = "";
+// Formats the time separation between the current date and the date the post was made.
+const getTimeAddedString = (time) => {
+  let description = "";
 
-    let currentDate = new Date();
-    let timeAdded = new Date(time);
+  let currentDate = new Date();
+  let timeAdded = new Date(time);
 
-    // Calculating the time difference in different units.
-    let secondsDifference = (currentDate.getTime() - timeAdded.getTime()) / 1000;
-    let minutesDifference = Math.abs(Math.round(secondsDifference / 60));
-    let hoursDifference = Math.floor(minutesDifference / 60);
-    let dayDifference = Math.floor(hoursDifference / 24);
-    let weekDifference = Math.floor(dayDifference / 7);
-    let monthDifference = Math.floor(dayDifference / 30);
-    let yearDifference = Math.floor(monthDifference / 12);
+  // Calculating the time difference in different units.
+  let secondsDifference = (currentDate.getTime() - timeAdded.getTime()) / 1000;
+  let minutesDifference = Math.abs(Math.round(secondsDifference / 60));
+  let hoursDifference = Math.floor(minutesDifference / 60);
+  let dayDifference = Math.floor(hoursDifference / 24);
+  let weekDifference = Math.floor(dayDifference / 7);
+  let monthDifference = Math.floor(dayDifference / 30);
+  let yearDifference = Math.floor(monthDifference / 12);
 
-    if (secondsDifference < 60) description = `Posted a few seconds ago`;
-    else if (minutesDifference < 60 && secondsDifference >= 60)
-      description = `Posted ${minutesDifference} ${minutesDifference == 1 ? "minute" : "minutes"} ago`;
-    else if (hoursDifference > 0 && dayDifference < 1) description = `Posted ${hoursDifference} ${hoursDifference == 1 ? "hour" : "hours"} ago`;
-    else if (dayDifference > 1 && weekDifference < 1) description = `Posted ${dayDifference} ${dayDifference == 1 ? "day" : "days"} ago`;
-    else if (weekDifference > 0 && monthDifference < 1) description = `Posted ${weekDifference} ${weekDifference == 1 ? "week" : "weeks"} ago`;
-    else if (monthDifference > 0 && yearDifference < 1) description = `Posted ${monthDifference} ${monthDifference == 1 ? "month" : "months"} ago`;
-    else if (yearDifference > 0) description = `Posted ${yearDifference} ${yearDifference == 1 ? "year" : "years"} ago`;
-    return description;
-  }
+  if (secondsDifference < 60) description = `Posted a few seconds ago`;
+  else if (minutesDifference < 60 && secondsDifference >= 60)
+    description = `Posted ${minutesDifference} ${
+      minutesDifference == 1 ? "minute" : "minutes"
+    } ago`;
+  else if (hoursDifference > 0 && dayDifference < 1)
+    description = `Posted ${hoursDifference} ${
+      hoursDifference == 1 ? "hour" : "hours"
+    } ago`;
+  else if (dayDifference > 1 && weekDifference < 1)
+    description = `Posted ${dayDifference} ${
+      dayDifference == 1 ? "day" : "days"
+    } ago`;
+  else if (weekDifference > 0 && monthDifference < 1)
+    description = `Posted ${weekDifference} ${
+      weekDifference == 1 ? "week" : "weeks"
+    } ago`;
+  else if (monthDifference > 0 && yearDifference < 1)
+    description = `Posted ${monthDifference} ${
+      monthDifference == 1 ? "month" : "months"
+    } ago`;
+  else if (yearDifference > 0)
+    description = `Posted ${yearDifference} ${
+      yearDifference == 1 ? "year" : "years"
+    } ago`;
+  return description;
+};
 
-
-const ListItem = ({singleMedia, navigation}) => {
-  const {darkMode, update, isLoggedIn} = useContext(MainContext);
-  const {likeMedia, removeLike, getFavourites} = useMedia(update);
+const ListItem = ({ singleMedia, navigation }) => {
+  const { darkMode, update, isLoggedIn } = useContext(MainContext);
+  const { likeMedia, removeLike, getFavourites } = useMedia(update);
   const [currentLikes, setCurrentLikes] = useState(0);
   const [liked, setLiked] = useState(false);
-
 
   let bgColor,
     headerColor,
@@ -76,8 +91,9 @@ const ListItem = ({singleMedia, navigation}) => {
     else await likeMedia(singleMedia.file_id);
     const newLikes = await getFavourites(singleMedia.file_id);
     setCurrentLikes(newLikes.amount);
-  }
+  };
 
+  console.log(singleMedia);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -87,9 +103,9 @@ const ListItem = ({singleMedia, navigation}) => {
       setCurrentLikes(0);
       setLiked(false);
     }
-  
+
     console.log(`ListItem ${singleMedia.title} rerendered.`);
-  }, [singleMedia])
+  }, [singleMedia]);
 
   return (
     <NBListItem
@@ -115,34 +131,69 @@ const ListItem = ({singleMedia, navigation}) => {
         >
           <View style={styles.postInfoContainer}>
             <TouchableOpacity style={styles.postInfo}>
-              <Icon size={45} name="person" style={styles.postInfoImage} color={headerTintColor}/>
+              {singleMedia.userAvatar !== "" ? (
+                <Image source={{uri: singleMedia.userAvatar}} style={styles.postInfoImage} resizeMode="contain"/>
+              ) : (
+                <Icon
+                  size={45}
+                  name="person"
+                  style={styles.postInfoImage}
+                  color={headerTintColor}
+                />
+              )}
+
               <View style={styles.postInfoText}>
-                <Text style={{color: headerTintColor, fontFamily: 'AdventPro', }}>t/{singleMedia.tag}</Text>
+                <Text
+                  style={{ color: headerTintColor, fontFamily: "AdventPro" }}
+                >
+                  t/{singleMedia.tag}
+                </Text>
                 {singleMedia.user && (
-                  <Text style={{color: headerTintColor, fontFamily: 'AdventPro', }}>
+                  <Text
+                    style={{ color: headerTintColor, fontFamily: "AdventPro" }}
+                  >
                     Posted by /user/{singleMedia.user}
                   </Text>
                 )}
               </View>
             </TouchableOpacity>
-            {currentLikes >= 0 && <TouchableOpacity style={styles.likesContainer} onPress={toggleLike}>
-              <MaterialCommunityIcons name="arrow-up-bold-outline" color={liked ? highlightColor : headerTintColor} size={50} />
-              <Text style={{color: liked ? highlightColor : headerTintColor, fontSize: 15, fontFamily: 'AdventPro', }}>{currentLikes}</Text>
-            </TouchableOpacity>}
+            {currentLikes >= 0 && (
+              <TouchableOpacity
+                style={styles.likesContainer}
+                onPress={toggleLike}
+              >
+                <MaterialCommunityIcons
+                  name="arrow-up-bold-outline"
+                  color={liked ? highlightColor : headerTintColor}
+                  size={50}
+                />
+                <Text
+                  style={{
+                    color: liked ? highlightColor : headerTintColor,
+                    fontSize: 15,
+                    fontFamily: "AdventPro",
+                  }}
+                >
+                  {currentLikes}
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
-          <TouchableOpacity style={styles.lowerContainer}
+          <TouchableOpacity
+            style={styles.lowerContainer}
             onPress={() => {
               navigation.navigate("Post", {
-                media: {singleMedia},
+                media: { singleMedia },
               });
-            }}>
+            }}
+          >
             <View style={styles.postTitle}>
               <Text
                 style={{
                   color: headerTintColor,
                   fontSize: 25,
                   paddingBottom: 10,
-                  fontFamily: 'AdventPro',
+                  fontFamily: "AdventPro",
                 }}
               >
                 {singleMedia.title}
@@ -152,7 +203,7 @@ const ListItem = ({singleMedia, navigation}) => {
                   color: headerTintColor,
                   fontSize: 13,
                   paddingBottom: 5,
-                  fontFamily: 'AdventPro',
+                  fontFamily: "AdventPro",
                 }}
               >
                 {getTimeAddedString(singleMedia.time_added)}
@@ -165,8 +216,21 @@ const ListItem = ({singleMedia, navigation}) => {
                 uri: `${url}${singleMedia.thumbnails}`,
               }}
             />
-            <View style={{justifyContent: "center", alignItems: "center", width: "100%", height: 70, position: "absolute", bottom: 0, backgroundColor: "black", opacity: 0.9}}>
-              <Text style={{color: "white", fontFamily: "AdventPro"}}>View full post</Text>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                height: 70,
+                position: "absolute",
+                bottom: 0,
+                backgroundColor: "black",
+                opacity: 0.9,
+              }}
+            >
+              <Text style={{ color: "white", fontFamily: "AdventPro" }}>
+                View full post
+              </Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -213,7 +277,7 @@ const styles = StyleSheet.create({
   postInfoImage: {
     width: 55,
     height: 55,
-    backgroundColor: "black",
+  /*   backgroundColor: "black", */
     marginRight: 20,
     borderRadius: 30,
     justifyContent: "center",

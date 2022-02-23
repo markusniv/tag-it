@@ -38,6 +38,7 @@ const useMedia = (update) => {
             // Fetching likes, user info and tags.
             const likes = await getFavourites(item.file_id);
             const user = await getUserInfo(item.user_id, options);
+            const userAvatar = await getUserAvatar(item.user_id);
             let tags = await getMediaTags(item.file_id);
 
             // Filtering "tagit_" tag from the array of tags.
@@ -48,7 +49,7 @@ const useMedia = (update) => {
             // Adding Like data to the JSON object
             json.likes = likes.amount;
             json.postLiked = likes.liked;
-
+            json.userAvatar = userAvatar;
             // Adding thumbnail and user data to the JSON object
             const thumbnails = json.thumbnails;
             json.thumbnails = thumbnails.w640;
@@ -99,6 +100,13 @@ const useMedia = (update) => {
     const response = await fetch(`${apiUrl}tags/file/${id}`);
     const tags = await response.json();
     return tags;
+  };
+
+  const getUserAvatar = async (id) => {
+    const response = await fetch(`${apiUrl}tags/avatar_${id}`);
+    const json = await response.json();
+    if (response.ok && Object.keys(json).length > 0) return `${apiUrl}uploads/${json[0].filename}`;
+    return "";
   }
 
 /*   const getMyMedia = async () => {
