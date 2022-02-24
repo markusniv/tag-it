@@ -420,10 +420,7 @@ const useUser = () => {
 }
 
 
-/** Gets all the tags containing tagit_ .
- * Currently there is no guest user, and the console will give an "tags.filter is not a function" error,
- * if the user is not logged in.
-*/
+/** Gets all the tags containing "tagit_" */
 const getTags = async () => {
   const token = await AsyncStorage.getItem('userToken');
   try { 

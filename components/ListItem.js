@@ -93,8 +93,6 @@ const ListItem = ({ singleMedia, navigation }) => {
     setCurrentLikes(newLikes.amount);
   };
 
-  console.log(singleMedia);
-
   useEffect(() => {
     if (isLoggedIn) {
       setCurrentLikes(singleMedia.likes);
@@ -104,7 +102,7 @@ const ListItem = ({ singleMedia, navigation }) => {
       setLiked(false);
     }
 
-    console.log(`ListItem ${singleMedia.title} rerendered.`);
+    console.log(`ListItem ${singleMedia.title} rendered.`);
   }, [singleMedia]);
 
   return (

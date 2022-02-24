@@ -81,7 +81,10 @@ const Settings = ({ navigation }) => {
             }}
             thumbColor={searchColor}
             value={darkMode}
-            onChange={() => setDarkMode(!darkMode)}
+            onChange={async () => {
+              await AsyncStorage.setItem("darkmode", !darkMode + "");
+              setDarkMode(!darkMode);
+            }}
             style={styles.switch}
           />
         </View>
