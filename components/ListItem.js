@@ -94,13 +94,13 @@ const ListItem = ({ singleMedia, navigation }) => {
   };
 
   useEffect(() => {
-    if (isLoggedIn) {
-      setCurrentLikes(singleMedia.likes);
-      setLiked(singleMedia.postLiked);
-    } else if (!isLoggedIn) {
+    /*     if (isLoggedIn) { */
+    setCurrentLikes(singleMedia.likes);
+    setLiked(singleMedia.postLiked);
+    /*     } else if (!isLoggedIn) {
       setCurrentLikes(0);
       setLiked(false);
-    }
+    } */
 
     console.log(`ListItem ${singleMedia.title} rendered.`);
   }, [singleMedia]);
@@ -130,7 +130,11 @@ const ListItem = ({ singleMedia, navigation }) => {
           <View style={styles.postInfoContainer}>
             <TouchableOpacity style={styles.postInfo}>
               {singleMedia.userAvatar !== "" ? (
-                <Image source={{uri: singleMedia.userAvatar}} style={styles.postInfoImage} resizeMode="contain"/>
+                <Image
+                  source={{ uri: singleMedia.userAvatar }}
+                  style={styles.postInfoImage}
+                  resizeMode="contain"
+                />
               ) : (
                 <Icon
                   size={45}
@@ -155,7 +159,7 @@ const ListItem = ({ singleMedia, navigation }) => {
                 )}
               </View>
             </TouchableOpacity>
-            {currentLikes >= 0 && (
+            {currentLikes >= 0 && isLoggedIn && (
               <TouchableOpacity
                 style={styles.likesContainer}
                 onPress={toggleLike}
@@ -175,6 +179,26 @@ const ListItem = ({ singleMedia, navigation }) => {
                   {currentLikes}
                 </Text>
               </TouchableOpacity>
+            )}
+            {currentLikes >= 0 && !isLoggedIn && (
+              <View
+                style={styles.likesContainer}
+              >
+                <MaterialCommunityIcons
+                  name="arrow-up-bold-outline"
+                  color={headerTintColor}
+                  size={50}
+                />
+                <Text
+                  style={{
+                    color: headerTintColor,
+                    fontSize: 15,
+                    fontFamily: "AdventPro",
+                  }}
+                >
+                  {currentLikes}
+                </Text>
+              </View>
             )}
           </View>
           <TouchableOpacity
@@ -275,7 +299,7 @@ const styles = StyleSheet.create({
   postInfoImage: {
     width: 55,
     height: 55,
-  /*   backgroundColor: "black", */
+    /*   backgroundColor: "black", */
     marginRight: 20,
     borderRadius: 30,
     justifyContent: "center",

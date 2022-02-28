@@ -144,13 +144,18 @@ const SearchModal = () => {
       return;
     }
 
-    const filtered = tags.filter((t) => t.tag.match(inputLowerCase));
+    let filtered = tags.filter((t) => t.tag.match(inputLowerCase) && !t.tag.includes("comment"));
+    filtered = filtered.sort((a, b) => b.posts - a.posts);
+    filtered = filtered.slice(0, 10);
     setShowedTags(filtered);
   };
 
   useEffect(() => {
     getTags().then((allTags) => {
+      allTags = allTags.sort((a, b) => b.posts - a.posts);
       setTags(allTags);
+
+      allTags = allTags.slice(0, 10);
       setShowedTags(allTags);
 
       const keyboardDidShowListener = Keyboard.addListener(

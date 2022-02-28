@@ -27,7 +27,7 @@ const useMedia = (update) => {
           const json = await response.json();
           
           // Fetching likes for the file and adding it to the json object.
-          if (isLoggedIn) {
+          if (isLoggedIn || user.user_id == 676) {
             const options = {
               method: 'GET',
               headers: {
@@ -433,7 +433,7 @@ const getTags = async () => {
 
     const tagItTags = tags.filter(t => t.tag.includes(tag));
     
-    const tagsWithDuplicates = getTagsWithPostAmount(tagItTags);
+    let tagsWithDuplicates = getTagsWithPostAmount(tagItTags);
 
     if (response.ok) {
       return tagsWithDuplicates;
@@ -450,17 +450,22 @@ const getTagsWithPostAmount = (array) => {
   
   const firstItem = array[0];
   firstItem.posts = 1;
-  let duplicates = [firstItem];
+  firstItem.tag = firstItem.tag.toLowerCase();
+  let duplicates = [];
+  duplicates.push(firstItem);
 
   for (let i = 0; i < array.length; i++) {
-    if (!duplicates.some(item => item.tag === array[i].tag)) {
+    if (!duplicates.some(item => item.tag.toLowerCase() === array[i].tag.toLowerCase())) {
       const newItem = array[i];
       newItem.posts = 1;
+      newItem.tag = newItem.tag.toLowerCase();
       duplicates.push(newItem);
     } else {
-      duplicates.map(item => {if (item.tag === array[i].tag) item.posts++});
+      duplicates.map(item => {if (item.tag.toLowerCase() === array[i].tag.toLowerCase()) item.posts++});
     }
   }
+
+  console.log("duplicates 1:", duplicates);
 
   duplicates = duplicates.filter(item => item.tag !== "tagit_");
 
