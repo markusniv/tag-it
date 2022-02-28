@@ -163,9 +163,35 @@ const BottomNav = () => {
           options={{
             headerStyle: {
               backgroundColor: colors.headerColor,
-            },
-            headerTintColor: colors.headerTintColor,
+            }, header : () => (
+              <View style={{
+            width: "100%",
+            height: 150,
+            justifyContent: "space-around",
+            paddingTop: 20,
+            paddingBottom: 65,
+            alignItems: "center",
+            backgroundColor: colors.headerColor,
           }}
+            >
+              <View style={{ position: 'absolute', top: '50%', left: '5%', transform: [{rotateY: '180deg'}]}}>
+                <Icon
+                  style={{height: 40, width: 40, }}
+                  name="arrow-forward"
+                  color={'white'}
+                  size={40}
+
+                />
+              </View>
+                <Text style={{color: colors.headerTintColor, fontSize: 24, fontFamily: 'AdventPro', }}>
+                  Profile
+                </Text>
+              </View>
+            ),
+            headerTintColor: colors.headerTintColor,
+
+          }}
+
         />
       )}
       {isLoggedIn && (

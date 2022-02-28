@@ -25,7 +25,7 @@ const useMedia = (update) => {
         array.map(async (item) => {
           const response = await fetch(url + item.file_id);
           const json = await response.json();
-          
+
           // Fetching likes for the file and adding it to the json object.
           if (isLoggedIn) {
             const options = {
@@ -259,7 +259,7 @@ const useMedia = (update) => {
       console.log(`Failed to like post: ${e.message}`);
     }
   };
-  
+
   // removes a like from a post.
   const removeLike = async (id) => {
     const token = await AsyncStorage.getItem('userToken');
@@ -301,7 +301,7 @@ const useLogin = () => {
       body: JSON.stringify(userCredentials)
     };
     try {
-      
+
       const response = await fetch(apiUrl + "login", options);
       if (!response.ok) {
         return new Error('Failed to retrieve data!');
@@ -403,7 +403,7 @@ const useUser = () => {
 */
 const getTags = async () => {
   const token = await AsyncStorage.getItem('userToken');
-  try { 
+  try {
     const options = {
       method: 'GET',
       headers: {'x-access-token': token},
@@ -412,7 +412,7 @@ const getTags = async () => {
     const tags = await response.json();
 
     const tagItTags = tags.filter(t => t.tag.includes(tag));
-    
+
     const tagsWithDuplicates = getTagsWithPostAmount(tagItTags);
 
     if (response.ok) {
@@ -427,7 +427,7 @@ const getTags = async () => {
 
 /** Returns an array of tags displaying how many posts each tag has. */
 const getTagsWithPostAmount = (array) => {
-  
+
   const firstItem = array[0];
   firstItem.posts = 1;
   let duplicates = [firstItem];
@@ -452,5 +452,7 @@ const getTagsWithPostAmount = (array) => {
 
   return duplicates;
 }
+
+
 
 export {useMedia, useLogin, useUser, getTags}
