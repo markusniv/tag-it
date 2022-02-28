@@ -4,53 +4,19 @@ import {
   ListItem as NBListItem,
   Text,
   Image,
+  Icon,
 } from "react-native-elements";
 import {MainContext} from "../contexts/MainContext";
 import {useMedia} from "../hooks/ApiHooks";
 import colors from "../global/colors.json";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 
-const ListItem = ({singleMedia, navigation}) => {
-  const {darkMode, update, isLoggedIn} = useContext(MainContext);
-  const {likeMedia, removeLike, getFavourites} = useMedia(update);
-  const [currentLikes, setCurrentLikes] = useState({});
-  const [liked, setLiked] = useState(false);
-
-
-  /*   console.log("Rendering item:", singleMedia.title); */
-
-  let bgColor,
-    headerColor,
-    headerTintColor,
-    highlightColor = colors.highlight_color;
-
-  if (darkMode) {
-    bgColor = colors.dark_mode_bg;
-    headerColor = colors.dark_mode_header;
-    headerTintColor = colors.dark_mode_header_tint;
-  } else {
-    bgColor = colors.light_mode_bg;
-    headerColor = colors.light_mode_header;
-    headerTintColor = colors.light_mode_header_tint;
-  }
-
-  const url = "https://media.mw.metropolia.fi/wbma/uploads/";
-
-  // Removes or adds a like depending on the liked status.
-  const toggleLike = async () => {
-    setLiked(!liked);
-    if (liked) removeLike(singleMedia.file_id);
-    else likeMedia(singleMedia.file_id);
-    const newLikes = await getFavourites(singleMedia.file_id);
-    setCurrentLikes(newLikes);
-  }
-
   // Formats the time separation between the current date and the date the post was made.
-  const getTimeAddedString = () => {
+  const getTimeAddedString = (time) => {
     let description = "";
 
     let currentDate = new Date();
-    let timeAdded = new Date(singleMedia.time_added);
+    let timeAdded = new Date(time);
 
     // Calculating the time difference in different units.
     let secondsDifference = (currentDate.getTime() - timeAdded.getTime()) / 1000;
@@ -72,14 +38,56 @@ const ListItem = ({singleMedia, navigation}) => {
     return description;
   }
 
+
+const ListItem = ({singleMedia, navigation}) => {
+  const {darkMode, update, isLoggedIn} = useContext(MainContext);
+  const {likeMedia, removeLike, getFavourites} = useMedia(update);
+  const [currentLikes, setCurrentLikes] = useState(0);
+  const [liked, setLiked] = useState(false);
+
+
+  let bgColor,
+    headerColor,
+    headerTintColor,
+    bgColorFaded,
+    postLabelColor,
+    highlightColor = colors.highlight_color;
+
+  if (darkMode) {
+    bgColor = colors.dark_mode_bg;
+    headerColor = colors.dark_mode_header;
+    bgColorFaded = colors.dark_mode_bg_faded;
+    postLabelColor = colors.light_mode_header_tint;
+    headerTintColor = colors.dark_mode_header_tint;
+  } else {
+    bgColor = colors.light_mode_bg;
+    headerColor = colors.light_mode_header;
+    bgColorFaded = colors.light_mode_header_faded;
+    postLabelColor = colors.dark_mode_header_tint;
+    headerTintColor = colors.light_mode_header_tint;
+  }
+
+  const url = "https://media.mw.metropolia.fi/wbma/uploads/";
+
+  // Removes or adds a like depending on the liked status.
+  const toggleLike = async () => {
+    setLiked(!liked);
+    if (liked) await removeLike(singleMedia.file_id);
+    else await likeMedia(singleMedia.file_id);
+    const newLikes = await getFavourites(singleMedia.file_id);
+    setCurrentLikes(newLikes.amount);
+  }
+
+
   useEffect(() => {
     if (isLoggedIn) {
       setCurrentLikes(singleMedia.likes);
-      setLiked(singleMedia.likes.liked);
+      setLiked(singleMedia.postLiked);
     } else if (!isLoggedIn) {
-      setCurrentLikes({});
+      setCurrentLikes(0);
       setLiked(false);
     }
+  
     console.log(`ListItem ${singleMedia.title} rerendered.`);
   }, [singleMedia])
 
@@ -87,8 +95,8 @@ const ListItem = ({singleMedia, navigation}) => {
     <NBListItem
       containerStyle={{
         backgroundColor: "transparent",
-        padding: 10,
-        paddingBottom: 5,
+        padding: 0,
+        paddingBottom: 1,
       }}
     >
       <NBListItem.Content>
@@ -100,27 +108,26 @@ const ListItem = ({singleMedia, navigation}) => {
             width: "100%",
             height: "100%",
             display: "flex",
-            elevation: 10,
-            borderRadius: 5,
+            borderRadius: 0,
             padding: 10,
-            backgroundColor: bgColor,
+            backgroundColor: bgColorFaded,
           }}
         >
           <View style={styles.postInfoContainer}>
             <TouchableOpacity style={styles.postInfo}>
-              <Image containerStyle={styles.postInfoImage} />
+              <Icon size={45} name="person" style={styles.postInfoImage} color={headerTintColor}/>
               <View style={styles.postInfoText}>
-                <Text style={{color: headerTintColor, fontFamily: 'AdventPro', }}>t/placeholder</Text>
+                <Text style={{color: headerTintColor, fontFamily: 'AdventPro', }}>t/{singleMedia.tag}</Text>
                 {singleMedia.user && (
                   <Text style={{color: headerTintColor, fontFamily: 'AdventPro', }}>
-                    Posted by /user/{singleMedia.user.username}
+                    Posted by /user/{singleMedia.user}
                   </Text>
                 )}
               </View>
             </TouchableOpacity>
-            {currentLikes.amount >= 0 && <TouchableOpacity style={styles.likesContainer} onPress={toggleLike}>
-              <MaterialCommunityIcons name="arrow-up-bold-outline" color={currentLikes.liked ? highlightColor : headerTintColor} size={50} />
-              <Text style={{color: currentLikes.liked ? highlightColor : headerTintColor, fontSize: 15, fontFamily: 'AdventPro', }}>{currentLikes.amount}</Text>
+            {currentLikes >= 0 && <TouchableOpacity style={styles.likesContainer} onPress={toggleLike}>
+              <MaterialCommunityIcons name="arrow-up-bold-outline" color={liked ? highlightColor : headerTintColor} size={50} />
+              <Text style={{color: liked ? highlightColor : headerTintColor, fontSize: 15, fontFamily: 'AdventPro', }}>{currentLikes}</Text>
             </TouchableOpacity>}
           </View>
           <TouchableOpacity style={styles.lowerContainer}
@@ -148,16 +155,19 @@ const ListItem = ({singleMedia, navigation}) => {
                   fontFamily: 'AdventPro',
                 }}
               >
-                {getTimeAddedString()}
+                {getTimeAddedString(singleMedia.time_added)}
               </Text>
             </View>
             <Image
-              resizeMode="contain"
+              resizeMode="cover"
               containerStyle={styles.image}
               source={{
-                uri: `${url}${singleMedia.thumbnails.w320}`,
+                uri: `${url}${singleMedia.thumbnails}`,
               }}
             />
+            <View style={{justifyContent: "center", alignItems: "center", width: "100%", height: 70, position: "absolute", bottom: 0, backgroundColor: "black", opacity: 0.9}}>
+              <Text style={{color: "white", fontFamily: "AdventPro"}}>View full post</Text>
+            </View>
           </TouchableOpacity>
         </View>
       </NBListItem.Content>
@@ -201,11 +211,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   postInfoImage: {
-    width: 60,
-    height: 60,
-    backgroundColor: "blue",
+    width: 55,
+    height: 55,
+    backgroundColor: "black",
     marginRight: 20,
     borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 0,
   },
   postTitle: {
     flex: 1,

@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from "react";
 import {SafeAreaView, ImageBackground} from "react-native";
-import List from "../components/List";
+import PopularList from "../components/PopularList";
 import {MainContext} from "../contexts/MainContext";
 import {useMedia} from "../hooks/ApiHooks";
 
@@ -32,8 +32,13 @@ const Popular = ({navigation}) => {
 
   return (
     <SafeAreaView>
+<<<<<<< HEAD
       <ImageBackground resizeMode="cover" style={{width: "100%", height: "100%"}} source={require('../images/mobile_background_tagit.png')}>
         <List navigation={navigation} media={arr} />
+=======
+    <ImageBackground resizeMode="cover" style={{width: "100%", height: "100%"}} source={require('../images/mobile_background3_tagit.png')}>
+        <PopularList navigation={navigation} media={arr} />
+>>>>>>> master
       </ImageBackground>
     </SafeAreaView >
   );

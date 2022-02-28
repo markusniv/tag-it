@@ -11,7 +11,7 @@ const useMedia = (update) => {
 
   const [mediaArray, setMediaArray] = useState(JSON);
   const [userMediaArray, setUserMediaArray] = useState(JSON);
-  const {isLoggedIn, user} = useContext(MainContext);
+  const {isLoggedIn, user, setUpdate} = useContext(MainContext);
 
   const getMedia = async () => {
 
@@ -34,19 +34,34 @@ const useMedia = (update) => {
                 'x-access-token': token,
               },
             };
+
+            // Fetching likes, user info and tags.
             const likes = await getFavourites(item.file_id);
             const user = await getUserInfo(item.user_id, options);
-            const tags = await getMediaTags(item.file_id);
+            let tags = await getMediaTags(item.file_id);
 
-            json.likes = likes;
-            json.user = user;
-            json.tags = tags;
+            // Filtering "tagit_" tag from the array of tags.
+            tags = tags.filter(t => t.tag != "tagit_");
+            if (tags[0] == undefined) tags = "main";
+            else tags = tags[0].tag.split("_")[1];
+         
+            // Adding Like data to the JSON object
+            json.likes = likes.amount;
+            json.postLiked = likes.liked;
+
+            // Adding thumbnail and user data to the JSON object
+            const thumbnails = json.thumbnails;
+            json.thumbnails = thumbnails.w640;
+            json.user = user.username;
+            json.user_email = user.email;
+            json.user_id = user.user_id;
+            json.tag = tags;
           }
           return json;
         })
       );
-      console.log(json);
       setMediaArray(json);
+      setUpdate(false);
     } catch (e) {
       throw new Error(e.message);
     }
@@ -76,14 +91,14 @@ const useMedia = (update) => {
   // Fetches user info with the given id.
   const getUserInfo = async (id, options) => {
     const response = await fetch(`${apiUrl}users/${id}`, options);
-    const tags = await response.json();
-    return tags;
+    const user = await response.json();
+    return user;
   };
 
   const getMediaTags = async (id) => {
     const response = await fetch(`${apiUrl}tags/file/${id}`);
-    const user = await response.json();
-    return user;
+    const tags = await response.json();
+    return tags;
   }
 
 /*   const getMyMedia = async () => {

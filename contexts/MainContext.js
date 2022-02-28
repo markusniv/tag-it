@@ -1,25 +1,25 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import {useFonts} from "expo-font";
+import { useFonts } from "expo-font";
 
 const MainContext = React.createContext({});
 
-const MainProvider = ({children}) => {
+const MainProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({});
   const [update, setUpdate] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [searching, setSearching] = useState(false);
+  const [currentTag, setCurrentTag] = useState("");
 
   const [loaded] = useFonts({
-    AdventPro: require('../assets/fonts/AdventPro.ttf'),
+    AdventPro: require("../assets/fonts/AdventPro.ttf"),
   });
 
   if (!loaded) {
     return null;
   }
-
 
   return (
     <MainContext.Provider
@@ -36,7 +36,9 @@ const MainProvider = ({children}) => {
         setSearchInput,
         searching,
         setSearching,
-        loaded
+        loaded,
+        currentTag,
+        setCurrentTag,
       }}
     >
       {children}
@@ -48,4 +50,4 @@ MainProvider.propTypes = {
   children: PropTypes.node,
 };
 
-export {MainContext, MainProvider};
+export { MainContext, MainProvider };

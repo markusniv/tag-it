@@ -1,25 +1,24 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CustomNavBar from "./CustomNavBar";
-import {NavigationContainer} from "@react-navigation/native";
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Home from "../views/Home";
 import Login from "../views/Login";
 import Profile from "../views/Profile";
 import Create from "../views/Create";
 import Post from "../views/Post";
 import Popular from "../views/Popular";
-import {View, Text, StatusBar, TouchableOpacity} from "react-native";
-import {Icon} from "react-native-elements";
+import { View, Text, StatusBar } from "react-native";
+import { Icon, Button } from "react-native-elements";
 import Notifications from "../views/Notifications";
-import Settings from "../views/Settings";
-import {MainContext} from "../contexts/MainContext";
+import SettingsWrapper from "../components/SettingWrapper";
+import { MainContext } from "../contexts/MainContext";
 import colors from "../global/colors.json";
 import Welcome from "../views/Welcome";
 import SearchModal from "../components/SearchModal";
 import Register from "../views/Register";
-
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -27,7 +26,7 @@ const Stack = createNativeStackNavigator();
 const HomeTopTab = createMaterialTopTabNavigator();
 
 const getColors = () => {
-  const {darkMode} = useContext(MainContext);
+  const { darkMode } = useContext(MainContext);
 
   let bgColor,
     headerColor,
@@ -46,19 +45,23 @@ const getColors = () => {
     headerTintColor = colors.light_mode_header_tint;
     searchColor = colors.dark_mode_bg;
   }
-  return {bgColor, headerColor, headerTintColor, highlightColor, searchColor};
+  return { bgColor, headerColor, headerTintColor, highlightColor, searchColor };
 };
 
 const HomeTopNavigator = () => {
   const colors = getColors();
-  const {setSearchInput} = useContext(MainContext);
+  const { setSearchInput } = useContext(MainContext);
 
   return (
     <HomeTopTab.Navigator
       screenOptions={{
-        tabBarStyle: {backgroundColor: colors.headerColor},
-        tabBarLabelStyle: {color: colors.headerTintColor, fontFamily: 'AdventPro', fontSize: 18},
-        tabBarIndicatorStyle: {backgroundColor: colors.highlightColor},
+        tabBarStyle: { backgroundColor: colors.headerColor },
+        tabBarLabelStyle: {
+          color: colors.headerTintColor,
+          fontFamily: "AdventPro",
+          fontSize: 18,
+        },
+        tabBarIndicatorStyle: { backgroundColor: colors.highlightColor },
         lazy: true,
       }}
       screenListeners={() => setSearchInput("")}
@@ -73,37 +76,50 @@ const StackScreen = () => {
   const colors = getColors();
 
   return (
-    <Stack.Navigator
-      initialRouteName="Welcome"
-    >
-      <Stack.Screen name="Welcome" component={Welcome} options={{
-        headerShown: false,
-      }} />
-      <Stack.Screen name="Tabs" component={BottomNav} options={{
-        headerShown: false,
-      }} />
-      <Stack.Screen name="Register" component={Register} options={{
-        headerShown: false,
-        headerStyle: {
-          backgroundColor: colors.headerColor,
-        },
-        headerTintColor: 'white',
-      }} />
-      <Stack.Screen name="Login" component={Login} options={{
-        headerShown: false,
-        headerStyle: {
-          backgroundColor: colors.headerColor,
-        },
-        headerTintColor: 'white',
-      }} />
-      {/*       <Stack.Screen name="Register" />
-       */}
+    <Stack.Navigator initialRouteName="Welcome">
+      <Stack.Screen
+        name="Welcome"
+        component={Welcome}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Tabs"
+        component={BottomNav}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: colors.headerColor,
+          },
+          headerTintColor: "white",
+        }}
+      />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: colors.headerColor,
+          },
+          headerTintColor: "white",
+        }}
+      />
     </Stack.Navigator>
   );
 };
 
 const BottomNav = () => {
-  const {isLoggedIn, setSearching} = useContext(MainContext);
+  const { isLoggedIn, setSearching, currentTag, setCurrentTag } =
+    useContext(MainContext);
 
   useEffect(() => {
     console.log("BottomNav useEffect called.");
@@ -135,21 +151,44 @@ const BottomNav = () => {
                 backgroundColor: colors.headerColor,
               }}
             >
-              <View style={{width: "100%", padding: 10, alignItems: "flex-end"}}>
+              <View
+                style={{
+                  width: "100%",
+                  padding: 10,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent:
+                    currentTag === "" ? "flex-end" : "space-between",
+                }}
+              >
+                {currentTag !== "" && (
+                  <Icon
+                    style={{ height: 50, width: 50 }}
+                    name="arrow-back"
+                    color={colors.headerTintColor}
+                    size={40}
+                    onPress={() => setCurrentTag("")}
+                  />
+                )}
                 <Icon
-                  style={{height: 50, width: 50}}
+                  style={{ height: 50, width: 50 }}
                   name="search"
-                  color={"white"}
+                  color={colors.headerTintColor}
                   size={40}
                   onPress={() => setSearching(true)}
                 />
               </View>
 
-
               <SearchModal />
 
-              <Text style={{color: colors.headerTintColor, fontSize: 24, fontFamily: 'AdventPro', }}>
-                Home
+              <Text
+                style={{
+                  color: colors.headerTintColor,
+                  fontSize: 24,
+                  fontFamily: "AdventPro",
+                }}
+              >
+                {currentTag === "" ? "Home" : `t/${currentTag}`}
               </Text>
             </View>
           ),
@@ -188,18 +227,26 @@ const BottomNav = () => {
           headerStyle: {
             backgroundColor: colors.headerColor,
           },
+          headerTitleAlign: "center",
           headerTintColor: colors.headerTintColor,
+          headerTitleStyle: {
+            fontFamily: "AdventPro",
+          }
         }}
       />
       <Tab.Screen
         name="Settings"
-        component={Settings}
+        component={SettingsWrapper}
         options={{
           headerStyle: {
             backgroundColor: colors.headerColor,
             height: StatusBar.currentHeight,
           },
+          headerTitleAlign: "center",
           headerTintColor: colors.headerTintColor,
+          headerTitleStyle: {
+            fontFamily: "AdventPro",
+          }
         }}
       />
       <Tab.Screen
