@@ -15,13 +15,8 @@ const Home = ({navigation}) => {
     <SafeAreaView>
       <ImageBackground
         resizeMode="cover"
-<<<<<<< HEAD
         style={{width: "100%", height: "100%"}}
-        source={require("../images/mobile_background_tagit.png")}
-=======
-        style={{ width: "100%", height: "100%" }}
         source={require("../images/mobile_background3_tagit.png")}
->>>>>>> master
       >
         <List navigation={navigation} />
       </ImageBackground>

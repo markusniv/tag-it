@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from "react";
-import {StyleSheet, SafeAreaView, Text, View, ScrollView, ImageBackground} from "react-native";
+import {StyleSheet, SafeAreaView, Text, View, ScrollView, ImageBackground, Image as ReactImage} from "react-native";
 import {Image, Input, Button, Divider} from "react-native-elements";
 import PropTypes from "prop-types";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -7,27 +7,43 @@ import {Video} from "expo-av";
 import {useUser} from "../hooks/ApiHooks";
 import {MainContext} from "../contexts/MainContext";
 import {useForm, Controller} from 'react-hook-form';
+import CommentList from '../components/CommentList'
+import {useMedia} from '../hooks/ApiHooks';
 
 import colors from "../global/colors.json";
 import {Icon} from 'react-native-elements/dist/icons/Icon';
+import CommentImage from '../images/comment.png';
+import {useFocusEffect} from "@react-navigation/native";
 
 const Post = ({route}) => {
   const {getUserById} = useUser();
   const video = React.useRef(null);
   const [status, setStatus] = useState({});
+  const {postMedia} = useMedia();
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
   const {media} = route.params;
   const singleMedia = media.singleMedia;
   const [user, setUser] = useState(singleMedia.user_id);
   const fileType = singleMedia.mime_type.split("/").shift();
+  const [update, setUpdate] = useState(false);
 
   const {control, handleSubmit, getValues, formState: {errors}} = useForm({
     mode: 'onBlur',
   });
 
+
+
   const [commentInput, setCommentInput] = useState('');
   const [activated, setActivated] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const {getComments} = useMedia(update);
+  const [commentArray, setCommentArray] = useState({})
+
+  const loadComments = async () => {
+    const comments = await getComments(singleMedia.file_id)
+    setCommentArray(comments)
+  }
 
   const {darkMode} = useContext(MainContext);
 
@@ -40,12 +56,50 @@ const Post = ({route}) => {
     setUser(userName);
   };
 
-  useEffect(() => {
-    getUser();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      loadComments()
+      getUser()
+      return () => {
 
-  const onSubmit = (data) => {
-    console.log(data);
+      };
+    }, [])
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadComments()
+      return () => {
+
+      };
+    }, [singleMedia])
+  );
+
+  const onSubmit = async (data) => {
+    const formData = new FormData();
+
+    const title = "comment"
+    const imageUri = ReactImage.resolveAssetSource(CommentImage).uri
+    const fileName = "comment.png"
+    const type = "image/png"
+    formData.append("title", title);
+    formData.append("description", data.comment);
+    formData.append("file", {
+      uri: imageUri,
+      name: fileName,
+      type: type,
+    })
+    const commentTag = `comment_${singleMedia.file_id}`;
+    setLoading(true);
+    console.log(formData);
+    const upload = await postMedia(formData, commentTag);
+    if (upload) {
+      setUpdate(!update);
+      setTimeout(() => {
+        setLoading(false);
+        setUpdate(!update);
+      }, 1000);
+    }
   }
 
   return (
@@ -144,7 +198,7 @@ const Post = ({route}) => {
           </View>
           <Divider style={{width: "95%", alignSelf: "center", }} />
           <View style={styles.commentSection}>
-
+            <CommentList commentArray={commentArray} />
           </View>
 
         </ScrollView>

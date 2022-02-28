@@ -11,6 +11,7 @@ const useMedia = (update) => {
 
   const [mediaArray, setMediaArray] = useState(JSON);
   const [userMediaArray, setUserMediaArray] = useState(JSON);
+  const [commentArray, setCommentArray] = useState(JSON);
   const {isLoggedIn, user, setUpdate} = useContext(MainContext);
 
   const getMedia = async () => {
@@ -25,7 +26,7 @@ const useMedia = (update) => {
         array.map(async (item) => {
           const response = await fetch(url + item.file_id);
           const json = await response.json();
-          
+
           // Fetching likes for the file and adding it to the json object.
           if (isLoggedIn) {
             const options = {
@@ -41,10 +42,11 @@ const useMedia = (update) => {
             let tags = await getMediaTags(item.file_id);
 
             // Filtering "tagit_" tag from the array of tags.
-            tags = tags.filter(t => t.tag != "tagit_");
-            if (tags[0] == undefined) tags = "main";
+            tags = tags.filter(t => t.tag != tag && !t.tag.includes("tagit_comment"));
+
+            if (tags[0] == undefined) return;
             else tags = tags[0].tag.split("_")[1];
-         
+
             // Adding Like data to the JSON object
             json.likes = likes.amount;
             json.postLiked = likes.liked;
@@ -67,6 +69,58 @@ const useMedia = (update) => {
     }
   };
 
+  const getComments = async (post) => {
+
+    const token = await AsyncStorage.getItem('userToken');
+    const url = apiUrl + "media/";
+    try {
+
+      const response = await fetch(`${apiUrl}tags/${tag}comment_${post}`);
+      const array = await response.json();
+      const json = await Promise.all(
+        array.map(async (item) => {
+          const response = await fetch(url + item.file_id);
+          const json = await response.json();
+
+          // Fetching likes for the file and adding it to the json object.
+          if (isLoggedIn) {
+            const options = {
+              method: 'GET',
+              headers: {
+                'x-access-token': token,
+              },
+            };
+
+            // Fetching likes, user info and tags.
+            const likes = await getFavourites(item.file_id);
+            const user = await getUserInfo(item.user_id, options);
+            let tags = await getMediaTags(item.file_id);
+
+            // Filtering "tagit_" tag from the array of tags.
+            tags = tags.filter(t => t.tag != tag);
+            if (tags[0] == undefined) tags = "main";
+            else tags = tags[0].tag.split("_")[1];
+
+            // Adding Like data to the JSON object
+            json.likes = likes.amount;
+            json.postLiked = likes.liked;
+
+            // Adding user data to the JSON object
+            json.user = user.username;
+            json.user_email = user.email;
+            json.user_id = user.user_id;
+            json.tag = tags;
+          }
+          return json;
+        })
+      );
+      setUpdate(false);
+      return json;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  };
+
 
   // Fetches all the likes for the chosen post.
   const getFavourites = async (id) => {
@@ -82,7 +136,7 @@ const useMedia = (update) => {
     const json = await response.json();
 
 
-    await json.map(like => {if (like.user_id === user.user_id) liked = true });
+    await json.map(like => {if (like.user_id === user.user_id) liked = true});
 
     return {amount: Object.keys(json).length, liked};
   };
@@ -101,38 +155,39 @@ const useMedia = (update) => {
     return tags;
   }
 
-/*   const getMyMedia = async () => {
-    const token = await AsyncStorage.getItem('userToken');
-    const url = apiUrl + "media/";
-
-    const options = {
-      method: 'GET',
-      headers: {
-        'x-access-token': token,
-      },
-    };
-
-    try {
-      const response = await fetch(`${apiUrl}media/user`, options);
-      const array = await response.json();
-      const json = await Promise.all(
-        array.map(async (item) => {
-          const response = await fetch(url + item.file_id);
-          const json = await response.json();
-          return json;
-        })
-      );
-
-      setUserMediaArray(json);
-    } catch (e) {
-      throw new Error(e.message);
-    }
-  } */
+  /*   const getMyMedia = async () => {
+      const token = await AsyncStorage.getItem('userToken');
+      const url = apiUrl + "media/";
+  
+      const options = {
+        method: 'GET',
+        headers: {
+          'x-access-token': token,
+        },
+      };
+  
+      try {
+        const response = await fetch(`${apiUrl}media/user`, options);
+        const array = await response.json();
+        const json = await Promise.all(
+          array.map(async (item) => {
+            const response = await fetch(url + item.file_id);
+            const json = await response.json();
+            return json;
+          })
+        );
+  
+        setUserMediaArray(json);
+      } catch (e) {
+        throw new Error(e.message);
+      }
+    } */
 
   const postMedia = async (data, userTag) => {
     const token = await AsyncStorage.getItem('userToken');
     const realTag = tag + userTag;
     console.log(realTag);
+    console.log(data)
     const options = {
       method: 'POST',
       headers: {
@@ -143,7 +198,9 @@ const useMedia = (update) => {
 
     try {
       const response = await fetch(apiUrl + "media/", options);
+      console.log(response)
       if (!response.ok) {
+        console.log(response)
         return new Error('Failed to upload data!');
       }
       console.log("Succesfully uploaded, now adding tag...");
@@ -168,6 +225,7 @@ const useMedia = (update) => {
 
       let tResponse = await fetch(apiUrl + "tags", tOptions);
       if (!tResponse.ok) {
+        console.log(tResponse)
         return new Error('Failed to create a tag!');
       }
       let tJson = await tResponse.json();
@@ -192,6 +250,7 @@ const useMedia = (update) => {
 
       tResponse = await fetch(apiUrl + "tags", tOptions);
       if (!tResponse.ok) {
+        console.log(tResponse)
         return new Error('Failed to create a tag!');
       }
       tJson = await tResponse.json();
@@ -274,7 +333,7 @@ const useMedia = (update) => {
       console.log(`Failed to like post: ${e.message}`);
     }
   };
-  
+
   // removes a like from a post.
   const removeLike = async (id) => {
     const token = await AsyncStorage.getItem('userToken');
@@ -299,9 +358,9 @@ const useMedia = (update) => {
 
   useEffect(async () => {
     await getMedia();
-/*     await getMyMedia(); */
+    /*     await getMyMedia(); */
   }, [update, isLoggedIn]);
-  return {mediaArray, userMediaArray, postMedia, deleteMedia, putMedia, likeMedia, removeLike, getFavourites};
+  return {mediaArray, commentArray, userMediaArray, postMedia, deleteMedia, putMedia, likeMedia, removeLike, getFavourites, getComments};
 };
 
 const useLogin = () => {
@@ -316,7 +375,7 @@ const useLogin = () => {
       body: JSON.stringify(userCredentials)
     };
     try {
-      
+
       const response = await fetch(apiUrl + "login", options);
       if (!response.ok) {
         return new Error('Failed to retrieve data!');
@@ -418,7 +477,7 @@ const useUser = () => {
 */
 const getTags = async () => {
   const token = await AsyncStorage.getItem('userToken');
-  try { 
+  try {
     const options = {
       method: 'GET',
       headers: {'x-access-token': token},
@@ -427,7 +486,7 @@ const getTags = async () => {
     const tags = await response.json();
 
     const tagItTags = tags.filter(t => t.tag.includes(tag));
-    
+
     const tagsWithDuplicates = getTagsWithPostAmount(tagItTags);
 
     if (response.ok) {
@@ -442,7 +501,7 @@ const getTags = async () => {
 
 /** Returns an array of tags displaying how many posts each tag has. */
 const getTagsWithPostAmount = (array) => {
-  
+
   const firstItem = array[0];
   firstItem.posts = 1;
   let duplicates = [firstItem];
@@ -461,8 +520,8 @@ const getTagsWithPostAmount = (array) => {
 
   // Removing the "tagit_" portion of the tags.
   duplicates.map(item => {
-      const splitTag = item.tag.split("_");
-      item.tag = splitTag[1].toLowerCase();
+    const splitTag = item.tag.split("_");
+    item.tag = splitTag[1].toLowerCase();
   });
 
   return duplicates;

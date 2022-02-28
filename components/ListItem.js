@@ -11,32 +11,32 @@ import {useMedia} from "../hooks/ApiHooks";
 import colors from "../global/colors.json";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 
-  // Formats the time separation between the current date and the date the post was made.
-  const getTimeAddedString = (time) => {
-    let description = "";
+// Formats the time separation between the current date and the date the post was made.
+const getTimeAddedString = (time) => {
+  let description = "";
 
-    let currentDate = new Date();
-    let timeAdded = new Date(time);
+  let currentDate = new Date();
+  let timeAdded = new Date(time);
 
-    // Calculating the time difference in different units.
-    let secondsDifference = (currentDate.getTime() - timeAdded.getTime()) / 1000;
-    let minutesDifference = Math.abs(Math.round(secondsDifference / 60));
-    let hoursDifference = Math.floor(minutesDifference / 60);
-    let dayDifference = Math.floor(hoursDifference / 24);
-    let weekDifference = Math.floor(dayDifference / 7);
-    let monthDifference = Math.floor(dayDifference / 30);
-    let yearDifference = Math.floor(monthDifference / 12);
+  // Calculating the time difference in different units.
+  let secondsDifference = (currentDate.getTime() - timeAdded.getTime()) / 1000;
+  let minutesDifference = Math.abs(Math.round(secondsDifference / 60));
+  let hoursDifference = Math.floor(minutesDifference / 60);
+  let dayDifference = Math.floor(hoursDifference / 24);
+  let weekDifference = Math.floor(dayDifference / 7);
+  let monthDifference = Math.floor(dayDifference / 30);
+  let yearDifference = Math.floor(monthDifference / 12);
 
-    if (secondsDifference < 60) description = `Posted a few seconds ago`;
-    else if (minutesDifference < 60 && secondsDifference >= 60)
-      description = `Posted ${minutesDifference} ${minutesDifference == 1 ? "minute" : "minutes"} ago`;
-    else if (hoursDifference > 0 && dayDifference < 1) description = `Posted ${hoursDifference} ${hoursDifference == 1 ? "hour" : "hours"} ago`;
-    else if (dayDifference > 1 && weekDifference < 1) description = `Posted ${dayDifference} ${dayDifference == 1 ? "day" : "days"} ago`;
-    else if (weekDifference > 0 && monthDifference < 1) description = `Posted ${weekDifference} ${weekDifference == 1 ? "week" : "weeks"} ago`;
-    else if (monthDifference > 0 && yearDifference < 1) description = `Posted ${monthDifference} ${monthDifference == 1 ? "month" : "months"} ago`;
-    else if (yearDifference > 0) description = `Posted ${yearDifference} ${yearDifference == 1 ? "year" : "years"} ago`;
-    return description;
-  }
+  if (secondsDifference < 60) description = `Posted a few seconds ago`;
+  else if (minutesDifference < 60 && secondsDifference >= 60)
+    description = `Posted ${minutesDifference} ${minutesDifference == 1 ? "minute" : "minutes"} ago`;
+  else if (hoursDifference > 0 && dayDifference < 1) description = `Posted ${hoursDifference} ${hoursDifference == 1 ? "hour" : "hours"} ago`;
+  else if (dayDifference > 1 && weekDifference < 1) description = `Posted ${dayDifference} ${dayDifference == 1 ? "day" : "days"} ago`;
+  else if (weekDifference > 0 && monthDifference < 1) description = `Posted ${weekDifference} ${weekDifference == 1 ? "week" : "weeks"} ago`;
+  else if (monthDifference > 0 && yearDifference < 1) description = `Posted ${monthDifference} ${monthDifference == 1 ? "month" : "months"} ago`;
+  else if (yearDifference > 0) description = `Posted ${yearDifference} ${yearDifference == 1 ? "year" : "years"} ago`;
+  return description;
+}
 
 
 const ListItem = ({singleMedia, navigation}) => {
@@ -87,7 +87,7 @@ const ListItem = ({singleMedia, navigation}) => {
       setCurrentLikes(0);
       setLiked(false);
     }
-  
+
     console.log(`ListItem ${singleMedia.title} rerendered.`);
   }, [singleMedia])
 
@@ -115,7 +115,7 @@ const ListItem = ({singleMedia, navigation}) => {
         >
           <View style={styles.postInfoContainer}>
             <TouchableOpacity style={styles.postInfo}>
-              <Icon size={45} name="person" style={styles.postInfoImage} color={headerTintColor}/>
+              <Icon size={45} name="person" style={styles.postInfoImage} color={headerTintColor} />
               <View style={styles.postInfoText}>
                 <Text style={{color: headerTintColor, fontFamily: 'AdventPro', }}>t/{singleMedia.tag}</Text>
                 {singleMedia.user && (

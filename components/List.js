@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import {FlatList, View, RefreshControl} from "react-native";
-import React, {useCallback, useContext, useEffect, useState, memo} from "react";
-=======
-import { FlatList, View, RefreshControl } from "react-native";
-import React, { useCallback, useContext, useEffect, useState } from "react";
->>>>>>> master
+import React, {useCallback, useContext, useEffect, useState} from "react";
 import ListItem from "./ListItem";
 import {MainContext} from "../contexts/MainContext";
 import colors from "../global/colors.json";
@@ -12,22 +7,17 @@ import {useMedia} from "../hooks/ApiHooks";
 
 const LOAD_SIZE = 4;
 
-<<<<<<< HEAD
-const List = ({navigation}) => {
-  const {darkMode, update, searchInput} = useContext(MainContext);
-=======
 /** Sorts the array of posts into a descending order according to the time_added date. */
 const sortRecent = (data) => {
   let dataArray = data;
-  if (Object.keys(data).length > 0) 
-  dataArray = dataArray.sort((a, b) => new Date(b.time_added).getTime() - new Date(a.time_added).getTime());
+  if (Object.keys(data).length > 0)
+    dataArray = dataArray.sort((a, b) => new Date(b.time_added).getTime() - new Date(a.time_added).getTime());
   return dataArray;
 }
 
 
-const List = ({ navigation }) => {
+const List = ({navigation}) => {
   const {darkMode, update, searchInput, currentTag, setUpdate} = useContext(MainContext);
->>>>>>> master
   const [loadCapacity, setLoadCapacity] = useState(LOAD_SIZE);
   const [displayedMedia, setDisplayedMedia] = useState({});
   const {mediaArray} = useMedia(update);
@@ -73,7 +63,7 @@ const List = ({ navigation }) => {
     console.log("Rerendering List.js");
     if (Object.keys(mediaArray).length > 0) {
 
-      const sliced = sliceData(mediaArray, loadCapacity); 
+      const sliced = sliceData(mediaArray, loadCapacity);
       setDisplayedMedia(sliced);
 
       if (searchInput === "") {
@@ -91,11 +81,7 @@ const List = ({ navigation }) => {
   return (
     <View>
       <FlatList
-<<<<<<< HEAD
         style={{backgroundColor: "transparent"}}
-=======
-        style={{ backgroundColor: "transparent"}}
->>>>>>> master
         showsVerticalScrollIndicator={false}
         data={displayedMedia}
         keyExtractor={keyExtractor}
@@ -105,16 +91,10 @@ const List = ({ navigation }) => {
         removeClippedSubviews={true}
         maxToRenderPerBatch={2}
         refreshControl={
-<<<<<<< HEAD
           <RefreshControl
-            refreshing={loading}
+            refreshing={update}
+            onRefresh={onRefresh}
           />
-=======
-          <RefreshControl 
-          refreshing={update}
-          onRefresh={onRefresh}
-            />
->>>>>>> master
         }
       />
 
