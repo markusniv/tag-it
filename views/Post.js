@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import {StyleSheet, SafeAreaView, Text, View, ScrollView, ImageBackground} from "react-native";
-import {Image, Input, Button} from "react-native-elements";
+import {Image, Input, Button, Divider} from "react-native-elements";
 import PropTypes from "prop-types";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {Video} from "expo-av";
@@ -142,6 +142,7 @@ const Post = ({route}) => {
               disabled={!activated}
             />
           </View>
+          <Divider style={{width: "95%", alignSelf: "center", }} />
           <View style={styles.commentSection}>
 
           </View>
@@ -158,6 +159,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 10,
     borderColor: "rgba(0, 0, 0, 0.1)",
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
     borderWidth: 5,
     marginHorizontal: 10,
     marginTop: 5,
@@ -173,6 +175,7 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     marginHorizontal: 10,
     marginTop: 5,
+    marginBottom: 10,
     paddingHorizontal: 10,
     paddingVertical: 10,
     color: "white",
