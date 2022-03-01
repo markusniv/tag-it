@@ -29,7 +29,7 @@ const getColors = () => {
   return { bgColor, headerColor, headerTintColor, highlightColor, searchColor };
 };
 
-const ConfirmLogoutModal = () => {
+const ConfirmModal = ({reason}) => {
   const colors = getColors();
   const { displayConfirmWindow, setDisplayConfirmWindow, setConfirmLogout } =
     useContext(LogoutContext);
@@ -69,8 +69,13 @@ const ConfirmLogoutModal = () => {
               alignItems: "center",
             }}
           >
-            <Icon type="material-community" name="logout" size={60} color={colors.headerTintColor} />
-            <Text style={{ fontFamily: "AdventPro", fontSize: 25, color: colors.headerTintColor }}>Confirm log out?</Text>
+            {reason == "logout" && <Icon type="material-community" name="logout" size={60} color={colors.headerTintColor} />}
+            {reason == ("delete_comment" || "delete_post") && <Icon type="material-community" name="delete" size={60} color={colors.headerTintColor} />}
+            <Text style={{ fontFamily: "AdventPro", fontSize: 25, color: colors.headerTintColor }}>
+              {reason == "logout" && "Confirm log out?"}
+              {reason == "delete_comment" && "Delete comment?"}
+              {reason == "delete_post" && "Delete post?"}
+            </Text>
           </View>
           <View
             style={{
@@ -115,7 +120,10 @@ const ConfirmLogoutModal = () => {
                 setDisplayConfirmWindow(false);
               }}
             >
-              <Text style={{ fontFamily: "AdventPro", fontSize: 20, color: colors.headerTintColor }}>Confirm</Text>
+              <Text style={{ fontFamily: "AdventPro", fontSize: 20, color: colors.headerTintColor }}>
+                {reason == "logout" && "Confirm"}
+                {reason == ("delete_comment" ||"delete_post") && "Delete"}
+                </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -132,4 +140,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmLogoutModal;
+export default ConfirmModal;

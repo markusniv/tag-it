@@ -4,7 +4,7 @@ import { Button, Switch } from "react-native-elements";
 import { MainContext } from "../contexts/MainContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import colors from "../global/colors.json";
-import ConfirmLogoutModal from "../components/ConfirmLogoutModal";
+import ConfirmModal from "../components/ConfirmModal";
 import { LogoutContext } from "../contexts/LogoutContext";
 
 const Settings = ({ navigation }) => {
@@ -59,7 +59,7 @@ const Settings = ({ navigation }) => {
         backgroundColor: bgColor,
       }}
     >
-      <ConfirmLogoutModal />
+      <ConfirmModal reason="logout"/>
 
       {/* Switch container */}
       <View style={{alignItems: "center", justifyContent: "center"}}>
