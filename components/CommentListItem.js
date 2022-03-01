@@ -10,11 +10,12 @@ import {MainContext} from '../contexts/MainContext';
 import {useMedia} from '../hooks/ApiHooks';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import colors from "../global/colors.json";
+import ConfirmModal from './ConfirmModal';
 
 
 
 const CommentListItem = ({singleComment}) => {
-  const {darkMode, isLoggedIn, user,} = useContext(MainContext);
+  const {darkMode, isLoggedIn, user, setDisplayConfirmWindow } = useContext(MainContext);
   const {likeMedia, removeLike, getFavourites, deleteMedia} = useMedia();
   const [currentLikes, setCurrentLikes] = useState(0);
   const [liked, setLiked] = useState(false);
@@ -98,7 +99,7 @@ const CommentListItem = ({singleComment}) => {
           </View>
           <View style={styles.actions}>
             {singleComment.user === user.username &&
-              <MaterialCommunityIcons name="delete" color={headerTintColor} size={30} onPress={deleteComment} />
+              <MaterialCommunityIcons name="delete" color={headerTintColor} size={30} onPress={() => setDisplayConfirmWindow(true)} />
             }
             {currentLikes >= 0 && <TouchableOpacity style={styles.likesContainer} onPress={toggleLike}>
               <MaterialCommunityIcons name="arrow-up-bold-outline" color={liked ? highlightColor : headerTintColor} size={30} />
@@ -108,6 +109,7 @@ const CommentListItem = ({singleComment}) => {
           </View>
 
         </View>
+        <ConfirmModal reason="delete_comment" id={singleComment.file_id} />
 
       </NBListItem.Content>
     </NBListItem>
