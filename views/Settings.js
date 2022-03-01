@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Switch } from "react-native-elements";
 import { MainContext } from "../contexts/MainContext";
@@ -9,7 +9,7 @@ import ConfirmModal from "../components/ConfirmModal";
 const Settings = ({ navigation }) => {
   const { isLoggedIn, setIsLoggedIn, darkMode, setDarkMode, setDisplayConfirmWindow, confirmLogout, setConfirmLogout } =
     useContext(MainContext);
-
+    const [confirmVisible, setConfirmVisible] = useState(false);
   let bgColor,
     headerColor,
     headerTintColor,
@@ -41,7 +41,7 @@ const Settings = ({ navigation }) => {
     }
   }, [confirmLogout]);
 
-  const showConfirm = () => setDisplayConfirmWindow(true);
+  const showConfirm = () => setConfirmVisible(true);
 
   const showLogin = () => navigation.navigate("Login");
 
@@ -56,7 +56,7 @@ const Settings = ({ navigation }) => {
         backgroundColor: bgColor,
       }}
     >
-      <ConfirmModal reason="logout"/>
+      <ConfirmModal reason="logout" visible={confirmVisible} setVisible={setConfirmVisible}/>
 
       {/* Switch container */}
       <View style={{alignItems: "center", justifyContent: "center"}}>

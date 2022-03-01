@@ -19,7 +19,7 @@ const CommentListItem = ({singleComment}) => {
   const {likeMedia, removeLike, getFavourites, deleteMedia} = useMedia();
   const [currentLikes, setCurrentLikes] = useState(0);
   const [liked, setLiked] = useState(false);
- 
+  const [confirmVisible, setConfirmVisible] = useState(false);
 
   let bgColor,
     headerColor,
@@ -99,7 +99,7 @@ const CommentListItem = ({singleComment}) => {
           </View>
           <View style={styles.actions}>
             {singleComment.user === user.username &&
-              <MaterialCommunityIcons name="delete" color={headerTintColor} size={30} onPress={() => setDisplayConfirmWindow(true)} />
+              <MaterialCommunityIcons name="delete" color={headerTintColor} size={30} onPress={() => setConfirmVisible(true)} />
             }
             {currentLikes >= 0 && <TouchableOpacity style={styles.likesContainer} onPress={toggleLike}>
               <MaterialCommunityIcons name="arrow-up-bold-outline" color={liked ? highlightColor : headerTintColor} size={30} />
@@ -109,7 +109,7 @@ const CommentListItem = ({singleComment}) => {
           </View>
 
         </View>
-        <ConfirmModal reason="delete_comment" id={singleComment.file_id} />
+        <ConfirmModal reason="delete_comment" id={singleComment.file_id} visible={confirmVisible} setVisible={setConfirmVisible} />
 
       </NBListItem.Content>
     </NBListItem>

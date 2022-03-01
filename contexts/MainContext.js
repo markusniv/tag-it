@@ -13,7 +13,6 @@ const MainProvider = ({ children }) => {
   const [searchInput, setSearchInput] = useState("");
   const [searching, setSearching] = useState(false);
   const [currentTag, setCurrentTag] = useState("");
-  const [displayConfirmWindow, setDisplayConfirmWindow] = useState(false);
   const [confirmLogout, setConfirmLogout] = useState(false);
 
   const [loaded] = useFonts({
@@ -44,8 +43,6 @@ const MainProvider = ({ children }) => {
         loaded,
         currentTag,
         setCurrentTag,
-        displayConfirmWindow,
-        setDisplayConfirmWindow,
         confirmLogout,
         setConfirmLogout,
       }}

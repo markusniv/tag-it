@@ -29,9 +29,9 @@ const getColors = () => {
   return { bgColor, headerColor, headerTintColor, highlightColor, searchColor };
 };
 
-const ConfirmModal = ({reason, id}) => {
+const ConfirmModal = ({reason, id, visible, setVisible}) => {
   const colors = getColors();
-  const { displayConfirmWindow, setDisplayConfirmWindow, setConfirmLogout, commentUpdate, setCommentUpdate } =
+  const { setConfirmLogout, commentUpdate, setCommentUpdate } =
     useContext(MainContext);
   const {deleteMedia} = useMedia();
 
@@ -54,9 +54,9 @@ const ConfirmModal = ({reason, id}) => {
         animationInTiming={300}
         backdropTransitionOutTiming={0}
         backdropOpacity={0.9}
-        isVisible={displayConfirmWindow}
-        onBackdropPress={() => setDisplayConfirmWindow(false)}
-        onBackButtonPress={() => setDisplayConfirmWindow(false)}
+        isVisible={visible}
+        onBackdropPress={() => setVisible(false)}
+        onBackButtonPress={() => setVisible(false)}
         style={{
           alignItems: "center",
           justifyContent: "center",
@@ -111,7 +111,7 @@ const ConfirmModal = ({reason, id}) => {
                 height: 50,
                 elevation: 10,
               }}
-              onPress={() => setDisplayConfirmWindow(false)}
+              onPress={() => setVisible(false)}
             >
               <Text style={{ fontFamily: "AdventPro", fontSize: 20, color: colors.headerTintColor }}>Cancel</Text>
             </TouchableOpacity>
@@ -132,7 +132,7 @@ const ConfirmModal = ({reason, id}) => {
                 if (reason == "logout") setConfirmLogout(true);
                 else if (reason == "delete_post") deleteMedia(id);
                 else if (reason == "delete_comment") deleteComment(id);
-                setDisplayConfirmWindow(false);
+                setVisible(false);
               }}
             >
               <Text style={{ fontFamily: "AdventPro", fontSize: 20, color: colors.headerTintColor }}>
