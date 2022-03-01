@@ -94,14 +94,8 @@ const ListItem = ({ singleMedia, navigation }) => {
   };
 
   useEffect(() => {
-    /*     if (isLoggedIn) { */
     setCurrentLikes(singleMedia.likes);
     setLiked(singleMedia.postLiked);
-    /*     } else if (!isLoggedIn) {
-      setCurrentLikes(0);
-      setLiked(false);
-    } */
-
     console.log(`ListItem ${singleMedia.title} rendered.`);
   }, [singleMedia]);
 

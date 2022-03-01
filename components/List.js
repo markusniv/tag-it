@@ -1,22 +1,22 @@
-import { FlatList, View, RefreshControl } from "react-native";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import {FlatList, View, RefreshControl} from "react-native";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 import ListItem from "./ListItem";
-import { MainContext } from "../contexts/MainContext";
+import {MainContext} from "../contexts/MainContext";
 import colors from "../global/colors.json";
-import { useMedia } from "../hooks/ApiHooks";
+import {useMedia} from "../hooks/ApiHooks";
 
 const LOAD_SIZE = 4;
 
 /** Sorts the array of posts into a descending order according to the time_added date. */
 const sortRecent = (data) => {
   let dataArray = data;
-  if (Object.keys(data).length > 0) 
-  dataArray = dataArray.sort((a, b) => new Date(b.time_added).getTime() - new Date(a.time_added).getTime());
+  if (Object.keys(data).length > 0)
+    dataArray = dataArray.sort((a, b) => new Date(b.time_added).getTime() - new Date(a.time_added).getTime());
   return dataArray;
 }
 
 
-const List = ({ navigation }) => {
+const List = ({navigation}) => {
   const {darkMode, update, searchInput, currentTag, setUpdate} = useContext(MainContext);
   const [loadCapacity, setLoadCapacity] = useState(LOAD_SIZE);
   const [displayedMedia, setDisplayedMedia] = useState({});
@@ -36,8 +36,8 @@ const List = ({ navigation }) => {
 
   // Renders the list items inside the FlatList.
   const renderItem = useCallback(
-     ({item}) => <ListItem navigation={navigation} singleMedia={item} />,
-      []
+    ({item}) => <ListItem navigation={navigation} singleMedia={item} />,
+    []
   );
 
   const keyExtractor = useCallback((item, index) => index.toString(), []);
@@ -49,7 +49,7 @@ const List = ({ navigation }) => {
     if (loadCapacity < mediaLength) {
       if (loadCapacity + LOAD_SIZE >= mediaLength) setLoadCapacity(mediaLength);
       else if (loadCapacity + LOAD_SIZE < mediaLength) setLoadCapacity(loadCapacity + LOAD_SIZE);
-    } 
+    }
   }
 
   const onRefresh = () => {
@@ -63,15 +63,15 @@ const List = ({ navigation }) => {
     console.log("Rerendering List.js");
     if (Object.keys(mediaArray).length > 0) {
 
-      const sliced = sliceData(mediaArray, loadCapacity); 
+      const sliced = sliceData(mediaArray, loadCapacity);
       setDisplayedMedia(sliced);
 
       if (searchInput === "") {
-        return; 
+        return;
       }
-  
+
       const filteredArray = sliced.filter(m => m.title.includes(searchInput) || m.description.includes(searchInput));
-  
+
       setDisplayedMedia(sliceData(filteredArray, loadCapacity));
     }
 
@@ -81,7 +81,7 @@ const List = ({ navigation }) => {
   return (
     <View>
       <FlatList
-        style={{ backgroundColor: "transparent"}}
+        style={{backgroundColor: "transparent"}}
         showsVerticalScrollIndicator={false}
         data={displayedMedia}
         keyExtractor={keyExtractor}
@@ -91,10 +91,10 @@ const List = ({ navigation }) => {
         removeClippedSubviews={true}
         maxToRenderPerBatch={2}
         refreshControl={
-          <RefreshControl 
-          refreshing={update}
-          onRefresh={onRefresh}
-            />
+          <RefreshControl
+            refreshing={update}
+            onRefresh={onRefresh}
+          />
         }
       />
 
