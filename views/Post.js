@@ -23,7 +23,7 @@ const Post = ({route}) => {
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
   const {media} = route.params;
   const singleMedia = media.singleMedia;
-  const [user, setUser] = useState(singleMedia.user_id);
+  const [postUser, setPostUser] = useState(singleMedia.user_id);
   const fileType = singleMedia.mime_type.split("/").shift();
   const [update, setUpdate] = useState(false);
 
@@ -45,7 +45,7 @@ const Post = ({route}) => {
     setCommentArray(comments)
   }
 
-  const {darkMode} = useContext(MainContext);
+  const {darkMode, commentUpdate, setCommentUpdate, user} = useContext(MainContext);
 
   let bgColor;
 
@@ -53,12 +53,11 @@ const Post = ({route}) => {
 
   const getUser = async () => {
     const userName = await getUserById(singleMedia.user_id);
-    setUser(userName);
+    setPostUser(userName);
   };
 
   useFocusEffect(
     React.useCallback(() => {
-      loadComments()
       getUser()
       return () => {
 
@@ -68,11 +67,11 @@ const Post = ({route}) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      loadComments()
+      loadComments();
       return () => {
 
       };
-    }, [singleMedia])
+    }, [singleMedia, commentUpdate])
   );
 
   const onSubmit = async (data) => {
@@ -94,10 +93,11 @@ const Post = ({route}) => {
     console.log(formData);
     const upload = await postMedia(formData, commentTag);
     if (upload) {
-      setUpdate(!update);
+      setUpdate(!commentUpdate);
       setTimeout(() => {
         setLoading(false);
-        setUpdate(!update);
+        loadComments();
+        setUpdate(!commentUpdate);
       }, 1000);
     }
   }
@@ -135,9 +135,9 @@ const Post = ({route}) => {
               />
             )}
             <Text style={styles.fontMid}>{singleMedia.description}</Text>
-            <Text style={styles.fontSmall}>By {user}</Text>
+            <Text style={styles.fontSmall}>By {postUser}</Text>
           </View>
-          <View style={styles.createComment}>
+          {user.user_id != 676 && <View style={styles.createComment}>
             <Controller
               control={control}
               rules={{
@@ -195,10 +195,14 @@ const Post = ({route}) => {
               }}
               disabled={!activated}
             />
-          </View>
+          </View>}
           <Divider style={{width: "95%", alignSelf: "center", }} />
           <View style={styles.commentSection}>
-            <CommentList commentArray={commentArray} />
+            {commentArray != {} &&
+              <CommentList
+                commentArray={commentArray}
+              />
+            }
           </View>
 
         </ScrollView>

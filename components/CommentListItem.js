@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
-import {View} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {
   ListItem as NBListItem,
   Text,
@@ -8,16 +8,18 @@ import {
 } from "react-native-elements";
 import {MainContext} from '../contexts/MainContext';
 import {useMedia} from '../hooks/ApiHooks';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 
 import colors from "../global/colors.json";
 
 
 
 const CommentListItem = ({singleComment}) => {
-  const {darkMode, update, isLoggedIn} = useContext(MainContext);
-  const {likeMedia, removeLike, getFavourites} = useMedia(update);
+  const {darkMode, isLoggedIn, user, commentUpdate, setCommentUpdate} = useContext(MainContext);
+  const {likeMedia, removeLike, getFavourites, deleteMedia} = useMedia();
   const [currentLikes, setCurrentLikes] = useState(0);
   const [liked, setLiked] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   let bgColor,
     headerColor,
@@ -49,10 +51,25 @@ const CommentListItem = ({singleComment}) => {
     setCurrentLikes(newLikes.amount);
   }
 
+  const deleteComment = async () => {
+    setLoading(true)
+    const remove = await deleteMedia(singleComment.file_id);
+    if (remove) {
+      console.log(remove)
+      setCommentUpdate(!commentUpdate);
+      setTimeout(() => {
+        setLoading(false)
+        setCommentUpdate(!commentUpdate);
+      }, 1000)
+    }
+  }
+
   useEffect(() => {
     if (isLoggedIn) {
       setCurrentLikes(singleComment.likes);
       setLiked(singleComment.postLiked);
+      console.log(currentLikes);
+      console.log(liked)
     } else if (!isLoggedIn) {
       setCurrentLikes(0);
       setLiked(false);
@@ -73,26 +90,57 @@ const CommentListItem = ({singleComment}) => {
         <View
           style={{
             flex: 1,
-            flexDirection: "column",
-            justifyContent: "center",
-            width: "100%",
+            flexDirection: "row",
+            alignSelf: "center",
+            width: "95%",
             height: "100%",
             display: "flex",
-            borderRadius: 0,
+            borderRadius: 5,
             padding: 10,
+            margin: 5,
             backgroundColor: bgColorFaded,
           }}
         >
-          {singleComment.user && (
-            <Text style={{color: headerTintColor, fontFamily: 'AdventPro', }}>
-              Posted by /user/{singleComment.user}
-            </Text>
-          )}
-          <Text style={{color: "white", fontFamily: 'AdventPro'}}>{singleComment.description}</Text>
+          <View style={styles.commentText}>
+            {singleComment.user && (
+              <Text style={{color: headerTintColor, fontFamily: 'AdventPro', fontSize: 12}}>
+                Posted by /user/{singleComment.user}
+              </Text>
+            )}
+            <Text style={{color: headerTintColor, fontFamily: 'AdventPro', fontSize: 16}}>{singleComment.description}</Text>
+          </View>
+          <View style={styles.actions}>
+            {singleComment.user === user.username &&
+              <MaterialCommunityIcons name="delete" color={headerTintColor} size={30} onPress={deleteComment} />
+            }
+            {currentLikes >= 0 && <TouchableOpacity style={styles.likesContainer} onPress={toggleLike}>
+              <MaterialCommunityIcons name="arrow-up-bold-outline" color={liked ? highlightColor : headerTintColor} size={30} />
+              <Text style={{color: liked ? highlightColor : headerTintColor, fontSize: 15, fontFamily: 'AdventPro', }}>{currentLikes}</Text>
+            </TouchableOpacity>
+            }
+          </View>
+
         </View>
+
       </NBListItem.Content>
     </NBListItem>
   );
 }
+
+const styles = StyleSheet.create({
+  commentText: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  actions: {
+    flex: 1,
+    alignItems: "flex-end"
+  },
+  likesContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default CommentListItem;

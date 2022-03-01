@@ -51,6 +51,7 @@ const useMedia = (update) => {
             json.likes = likes.amount;
             json.postLiked = likes.liked;
 
+
             // Adding thumbnail and user data to the JSON object
             const thumbnails = json.thumbnails;
             json.thumbnails = thumbnails.w640;
