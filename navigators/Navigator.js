@@ -12,7 +12,7 @@ import Post from "../views/Post";
 import Popular from "../views/Popular";
 import { View, Text, StatusBar } from "react-native";
 import { Icon } from "react-native-elements";
-import SettingsWrapper from "../components/SettingWrapper";
+import Settings from "../views/Settings";
 import { MainContext } from "../contexts/MainContext";
 import colors from "../global/colors.json";
 import Welcome from "../views/Welcome";
@@ -132,7 +132,7 @@ const BottomNav = () => {
     >
       <Tab.Screen
         name="Settings"
-        component={SettingsWrapper}
+        component={Settings}
         options={{
           headerStyle: {
             backgroundColor: colors.headerColor,

@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import Modal from "react-native-modal";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Button, Icon, Divider } from "react-native-elements";
+import { Icon } from "react-native-elements";
 import { MainContext } from "../contexts/MainContext";
-import { LogoutContext } from "../contexts/LogoutContext";
 import colors from "../global/colors.json";
+import { useMedia } from "../hooks/ApiHooks";
 
 const getColors = () => {
   const { darkMode } = useContext(MainContext);
@@ -29,10 +29,23 @@ const getColors = () => {
   return { bgColor, headerColor, headerTintColor, highlightColor, searchColor };
 };
 
-const ConfirmModal = ({reason}) => {
+const ConfirmModal = ({reason, id}) => {
   const colors = getColors();
-  const { displayConfirmWindow, setDisplayConfirmWindow, setConfirmLogout } =
-    useContext(LogoutContext);
+  const { displayConfirmWindow, setDisplayConfirmWindow, setConfirmLogout, commentUpdate, setCommentUpdate } =
+    useContext(MainContext);
+  const {deleteMedia} = useMedia();
+
+  const deleteComment = async (id) => {
+    const remove = await deleteMedia(id);
+    if (remove) {
+      console.log(remove)
+      setCommentUpdate(!commentUpdate);
+      setTimeout(() => {
+        setCommentUpdate(!commentUpdate);
+      }, 1000)
+    }
+  }
+
   return (
     <View style={{ padidng: 0 }}>
       <Modal
@@ -116,7 +129,9 @@ const ConfirmModal = ({reason}) => {
                 elevation: 10,
               }}
               onPress={() => {
-                setConfirmLogout(true);
+                if (reason == "logout") setConfirmLogout(true);
+                else if (reason == "delete_post") deleteMedia(id);
+                else if (reason == "delete_comment") deleteComment(id);
                 setDisplayConfirmWindow(false);
               }}
             >

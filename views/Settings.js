@@ -1,17 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
-import { Button, Switch } from "react-native-elements";
+import { Switch } from "react-native-elements";
 import { MainContext } from "../contexts/MainContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import colors from "../global/colors.json";
 import ConfirmModal from "../components/ConfirmModal";
-import { LogoutContext } from "../contexts/LogoutContext";
 
 const Settings = ({ navigation }) => {
-  const { isLoggedIn, setIsLoggedIn, darkMode, setDarkMode } =
+  const { isLoggedIn, setIsLoggedIn, darkMode, setDarkMode, setDisplayConfirmWindow, confirmLogout, setConfirmLogout } =
     useContext(MainContext);
-  const { setDisplayConfirmWindow, confirmLogout, setConfirmLogout } =
-    useContext(LogoutContext);
 
   let bgColor,
     headerColor,

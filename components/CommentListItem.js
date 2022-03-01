@@ -9,17 +9,16 @@ import {
 import {MainContext} from '../contexts/MainContext';
 import {useMedia} from '../hooks/ApiHooks';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
-
 import colors from "../global/colors.json";
 
 
 
 const CommentListItem = ({singleComment}) => {
-  const {darkMode, isLoggedIn, user, commentUpdate, setCommentUpdate} = useContext(MainContext);
+  const {darkMode, isLoggedIn, user,} = useContext(MainContext);
   const {likeMedia, removeLike, getFavourites, deleteMedia} = useMedia();
   const [currentLikes, setCurrentLikes] = useState(0);
   const [liked, setLiked] = useState(false);
-  const [loading, setLoading] = useState(false);
+ 
 
   let bgColor,
     headerColor,
@@ -51,18 +50,6 @@ const CommentListItem = ({singleComment}) => {
     setCurrentLikes(newLikes.amount);
   }
 
-  const deleteComment = async () => {
-    setLoading(true)
-    const remove = await deleteMedia(singleComment.file_id);
-    if (remove) {
-      console.log(remove)
-      setCommentUpdate(!commentUpdate);
-      setTimeout(() => {
-        setLoading(false)
-        setCommentUpdate(!commentUpdate);
-      }, 1000)
-    }
-  }
 
   useEffect(() => {
     if (isLoggedIn) {
