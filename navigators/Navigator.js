@@ -11,8 +11,7 @@ import Create from "../views/Create";
 import Post from "../views/Post";
 import Popular from "../views/Popular";
 import { View, Text, StatusBar } from "react-native";
-import { Icon, Button } from "react-native-elements";
-import Notifications from "../views/Notifications";
+import { Icon } from "react-native-elements";
 import SettingsWrapper from "../components/SettingWrapper";
 import { MainContext } from "../contexts/MainContext";
 import colors from "../global/colors.json";
@@ -132,6 +131,20 @@ const BottomNav = () => {
       tabBar={(props) => <CustomNavBar {...props} />}
     >
       <Tab.Screen
+        name="Settings"
+        component={SettingsWrapper}
+        options={{
+          headerStyle: {
+            backgroundColor: colors.headerColor,
+          },
+          headerTitleAlign: "center",
+          headerTintColor: colors.headerTintColor,
+          headerTitleStyle: {
+            fontFamily: "AdventPro",
+          },
+        }}
+      />
+      <Tab.Screen
         name="Home"
         component={HomeTopNavigator}
         options={{
@@ -197,18 +210,6 @@ const BottomNav = () => {
       />
       {isLoggedIn && (
         <Tab.Screen
-          name="Profile"
-          component={Profile}
-          options={{
-            headerStyle: {
-              backgroundColor: colors.headerColor,
-            },
-            headerTintColor: colors.headerTintColor,
-          }}
-        />
-      )}
-      {isLoggedIn && (
-        <Tab.Screen
           name="Create"
           component={Create}
           options={{
@@ -220,34 +221,18 @@ const BottomNav = () => {
           }}
         />
       )}
-      <Tab.Screen
-        name="Notifications"
-        component={Notifications}
-        options={{
-          headerStyle: {
-            backgroundColor: colors.headerColor,
-          },
-          headerTitleAlign: "center",
-          headerTintColor: colors.headerTintColor,
-          headerTitleStyle: {
-            fontFamily: "AdventPro",
-          }
-        }}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={SettingsWrapper}
-        options={{
-          headerStyle: {
-            backgroundColor: colors.headerColor,
-          },
-          headerTitleAlign: "center",
-          headerTintColor: colors.headerTintColor,
-          headerTitleStyle: {
-            fontFamily: "AdventPro",
-          }
-        }}
-      />
+     {isLoggedIn && (
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            headerStyle: {
+              backgroundColor: colors.headerColor,
+            },
+            headerTintColor: colors.headerTintColor,
+          }}
+        />
+      )}
       <Tab.Screen
         name="Post"
         component={Post}

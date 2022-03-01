@@ -1,13 +1,13 @@
-import React, {useEffect, useState, useContext} from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   StyleSheet,
   View,
   Text,
   TouchableOpacity,
-  Keyboard
+  Keyboard,
 } from "react-native";
-import {Icon} from "react-native-elements";
-import {useFonts} from "expo-font";
+import { Icon } from "react-native-elements";
+import { useFonts } from "expo-font";
 import colors from "../global/colors.json";
 import { MainContext } from "../contexts/MainContext";
 
@@ -34,19 +34,19 @@ const getColors = () => {
   return { bgColor, headerColor, headerTintColor, highlightColor, searchColor };
 };
 
-const CustomNavBar = ({state, descriptors, navigation, position}) => {
+const CustomNavBar = ({ state, descriptors, navigation, position }) => {
   const colors = getColors();
   const [keyboardShown, setKeyboardShown] = useState(false);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
+      "keyboardDidShow",
       () => {
         setKeyboardShown(true);
       }
     );
     const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
+      "keyboardDidHide",
       () => {
         setKeyboardShown(false);
       }
@@ -58,7 +58,7 @@ const CustomNavBar = ({state, descriptors, navigation, position}) => {
   }, []);
 
   const [loaded] = useFonts({
-    AdventPro: require('../assets/fonts/AdventPro.ttf'),
+    AdventPro: require("../assets/fonts/AdventPro.ttf"),
   });
 
   if (!loaded) {
@@ -67,15 +67,17 @@ const CustomNavBar = ({state, descriptors, navigation, position}) => {
 
   return (
     <>
-      {!keyboardShown &&
+      {!keyboardShown && (
         <View style={styles.navBarContainer}>
-          <View style={{
+          <View
+            style={{
               height: 55,
               width: "100%",
               backgroundColor: colors.headerColor,
               position: "absolute",
-              bottom: 0,  
-          }} />
+              bottom: 0,
+            }}
+          />
 
           <View
             style={{
@@ -104,16 +106,22 @@ const CustomNavBar = ({state, descriptors, navigation, position}) => {
               let iconName = "add";
               if (route.name === "Create") iconName = "add";
               else if (route.name === "Home") iconName = "home";
-              else if (route.name === "Notifications") iconName = "notifications";
+              else if (route.name === "Notifications")
+                iconName = "notifications";
               else if (route.name === "Profile") iconName = "person";
               else if (route.name === "Settings") iconName = "settings";
               if (route.name === "Post") return;
               return (
-                <View style={route.name == "Create" ? styles.createHolder : ""} key={route.name}>
+                <View
+                  style={route.name == "Create" ? styles.createHolder : ""}
+                  key={route.name}
+                >
                   <TouchableOpacity onPress={onPress}>
                     {route.name === "Create" ? (
                       <Icon
-                        style={isFocused ? styles.create_focused : styles.create}
+                        style={
+                          isFocused ? styles.create_focused : styles.create
+                        }
                         name={iconName}
                         color={colors.headerTintColor}
                         size={70}
@@ -124,22 +132,28 @@ const CustomNavBar = ({state, descriptors, navigation, position}) => {
                           <Icon
                             style={styles.logo_tiny}
                             name={iconName}
-                            color={isFocused ? colors.highlightColor : colors.headerTintColor}
+                            color={
+                              isFocused
+                                ? colors.highlightColor
+                                : colors.headerTintColor
+                            }
                             size={isFocused ? 35 : 30}
                           />
                           <Text
-                            style={isFocused ? 
-                              {
-                                fontSize: 13,
-                                color: colors.highlightColor,
-                                margin: 0,
-                                fontFamily: "AdventPro"
-                              } : 
-                              {
-                                fontSize: 12,
-                                color: colors.headerTintColor,
-                                fontFamily: "AdventPro"
-                              }}
+                            style={
+                              isFocused
+                                ? {
+                                    fontSize: 13,
+                                    color: colors.highlightColor,
+                                    margin: 0,
+                                    fontFamily: "AdventPro",
+                                  }
+                                : {
+                                    fontSize: 12,
+                                    color: colors.headerTintColor,
+                                    fontFamily: "AdventPro",
+                                  }
+                            }
                           >
                             {route.name}
                           </Text>
@@ -150,14 +164,21 @@ const CustomNavBar = ({state, descriptors, navigation, position}) => {
                 </View>
               );
             })}
+            <TouchableOpacity style={styles.btnContainer}>
+                <Icon
+                  style={styles.logo_tiny}
+                  name="more-horiz"
+                  type="material"
+                  color={colors.headerTintColor}
+                  size={30}
+                />
+            </TouchableOpacity>
           </View>
         </View>
-      }
+      )}
     </>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   navBarContainer: {
@@ -223,13 +244,13 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 12,
     color: "white",
-    fontFamily: "AdventPro"
+    fontFamily: "AdventPro",
   },
   label_focused: {
     fontSize: 13,
     color: "#FF0000",
     margin: 0,
-    fontFamily: "AdventPro"
+    fontFamily: "AdventPro",
   },
 });
 
