@@ -1,15 +1,15 @@
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import {StyleSheet, View, TouchableOpacity} from "react-native";
+import React, {useContext, useEffect, useState} from "react";
 import {
   ListItem as NBListItem,
   Text,
   Image,
   Icon,
 } from "react-native-elements";
-import { MainContext } from "../contexts/MainContext";
-import { useMedia } from "../hooks/ApiHooks";
+import {MainContext} from "../contexts/MainContext";
+import {useMedia} from "../hooks/ApiHooks";
 import colors from "../global/colors.json";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 // Formats the time separation between the current date and the date the post was made.
 const getTimeAddedString = (time) => {
@@ -29,35 +29,29 @@ const getTimeAddedString = (time) => {
 
   if (secondsDifference < 60) description = `Posted a few seconds ago`;
   else if (minutesDifference < 60 && secondsDifference >= 60)
-    description = `Posted ${minutesDifference} ${
-      minutesDifference == 1 ? "minute" : "minutes"
-    } ago`;
+    description = `Posted ${minutesDifference} ${minutesDifference == 1 ? "minute" : "minutes"
+      } ago`;
   else if (hoursDifference > 0 && dayDifference < 1)
-    description = `Posted ${hoursDifference} ${
-      hoursDifference == 1 ? "hour" : "hours"
-    } ago`;
+    description = `Posted ${hoursDifference} ${hoursDifference == 1 ? "hour" : "hours"
+      } ago`;
   else if (dayDifference > 1 && weekDifference < 1)
-    description = `Posted ${dayDifference} ${
-      dayDifference == 1 ? "day" : "days"
-    } ago`;
+    description = `Posted ${dayDifference} ${dayDifference == 1 ? "day" : "days"
+      } ago`;
   else if (weekDifference > 0 && monthDifference < 1)
-    description = `Posted ${weekDifference} ${
-      weekDifference == 1 ? "week" : "weeks"
-    } ago`;
+    description = `Posted ${weekDifference} ${weekDifference == 1 ? "week" : "weeks"
+      } ago`;
   else if (monthDifference > 0 && yearDifference < 1)
-    description = `Posted ${monthDifference} ${
-      monthDifference == 1 ? "month" : "months"
-    } ago`;
+    description = `Posted ${monthDifference} ${monthDifference == 1 ? "month" : "months"
+      } ago`;
   else if (yearDifference > 0)
-    description = `Posted ${yearDifference} ${
-      yearDifference == 1 ? "year" : "years"
-    } ago`;
+    description = `Posted ${yearDifference} ${yearDifference == 1 ? "year" : "years"
+      } ago`;
   return description;
 };
 
-const ListItem = ({ singleMedia, navigation }) => {
-  const { darkMode, update, isLoggedIn } = useContext(MainContext);
-  const { likeMedia, removeLike, getFavourites } = useMedia(update);
+const ListItem = ({singleMedia, navigation}) => {
+  const {darkMode, update, isLoggedIn} = useContext(MainContext);
+  const {likeMedia, removeLike, getFavourites} = useMedia(update);
   const [currentLikes, setCurrentLikes] = useState(0);
   const [liked, setLiked] = useState(false);
 
@@ -125,7 +119,7 @@ const ListItem = ({ singleMedia, navigation }) => {
             <TouchableOpacity style={styles.postInfo}>
               {singleMedia.userAvatar !== "" ? (
                 <Image
-                  source={{ uri: singleMedia.userAvatar }}
+                  source={{uri: singleMedia.userAvatar}}
                   style={styles.postInfoImage}
                   resizeMode="contain"
                 />
@@ -140,13 +134,13 @@ const ListItem = ({ singleMedia, navigation }) => {
 
               <View style={styles.postInfoText}>
                 <Text
-                  style={{ color: headerTintColor, fontFamily: "AdventPro" }}
+                  style={{color: headerTintColor, fontFamily: "AdventPro"}}
                 >
                   t/{singleMedia.tag}
                 </Text>
                 {singleMedia.user && (
                   <Text
-                    style={{ color: headerTintColor, fontFamily: "AdventPro" }}
+                    style={{color: headerTintColor, fontFamily: "AdventPro"}}
                   >
                     Posted by /user/{singleMedia.user}
                   </Text>
@@ -199,7 +193,7 @@ const ListItem = ({ singleMedia, navigation }) => {
             style={styles.lowerContainer}
             onPress={() => {
               navigation.navigate("Post", {
-                media: { singleMedia },
+                media: {singleMedia},
               });
             }}
           >
@@ -244,7 +238,7 @@ const ListItem = ({ singleMedia, navigation }) => {
                 opacity: 0.9,
               }}
             >
-              <Text style={{ color: "white", fontFamily: "AdventPro" }}>
+              <Text style={{color: "white", fontFamily: "AdventPro"}}>
                 View full post
               </Text>
             </View>

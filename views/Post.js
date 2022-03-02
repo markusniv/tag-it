@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from "react";
-import {StyleSheet, SafeAreaView, Text, View, ScrollView, ImageBackground, Image as ReactImage} from "react-native";
+import {StyleSheet, SafeAreaView, Text, View, ScrollView, ImageBackground, Image as ReactImage, TouchableOpacity} from "react-native";
 import {Image, Input, Button, Divider} from "react-native-elements";
 import PropTypes from "prop-types";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -14,8 +14,9 @@ import colors from "../global/colors.json";
 import {Icon} from 'react-native-elements/dist/icons/Icon';
 import CommentImage from '../images/comment.png';
 import {useFocusEffect} from "@react-navigation/native";
+import ConfirmModal from '../components/ConfirmModal';
 
-const Post = ({route}) => {
+const Post = ({navigation, route}) => {
   const {getUserById} = useUser();
   const video = React.useRef(null);
   const [status, setStatus] = useState({});
@@ -102,6 +103,8 @@ const Post = ({route}) => {
     }
   }
 
+  const onPress = () => navigation.navigate("Home");
+
   return (
     <ImageBackground
       resizeMode="cover"
@@ -112,8 +115,17 @@ const Post = ({route}) => {
         flex: 1,
         backgroundColor: "transparent",
       }}>
+        <TouchableOpacity style={{position: 'absolute', top: '5%', left: '5%', transform: [{rotateY: '180deg'}]}} onPress={onPress} >
+          <Icon
+            style={{height: 40, width: 40}}
+            name='arrow-forward'
+            color={'white'}
+            size={40} />
+        </TouchableOpacity>
 
-        <ScrollView>
+        <ConfirmModal reason="logout" id={singleMedia.file_id} />
+
+        <ScrollView style={{marginTop: 75}} nestedScrollEnabled={true} keyboardShouldPersistTaps="handled">
           <View style={styles.top}>
             <Text style={styles.fontBig}>{singleMedia.title}</Text>
 

@@ -21,6 +21,7 @@ const CommentList = ({commentArray}) => {
     <View>
       <FlatList
         nestedScrollEnabled={true}
+        keyboardShouldPersistTaps="handled"
         style={{backgroundColor: "transparent"}}
         data={comments}
         keyExtractor={(item, index) => index.toString()}

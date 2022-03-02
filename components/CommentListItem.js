@@ -15,7 +15,7 @@ import ConfirmModal from './ConfirmModal';
 
 
 const CommentListItem = ({singleComment}) => {
-  const {darkMode, isLoggedIn, user, setDisplayConfirmWindow } = useContext(MainContext);
+  const {darkMode, isLoggedIn, user, setDisplayConfirmWindow} = useContext(MainContext);
   const {likeMedia, removeLike, getFavourites, deleteMedia} = useMedia();
   const [currentLikes, setCurrentLikes] = useState(0);
   const [liked, setLiked] = useState(false);
@@ -26,7 +26,9 @@ const CommentListItem = ({singleComment}) => {
     headerTintColor,
     bgColorFaded,
     postLabelColor,
-    highlightColor = colors.highlight_color;
+    highlightColor = colors.highlight_color,
+    ownCommentColor = colors.own_comment_color;
+
 
   if (darkMode) {
     bgColor = colors.dark_mode_bg;
@@ -86,7 +88,7 @@ const CommentListItem = ({singleComment}) => {
             borderRadius: 5,
             padding: 10,
             margin: 5,
-            backgroundColor: bgColorFaded,
+            backgroundColor: singleComment.user === user.username ? ownCommentColor : bgColorFaded,
           }}
         >
           <View style={styles.commentText}>
