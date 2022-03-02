@@ -22,7 +22,7 @@ const useMedia = (update) => {
 
       const response = await fetch(`${apiUrl}tags/${tag}`);
       const array = await response.json();
-      const json = await Promise.all(
+      let json = await Promise.all(
         array.map(async (item) => {
           const response = await fetch(url + item.file_id);
           const json = await response.json();
@@ -43,9 +43,9 @@ const useMedia = (update) => {
             let tags = await getMediaTags(item.file_id);
 
             // Filtering "tagit_" tag from the array of tags.
-            tags = tags.filter(t => t.tag != tag && !t.tag.includes("tagit_comment"));
-
-            if (tags[0] == undefined) return;
+            tags = tags.filter(t => t.tag !== tag && !t.tag.includes("tagit_comment"));
+            
+            if (tags[0] == undefined) return; 
             else tags = tags[0].tag.split("_")[1];
 
             // Adding Like data to the JSON object
@@ -59,10 +59,12 @@ const useMedia = (update) => {
             json.user_email = user.email;
             json.user_id = user.user_id;
             json.tag = tags;
+        
           }
           return json;
         })
       );
+      json = json.filter(item => item != undefined);
       setMediaArray(json);
       setUpdate(false);
     } catch (e) {
@@ -524,9 +526,7 @@ const getTagsWithPostAmount = (array) => {
     }
   }
 
-  console.log("duplicates 1:", duplicates);
-
-  duplicates = duplicates.filter(item => item.tag !== "tagit_");
+  duplicates = duplicates.filter(item => item.tag !== "tagit_" && !item.tag.includes("tagit_comment"));
 
   // Removing the "tagit_" portion of the tags.
   duplicates.map(item => {

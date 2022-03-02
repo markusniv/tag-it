@@ -10,6 +10,7 @@ const LOAD_SIZE = 4;
 /** Sorts the array of posts into a descending order according to the time_added date. */
 const sortRecent = (data) => {
   let dataArray = data;
+  console.log(data);
   if (Object.keys(data).length > 0)
     dataArray = dataArray.sort((a, b) => new Date(b.time_added).getTime() - new Date(a.time_added).getTime());
   return dataArray;
@@ -25,10 +26,10 @@ const List = ({navigation}) => {
   let bgColor;
   if (darkMode) bgColor = colors.dark_mode_bg;
 
-
   // Gets a given amount of data from an array.
   const sliceData = (array, capacity) => {
     let withTags = sortRecent(array);
+
     if (currentTag !== "") withTags = array.filter(item => item.tag === currentTag);
     const sliced = withTags.filter((item, idx) => (idx < capacity));
     return sliced;
@@ -61,12 +62,12 @@ const List = ({navigation}) => {
 
     /* Updating more posts when the FlatLists end has been reached,
      and also filtering according to the search input. */
-    console.log("Rerendering List.js");
+    console.log("Rendering List.js");
     if (Object.keys(mediaArray).length > 0) {
 
       const sliced = sliceData(mediaArray, loadCapacity);
       setDisplayedMedia(sliced);
-
+     
       if (searchInput === "") {
         return;
       }

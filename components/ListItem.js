@@ -17,7 +17,7 @@ const getTimeAddedString = (time) => {
 
   let currentDate = new Date();
   let timeAdded = new Date(time);
-
+ 
   // Calculating the time difference in different units.
   let secondsDifference = (currentDate.getTime() - timeAdded.getTime()) / 1000;
   let minutesDifference = Math.abs(Math.round(secondsDifference / 60));
@@ -34,7 +34,7 @@ const getTimeAddedString = (time) => {
   else if (hoursDifference > 0 && dayDifference < 1)
     description = `Posted ${hoursDifference} ${hoursDifference == 1 ? "hour" : "hours"
       } ago`;
-  else if (dayDifference > 1 && weekDifference < 1)
+  else if (dayDifference > 0 && weekDifference < 1)
     description = `Posted ${dayDifference} ${dayDifference == 1 ? "day" : "days"
       } ago`;
   else if (weekDifference > 0 && monthDifference < 1)
