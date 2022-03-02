@@ -55,6 +55,7 @@ const Welcome = ({ navigation }) => {
     checkSettings();
     checkToken();
   }, []);
+  
   const logIn = () => navigation.navigate("Login");
   const register = () => navigation.navigate("Register");
 

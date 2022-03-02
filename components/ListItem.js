@@ -99,6 +99,8 @@ const ListItem = ({ singleMedia, navigation }) => {
     console.log(`ListItem ${singleMedia.title} rendered.`);
   }, [singleMedia]);
 
+/*   console.log("singlemedia is", singleMedia); */
+
   return (
     <NBListItem
       containerStyle={{

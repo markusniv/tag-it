@@ -15,7 +15,7 @@ const sortRecent = (data) => {
   return dataArray;
 }
 
-
+/** Displays A FlatList containing recently added posts, ordered by the time_added value in an descending order. */
 const List = ({navigation}) => {
   const {darkMode, update, searchInput, currentTag, setUpdate} = useContext(MainContext);
   const [loadCapacity, setLoadCapacity] = useState(LOAD_SIZE);
@@ -26,7 +26,7 @@ const List = ({navigation}) => {
   if (darkMode) bgColor = colors.dark_mode_bg;
 
 
-  // Used for getting a given amount of JSON data from an JSON object.
+  // Gets a given amount of data from an array.
   const sliceData = (array, capacity) => {
     let withTags = sortRecent(array);
     if (currentTag !== "") withTags = array.filter(item => item.tag === currentTag);
@@ -50,6 +50,7 @@ const List = ({navigation}) => {
       if (loadCapacity + LOAD_SIZE >= mediaLength) setLoadCapacity(mediaLength);
       else if (loadCapacity + LOAD_SIZE < mediaLength) setLoadCapacity(loadCapacity + LOAD_SIZE);
     }
+    console.log("Load capacity", loadCapacity, "mediaLength", mediaLength);
   }
 
   const onRefresh = () => {
@@ -58,7 +59,7 @@ const List = ({navigation}) => {
 
   useEffect(() => {
 
-    /* The below code is used for loading more posts when the FlatLists' end has been reached,
+    /* Updating more posts when the FlatLists end has been reached,
      and also filtering according to the search input. */
     console.log("Rerendering List.js");
     if (Object.keys(mediaArray).length > 0) {
@@ -103,8 +104,3 @@ const List = ({navigation}) => {
 };
 
 export default List;
-
-
-
-
-/* <ActivityIndicator color="red" animating={loading} size="large" style={{position: "relative", bottom: 100}}/> */
