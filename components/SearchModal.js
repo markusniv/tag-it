@@ -123,7 +123,7 @@ const EmptyListIndicator = () => {
 
 const SearchModal = () => {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-  const { searching, setSearching, currentTag } = useContext(MainContext);
+  const { searching, setSearching, currentTag, update } = useContext(MainContext);
   const [currentInput, setCurrentInput] = useState("");
   const [tags, setTags] = useState([]);
   const [showedTags, setShowedTags] = useState([]);
@@ -150,7 +150,8 @@ const SearchModal = () => {
     setShowedTags(filtered);
   };
 
-  useEffect(() => {
+
+  const updateTags = () => {
     getTags().then((allTags) => {
       allTags = allTags.sort((a, b) => b.posts - a.posts);
       setTags(allTags);
@@ -172,7 +173,15 @@ const SearchModal = () => {
         keyboardDidShowListener.remove();
       };
     });
+  }
+
+  useEffect(() => {
+    updateTags();
   }, []);
+
+  useEffect(() => {
+    updateTags();
+  }, [update])
 
   const keyExtractor = useCallback((item, index) => index.toString(), []);
 
