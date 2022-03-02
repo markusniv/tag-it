@@ -17,16 +17,13 @@ import {useFocusEffect} from "@react-navigation/native";
 import ConfirmModal from '../components/ConfirmModal';
 
 const Post = ({navigation, route}) => {
-  const {getUserById} = useUser();
   const video = React.useRef(null);
   const [status, setStatus] = useState({});
   const {postMedia} = useMedia();
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
   const {media} = route.params;
   const singleMedia = media.singleMedia;
-  const [postUser, setPostUser] = useState(singleMedia.user_id);
   const fileType = singleMedia.mime_type.split("/").shift();
-  const [update, setUpdate] = useState(false);
 
   const {control, handleSubmit, getValues, formState: {errors}} = useForm({
     mode: 'onBlur',
@@ -38,7 +35,7 @@ const Post = ({navigation, route}) => {
   const [activated, setActivated] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const {getComments} = useMedia(update);
+  const {getComments} = useMedia();
   const [commentArray, setCommentArray] = useState({})
 
   const loadComments = async () => {
@@ -46,25 +43,13 @@ const Post = ({navigation, route}) => {
     setCommentArray(comments)
   }
 
-  const {darkMode, commentUpdate, setCommentUpdate, user} = useContext(MainContext);
+  const {darkMode, update, commentUpdate, setCommentUpdate, user, setDisplayConfirmWindow} = useContext(MainContext);
+  const [confirmVisible, setConfirmVisible] = useState(false);
+  const [deleteUpdate, setDeleteUpdate] = useState(false);
 
   let bgColor;
 
   if (darkMode) bgColor = colors.dark_mode_bg;
-
-  const getUser = async () => {
-    const userName = await getUserById(singleMedia.user_id);
-    setPostUser(userName);
-  };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      getUser()
-      return () => {
-
-      };
-    }, [])
-  );
 
   useFocusEffect(
     React.useCallback(() => {
@@ -74,6 +59,10 @@ const Post = ({navigation, route}) => {
       };
     }, [singleMedia, commentUpdate])
   );
+
+  useEffect(() => {
+    if (deleteUpdate) navigation.navigate("Home");
+  }, [deleteUpdate])
 
   const onSubmit = async (data) => {
     const formData = new FormData();
@@ -104,6 +93,7 @@ const Post = ({navigation, route}) => {
   }
 
   const onPress = () => navigation.navigate("Home");
+  const deletePost = () => setConfirmVisible(true)
 
   return (
     <ImageBackground
@@ -122,8 +112,16 @@ const Post = ({navigation, route}) => {
             color={'white'}
             size={40} />
         </TouchableOpacity>
-
-        <ConfirmModal reason="logout" id={singleMedia.file_id} />
+        {singleMedia.user === user.username &&
+          <TouchableOpacity style={{position: 'absolute', top: '5%', right: '5%'}} onPress={deletePost} >
+            <Icon
+              style={{height: 40, width: 40}}
+              name='delete'
+              color={'white'}
+              size={40} />
+          </TouchableOpacity>
+        }
+        <ConfirmModal reason="delete_post" id={singleMedia.file_id} visible={confirmVisible} setVisible={setConfirmVisible} deleteUpdate={deleteUpdate} setDeleteUpdate={setDeleteUpdate} />
 
         <ScrollView style={{marginTop: 75}} nestedScrollEnabled={true} keyboardShouldPersistTaps="handled">
           <View style={styles.top}>
@@ -147,7 +145,7 @@ const Post = ({navigation, route}) => {
               />
             )}
             <Text style={styles.fontMid}>{singleMedia.description}</Text>
-            <Text style={styles.fontSmall}>By {postUser}</Text>
+            <Text style={styles.fontSmall}>By {singleMedia.user}</Text>
           </View>
           {user.user_id != 676 && <View style={styles.createComment}>
             <Controller

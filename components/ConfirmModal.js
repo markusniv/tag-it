@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
+import React, {useContext} from "react";
 import Modal from "react-native-modal";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Icon } from "react-native-elements";
-import { MainContext } from "../contexts/MainContext";
+import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {Icon} from "react-native-elements";
+import {MainContext} from "../contexts/MainContext";
 import colors from "../global/colors.json";
-import { useMedia } from "../hooks/ApiHooks";
+import {useMedia} from "../hooks/ApiHooks";
 
 const getColors = () => {
-  const { darkMode } = useContext(MainContext);
+  const {darkMode} = useContext(MainContext);
 
   let bgColor,
     headerColor,
@@ -26,14 +26,26 @@ const getColors = () => {
     headerTintColor = colors.light_mode_header_tint;
     searchColor = colors.dark_mode_bg;
   }
-  return { bgColor, headerColor, headerTintColor, highlightColor, searchColor };
+  return {bgColor, headerColor, headerTintColor, highlightColor, searchColor};
 };
 
-const ConfirmModal = ({reason, id, visible, setVisible}) => {
+const ConfirmModal = ({reason, id, visible, setVisible, deleteUpdate, setDeleteUpdate}) => {
   const colors = getColors();
-  const { setConfirmLogout, commentUpdate, setCommentUpdate } =
+  const {setConfirmLogout, commentUpdate, setCommentUpdate, update, setUpdate} =
     useContext(MainContext);
   const {deleteMedia} = useMedia();
+
+  const deletePost = async (id) => {
+    const remove = await deleteMedia(id);
+    if (remove) {
+      setDeleteUpdate(!deleteUpdate)
+      setUpdate(!update);
+      setTimeout(() => {
+        setUpdate(!update)
+        setDeleteUpdate(!deleteUpdate)
+      }, 1000)
+    }
+  }
 
   const deleteComment = async (id) => {
     const remove = await deleteMedia(id);
@@ -47,7 +59,7 @@ const ConfirmModal = ({reason, id, visible, setVisible}) => {
   }
 
   return (
-    <View style={{ padidng: 0 }}>
+    <View style={{padidng: 0}}>
       <Modal
         animationIn="slideInDown"
         animationOut="slideOutUp"
@@ -84,7 +96,7 @@ const ConfirmModal = ({reason, id, visible, setVisible}) => {
           >
             {reason == "logout" && <Icon type="material-community" name="logout" size={60} color={colors.headerTintColor} />}
             {reason == ("delete_comment" || "delete_post") && <Icon type="material-community" name="delete" size={60} color={colors.headerTintColor} />}
-            <Text style={{ fontFamily: "AdventPro", fontSize: 25, color: colors.headerTintColor }}>
+            <Text style={{fontFamily: "AdventPro", fontSize: 25, color: colors.headerTintColor}}>
               {reason == "logout" && "Confirm log out?"}
               {reason == "delete_comment" && "Delete comment?"}
               {reason == "delete_post" && "Delete post?"}
@@ -113,7 +125,7 @@ const ConfirmModal = ({reason, id, visible, setVisible}) => {
               }}
               onPress={() => setVisible(false)}
             >
-              <Text style={{ fontFamily: "AdventPro", fontSize: 20, color: colors.headerTintColor }}>Cancel</Text>
+              <Text style={{fontFamily: "AdventPro", fontSize: 20, color: colors.headerTintColor}}>Cancel</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -130,15 +142,15 @@ const ConfirmModal = ({reason, id, visible, setVisible}) => {
               }}
               onPress={() => {
                 if (reason == "logout") setConfirmLogout(true);
-                else if (reason == "delete_post") deleteMedia(id);
+                else if (reason == "delete_post") deletePost(id);
                 else if (reason == "delete_comment") deleteComment(id);
                 setVisible(false);
               }}
             >
-              <Text style={{ fontFamily: "AdventPro", fontSize: 20, color: colors.headerTintColor }}>
+              <Text style={{fontFamily: "AdventPro", fontSize: 20, color: colors.headerTintColor}}>
                 {reason == "logout" && "Confirm"}
-                {reason == ("delete_comment" ||"delete_post") && "Delete"}
-                </Text>
+                {reason == ("delete_comment" && "delete_post") && "Delete"}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
