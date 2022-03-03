@@ -493,13 +493,8 @@ const getTags = async () => {
     const tags = await response.json();
 
     const tagItTags = tags.filter(t => t.tag.includes(tag));
-<<<<<<< HEAD
-
-    const tagsWithDuplicates = getTagsWithPostAmount(tagItTags);
-=======
 
     let tagsWithDuplicates = getTagsWithPostAmount(tagItTags);
->>>>>>> master
 
     if (response.ok) {
       return tagsWithDuplicates;
