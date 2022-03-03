@@ -11,7 +11,8 @@ const useMedia = (update) => {
 
   const [mediaArray, setMediaArray] = useState(JSON);
   const [userMediaArray, setUserMediaArray] = useState(JSON);
-  const {isLoggedIn, user} = useContext(MainContext);
+  const [commentArray, setCommentArray] = useState(JSON);
+  const {isLoggedIn, user, setUpdate} = useContext(MainContext);
 
   const getMedia = async () => {
 
@@ -20,6 +21,64 @@ const useMedia = (update) => {
     try {
 
       const response = await fetch(`${apiUrl}tags/${tag}`);
+      const array = await response.json();
+      let json = await Promise.all(
+        array.map(async (item) => {
+          const response = await fetch(url + item.file_id);
+          const json = await response.json();
+
+          // Fetching likes for the file and adding it to the json object.
+          if (isLoggedIn || user.user_id == 676) {
+            const options = {
+              method: 'GET',
+              headers: {
+                'x-access-token': token,
+              },
+            };
+
+            // Fetching likes, user info and tags.
+            const likes = await getFavourites(item.file_id);
+            const user = await getUserInfo(item.user_id, options);
+            const userAvatar = await getUserAvatar(item.user_id);
+            let tags = await getMediaTags(item.file_id);
+
+            // Filtering "tagit_" tag from the array of tags.
+            tags = tags.filter(t => t.tag !== tag && !t.tag.includes("tagit_comment"));
+
+            if (tags[0] == undefined) return;
+            else tags = tags[0].tag.split("_")[1];
+
+            // Adding Like data to the JSON object
+            json.likes = likes.amount;
+            json.postLiked = likes.liked;
+            json.userAvatar = userAvatar;
+            // Adding thumbnail and user data to the JSON object
+            const thumbnails = json.thumbnails;
+            json.thumbnails = thumbnails.w640;
+            json.user = user.username;
+            json.user_email = user.email;
+            json.user_id = user.user_id;
+            json.tag = tags;
+
+          }
+          return json;
+        })
+      );
+      json = json.filter(item => item != undefined);
+      setMediaArray(json);
+      setUpdate(false);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  };
+
+  const getComments = async (post) => {
+
+    const token = await AsyncStorage.getItem('userToken');
+    const url = apiUrl + "media/";
+    try {
+
+      const response = await fetch(`${apiUrl}tags/${tag}comment_${post}`);
       const array = await response.json();
       const json = await Promise.all(
         array.map(async (item) => {
@@ -34,19 +93,32 @@ const useMedia = (update) => {
                 'x-access-token': token,
               },
             };
+
+            // Fetching likes, user info and tags.
             const likes = await getFavourites(item.file_id);
             const user = await getUserInfo(item.user_id, options);
-            const tags = await getMediaTags(item.file_id);
+            let tags = await getMediaTags(item.file_id);
 
-            json.likes = likes;
-            json.user = user;
-            json.tags = tags;
+            // Filtering "tagit_" tag from the array of tags.
+            tags = tags.filter(t => t.tag != tag);
+            if (tags[0] == undefined) tags = "main";
+            else tags = tags[0].tag.split("_")[1];
+
+            // Adding Like data to the JSON object
+            json.likes = likes.amount;
+            json.postLiked = likes.liked;
+
+            // Adding user data to the JSON object
+            json.user = user.username;
+            json.user_email = user.email;
+            json.user_id = user.user_id;
+            json.tag = tags;
           }
           return json;
         })
       );
-      console.log(json);
-      setMediaArray(json);
+      setUpdate(false);
+      return json;
     } catch (e) {
       throw new Error(e.message);
     }
@@ -67,7 +139,7 @@ const useMedia = (update) => {
     const json = await response.json();
 
 
-    await json.map(like => {if (like.user_id === user.user_id) liked = true });
+    await json.map(like => {if (like.user_id === user.user_id) liked = true});
 
     return {amount: Object.keys(json).length, liked};
   };
@@ -76,14 +148,21 @@ const useMedia = (update) => {
   // Fetches user info with the given id.
   const getUserInfo = async (id, options) => {
     const response = await fetch(`${apiUrl}users/${id}`, options);
-    const tags = await response.json();
-    return tags;
+    const user = await response.json();
+    return user;
   };
 
   const getMediaTags = async (id) => {
     const response = await fetch(`${apiUrl}tags/file/${id}`);
-    const user = await response.json();
-    return user;
+    const tags = await response.json();
+    return tags;
+  };
+
+  const getUserAvatar = async (id) => {
+    const response = await fetch(`${apiUrl}tags/avatar_${id}`);
+    const json = await response.json();
+    if (response.ok && Object.keys(json).length > 0) return `${apiUrl}uploads/${json[0].filename}`;
+    return "";
   }
 
   const getMyMedia = async () => {
@@ -114,11 +193,11 @@ const useMedia = (update) => {
     }
   }
 
-
   const postMedia = async (data, userTag) => {
     const token = await AsyncStorage.getItem('userToken');
     const realTag = tag + userTag;
     console.log(realTag);
+    console.log(data)
     const options = {
       method: 'POST',
       headers: {
@@ -129,7 +208,9 @@ const useMedia = (update) => {
 
     try {
       const response = await fetch(apiUrl + "media/", options);
+      console.log(response)
       if (!response.ok) {
+        console.log(response)
         return new Error('Failed to upload data!');
       }
       console.log("Succesfully uploaded, now adding tag...");
@@ -154,6 +235,7 @@ const useMedia = (update) => {
 
       let tResponse = await fetch(apiUrl + "tags", tOptions);
       if (!tResponse.ok) {
+        console.log(tResponse)
         return new Error('Failed to create a tag!');
       }
       let tJson = await tResponse.json();
@@ -178,6 +260,7 @@ const useMedia = (update) => {
 
       tResponse = await fetch(apiUrl + "tags", tOptions);
       if (!tResponse.ok) {
+        console.log(tResponse)
         return new Error('Failed to create a tag!');
       }
       tJson = await tResponse.json();
@@ -287,7 +370,7 @@ const useMedia = (update) => {
     await getMedia();
     await getMyMedia();
   }, [update, isLoggedIn]);
-  return {mediaArray, userMediaArray, postMedia, deleteMedia, putMedia, likeMedia, removeLike, getFavourites};
+  return {mediaArray, commentArray, userMediaArray, postMedia, deleteMedia, putMedia, likeMedia, removeLike, getFavourites, getComments};
 };
 
 const useLogin = () => {
@@ -398,10 +481,7 @@ const useUser = () => {
 }
 
 
-/** Gets all the tags containing tagit_ .
- * Currently there is no guest user, and the console will give an "tags.filter is not a function" error,
- * if the user is not logged in.
-*/
+/** Gets all the tags containing "tagit_" */
 const getTags = async () => {
   const token = await AsyncStorage.getItem('userToken');
   try {
@@ -413,8 +493,13 @@ const getTags = async () => {
     const tags = await response.json();
 
     const tagItTags = tags.filter(t => t.tag.includes(tag));
+<<<<<<< HEAD
 
     const tagsWithDuplicates = getTagsWithPostAmount(tagItTags);
+=======
+
+    let tagsWithDuplicates = getTagsWithPostAmount(tagItTags);
+>>>>>>> master
 
     if (response.ok) {
       return tagsWithDuplicates;
@@ -431,24 +516,27 @@ const getTagsWithPostAmount = (array) => {
 
   const firstItem = array[0];
   firstItem.posts = 1;
-  let duplicates = [firstItem];
+  firstItem.tag = firstItem.tag.toLowerCase();
+  let duplicates = [];
+  duplicates.push(firstItem);
 
   for (let i = 0; i < array.length; i++) {
-    if (!duplicates.some(item => item.tag === array[i].tag)) {
+    if (!duplicates.some(item => item.tag.toLowerCase() === array[i].tag.toLowerCase())) {
       const newItem = array[i];
       newItem.posts = 1;
+      newItem.tag = newItem.tag.toLowerCase();
       duplicates.push(newItem);
     } else {
-      duplicates.map(item => {if (item.tag === array[i].tag) item.posts++});
+      duplicates.map(item => {if (item.tag.toLowerCase() === array[i].tag.toLowerCase()) item.posts++});
     }
   }
 
-  duplicates = duplicates.filter(item => item.tag !== "tagit_");
+  duplicates = duplicates.filter(item => item.tag !== "tagit_" && !item.tag.includes("tagit_comment"));
 
   // Removing the "tagit_" portion of the tags.
   duplicates.map(item => {
-      const splitTag = item.tag.split("_");
-      item.tag = splitTag[1].toLowerCase();
+    const splitTag = item.tag.split("_");
+    item.tag = splitTag[1].toLowerCase();
   });
 
   return duplicates;

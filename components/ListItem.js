@@ -4,33 +4,75 @@ import {
   ListItem as NBListItem,
   Text,
   Image,
+  Icon,
 } from "react-native-elements";
 import {MainContext} from "../contexts/MainContext";
 import {useMedia} from "../hooks/ApiHooks";
 import colors from "../global/colors.json";
-import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {MaterialCommunityIcons} from "@expo/vector-icons";
+
+// Formats the time separation between the current date and the date the post was made.
+const getTimeAddedString = (time) => {
+  let description = "";
+
+  let currentDate = new Date();
+  let timeAdded = new Date(time);
+ 
+  // Calculating the time difference in different units.
+  let secondsDifference = (currentDate.getTime() - timeAdded.getTime()) / 1000;
+  let minutesDifference = Math.abs(Math.round(secondsDifference / 60));
+  let hoursDifference = Math.floor(minutesDifference / 60);
+  let dayDifference = Math.floor(hoursDifference / 24);
+  let weekDifference = Math.floor(dayDifference / 7);
+  let monthDifference = Math.floor(dayDifference / 30);
+  let yearDifference = Math.floor(monthDifference / 12);
+
+  if (secondsDifference < 60) description = `Posted a few seconds ago`;
+  else if (minutesDifference < 60 && secondsDifference >= 60)
+    description = `Posted ${minutesDifference} ${minutesDifference == 1 ? "minute" : "minutes"
+      } ago`;
+  else if (hoursDifference > 0 && dayDifference < 1)
+    description = `Posted ${hoursDifference} ${hoursDifference == 1 ? "hour" : "hours"
+      } ago`;
+  else if (dayDifference > 0 && weekDifference < 1)
+    description = `Posted ${dayDifference} ${dayDifference == 1 ? "day" : "days"
+      } ago`;
+  else if (weekDifference > 0 && monthDifference < 1)
+    description = `Posted ${weekDifference} ${weekDifference == 1 ? "week" : "weeks"
+      } ago`;
+  else if (monthDifference > 0 && yearDifference < 1)
+    description = `Posted ${monthDifference} ${monthDifference == 1 ? "month" : "months"
+      } ago`;
+  else if (yearDifference > 0)
+    description = `Posted ${yearDifference} ${yearDifference == 1 ? "year" : "years"
+      } ago`;
+  return description;
+};
 
 const ListItem = ({singleMedia, navigation}) => {
   const {darkMode, update, isLoggedIn} = useContext(MainContext);
   const {likeMedia, removeLike, getFavourites} = useMedia(update);
-  const [currentLikes, setCurrentLikes] = useState({});
+  const [currentLikes, setCurrentLikes] = useState(0);
   const [liked, setLiked] = useState(false);
-
-
-  /*   console.log("Rendering item:", singleMedia.title); */
 
   let bgColor,
     headerColor,
     headerTintColor,
+    bgColorFaded,
+    postLabelColor,
     highlightColor = colors.highlight_color;
 
   if (darkMode) {
     bgColor = colors.dark_mode_bg;
     headerColor = colors.dark_mode_header;
+    bgColorFaded = colors.dark_mode_bg_faded;
+    postLabelColor = colors.light_mode_header_tint;
     headerTintColor = colors.dark_mode_header_tint;
   } else {
     bgColor = colors.light_mode_bg;
     headerColor = colors.light_mode_header;
+    bgColorFaded = colors.light_mode_header_faded;
+    postLabelColor = colors.dark_mode_header_tint;
     headerTintColor = colors.light_mode_header_tint;
   }
 
@@ -39,56 +81,26 @@ const ListItem = ({singleMedia, navigation}) => {
   // Removes or adds a like depending on the liked status.
   const toggleLike = async () => {
     setLiked(!liked);
-    if (liked) removeLike(singleMedia.file_id);
-    else likeMedia(singleMedia.file_id);
+    if (liked) await removeLike(singleMedia.file_id);
+    else await likeMedia(singleMedia.file_id);
     const newLikes = await getFavourites(singleMedia.file_id);
-    setCurrentLikes(newLikes);
-  }
-
-  // Formats the time separation between the current date and the date the post was made.
-  const getTimeAddedString = () => {
-    let description = "";
-
-    let currentDate = new Date();
-    let timeAdded = new Date(singleMedia.time_added);
-
-    // Calculating the time difference in different units.
-    let secondsDifference = (currentDate.getTime() - timeAdded.getTime()) / 1000;
-    let minutesDifference = Math.abs(Math.round(secondsDifference / 60));
-    let hoursDifference = Math.floor(minutesDifference / 60);
-    let dayDifference = Math.floor(hoursDifference / 24);
-    let weekDifference = Math.floor(dayDifference / 7);
-    let monthDifference = Math.floor(dayDifference / 30);
-    let yearDifference = Math.floor(monthDifference / 12);
-
-    if (secondsDifference < 60) description = `Posted a few seconds ago`;
-    else if (minutesDifference < 60 && secondsDifference >= 60)
-      description = `Posted ${minutesDifference} ${minutesDifference == 1 ? "minute" : "minutes"} ago`;
-    else if (hoursDifference > 0 && dayDifference < 1) description = `Posted ${hoursDifference} ${hoursDifference == 1 ? "hour" : "hours"} ago`;
-    else if (dayDifference > 1 && weekDifference < 1) description = `Posted ${dayDifference} ${dayDifference == 1 ? "day" : "days"} ago`;
-    else if (weekDifference > 0 && monthDifference < 1) description = `Posted ${weekDifference} ${weekDifference == 1 ? "week" : "weeks"} ago`;
-    else if (monthDifference > 0 && yearDifference < 1) description = `Posted ${monthDifference} ${monthDifference == 1 ? "month" : "months"} ago`;
-    else if (yearDifference > 0) description = `Posted ${yearDifference} ${yearDifference == 1 ? "year" : "years"} ago`;
-    return description;
-  }
+    setCurrentLikes(newLikes.amount);
+  };
 
   useEffect(() => {
-    if (isLoggedIn) {
-      setCurrentLikes(singleMedia.likes);
-      setLiked(singleMedia.likes.liked);
-    } else if (!isLoggedIn) {
-      setCurrentLikes({});
-      setLiked(false);
-    }
-    console.log(`ListItem ${singleMedia.title} rerendered.`);
-  }, [singleMedia])
+    setCurrentLikes(singleMedia.likes);
+    setLiked(singleMedia.postLiked);
+    console.log(`ListItem ${singleMedia.title} rendered.`);
+  }, [singleMedia]);
+
+/*   console.log("singlemedia is", singleMedia); */
 
   return (
     <NBListItem
       containerStyle={{
         backgroundColor: "transparent",
-        padding: 10,
-        paddingBottom: 5,
+        padding: 0,
+        paddingBottom: 1,
       }}
     >
       <NBListItem.Content>
@@ -100,42 +112,100 @@ const ListItem = ({singleMedia, navigation}) => {
             width: "100%",
             height: "100%",
             display: "flex",
-            elevation: 10,
-            borderRadius: 5,
+            borderRadius: 0,
             padding: 10,
-            backgroundColor: bgColor,
+            backgroundColor: bgColorFaded,
           }}
         >
           <View style={styles.postInfoContainer}>
             <TouchableOpacity style={styles.postInfo}>
-              <Image containerStyle={styles.postInfoImage} />
+              {singleMedia.userAvatar !== "" ? (
+                <Image
+                  source={{uri: singleMedia.userAvatar}}
+                  style={styles.postInfoImage}
+                  resizeMode="contain"
+                />
+              ) : (
+                <Icon
+                  size={45}
+                  name="person"
+                  style={styles.postInfoImage}
+                  color={headerTintColor}
+                />
+              )}
+
               <View style={styles.postInfoText}>
-                <Text style={{color: headerTintColor, fontFamily: 'AdventPro', }}>t/placeholder</Text>
+                <Text
+                  style={{color: headerTintColor, fontFamily: "AdventPro"}}
+                >
+                  t/{singleMedia.tag}
+                </Text>
                 {singleMedia.user && (
-                  <Text style={{color: headerTintColor, fontFamily: 'AdventPro', }}>
-                    Posted by /user/{singleMedia.user.username}
+                  <Text
+                    style={{color: headerTintColor, fontFamily: "AdventPro"}}
+                  >
+                    Posted by /user/{singleMedia.user}
                   </Text>
                 )}
               </View>
             </TouchableOpacity>
-            {currentLikes.amount >= 0 && <TouchableOpacity style={styles.likesContainer} onPress={toggleLike}>
-              <MaterialCommunityIcons name="arrow-up-bold-outline" color={currentLikes.liked ? highlightColor : headerTintColor} size={50} />
-              <Text style={{color: currentLikes.liked ? highlightColor : headerTintColor, fontSize: 15, fontFamily: 'AdventPro', }}>{currentLikes.amount}</Text>
-            </TouchableOpacity>}
+            {currentLikes >= 0 && isLoggedIn && (
+              <TouchableOpacity
+                style={styles.likesContainer}
+                onPress={toggleLike}
+              >
+                <MaterialCommunityIcons
+                  name="arrow-up-bold-outline"
+                  color={liked ? highlightColor : headerTintColor}
+                  size={50}
+                />
+                <Text
+                  style={{
+                    color: liked ? highlightColor : headerTintColor,
+                    fontSize: 15,
+                    fontFamily: "AdventPro",
+                  }}
+                >
+                  {currentLikes}
+                </Text>
+              </TouchableOpacity>
+            )}
+            {currentLikes >= 0 && !isLoggedIn && (
+              <View
+                style={styles.likesContainer}
+              >
+                <MaterialCommunityIcons
+                  name="arrow-up-bold-outline"
+                  color={headerTintColor}
+                  size={50}
+                />
+                <Text
+                  style={{
+                    color: headerTintColor,
+                    fontSize: 15,
+                    fontFamily: "AdventPro",
+                  }}
+                >
+                  {currentLikes}
+                </Text>
+              </View>
+            )}
           </View>
-          <TouchableOpacity style={styles.lowerContainer}
+          <TouchableOpacity
+            style={styles.lowerContainer}
             onPress={() => {
               navigation.navigate("Post", {
                 media: {singleMedia},
               });
-            }}>
+            }}
+          >
             <View style={styles.postTitle}>
               <Text
                 style={{
                   color: headerTintColor,
                   fontSize: 25,
                   paddingBottom: 10,
-                  fontFamily: 'AdventPro',
+                  fontFamily: "AdventPro",
                 }}
               >
                 {singleMedia.title}
@@ -145,19 +215,35 @@ const ListItem = ({singleMedia, navigation}) => {
                   color: headerTintColor,
                   fontSize: 13,
                   paddingBottom: 5,
-                  fontFamily: 'AdventPro',
+                  fontFamily: "AdventPro",
                 }}
               >
-                {getTimeAddedString()}
+                {getTimeAddedString(singleMedia.time_added)}
               </Text>
             </View>
             <Image
-              resizeMode="contain"
+              resizeMode="cover"
               containerStyle={styles.image}
               source={{
-                uri: `${url}${singleMedia.thumbnails.w320}`,
+                uri: `${url}${singleMedia.thumbnails}`,
               }}
             />
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                height: 70,
+                position: "absolute",
+                bottom: 0,
+                backgroundColor: "black",
+                opacity: 0.9,
+              }}
+            >
+              <Text style={{color: "white", fontFamily: "AdventPro"}}>
+                View full post
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
       </NBListItem.Content>
@@ -201,11 +287,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   postInfoImage: {
-    width: 60,
-    height: 60,
-    backgroundColor: "blue",
+    width: 55,
+    height: 55,
+    /*   backgroundColor: "black", */
     marginRight: 20,
     borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 0,
   },
   postTitle: {
     flex: 1,

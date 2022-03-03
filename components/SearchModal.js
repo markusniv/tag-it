@@ -1,13 +1,13 @@
-import React, {useContext, useState, useCallback, useEffect} from "react";
+import React, { useContext, useState, useCallback, useEffect } from "react";
 import Modal from "react-native-modal";
-import {View, FlatList, Text, Keyboard, TouchableOpacity} from "react-native";
-import {SearchBar, Icon} from "react-native-elements";
-import {MainContext} from "../contexts/MainContext";
+import { View, FlatList, Text, Keyboard, TouchableOpacity } from "react-native";
+import { SearchBar, Icon } from "react-native-elements";
+import { MainContext } from "../contexts/MainContext";
 import colors from "../global/colors.json";
-import {getTags} from "../hooks/ApiHooks";
+import { getTags } from "../hooks/ApiHooks";
 
 const getColors = () => {
-  const {darkMode} = useContext(MainContext);
+  const { darkMode } = useContext(MainContext);
 
   let bgColor,
     headerColor,
@@ -26,50 +26,72 @@ const getColors = () => {
     headerTintColor = colors.light_mode_header_tint;
     searchColor = colors.dark_mode_bg;
   }
-  return {bgColor, headerColor, headerTintColor, highlightColor, searchColor};
+  return { bgColor, headerColor, headerTintColor, highlightColor, searchColor };
 };
 
-const SearchListItem = ({item}) => {
+const SearchListItem = ({ item }) => {
+  const { setCurrentTag, setSearching } = useContext(MainContext);
   const colors = getColors();
+
   return (
-    <TouchableOpacity
+    <View
       style={{
         width: "100%",
-        borderLeftWidth: 1,
-        padding: 15,
+        padding: 3,
+        alignItems: "center",
         flexDirection: "row",
+        backgroundColor: colors.bgColor,
         justifyContent: "space-between",
       }}
     >
-      <View>
-        <Text
-          style={{
-            fontSize: 20,
-            color: colors.headerTintColor,
-            marginBottom: 2,
-            fontFamily: 'AdventPro',
-          }}
-        >
-          t/{item.tag}
-        </Text>
-        <Text
-          style={{
-            fontSize: 15,
-            color: colors.headerTintColor,
-            marginBottom: 5,
-            fontFamily: 'AdventPro',
-          }}
-        >
-          {item.posts} {item.posts == 1 ? "post" : "posts"}
-        </Text>
-      </View>
-      <Icon
-        style={{height: 50, width: 50}}
-        name="arrow-forward"
-        color={colors.headerTintColor}
-        size={50}
-      />
-    </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          width: "100%",
+          padding: 10,
+          margin: 0,
+          alignItems: "center",
+          flexDirection: "row",
+          backgroundColor: colors.headerColor,
+          justifyContent: "space-between",
+          borderRadius: 7,
+          borderLeftWidth: 0,
+          elevation: 10,
+        }}
+        onPress={() => {
+          setCurrentTag(item.tag);
+          setSearching(false);
+        }}
+      >
+        <View>
+          <Text
+            style={{
+              fontSize: 20,
+              color: colors.headerTintColor,
+              marginBottom: 2,
+              fontFamily: "AdventPro",
+            }}
+          >
+            t/{item.tag}
+          </Text>
+          <Text
+            style={{
+              fontSize: 15,
+              color: colors.headerTintColor,
+              marginBottom: 5,
+              fontFamily: "AdventPro",
+            }}
+          >
+            {item.posts} {item.posts == 1 ? "post" : "posts"}
+          </Text>
+        </View>
+        <Icon
+          style={{ height: 50, width: 50 }}
+          name="arrow-forward"
+          color={colors.headerTintColor}
+          size={50}
+        />
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -101,7 +123,7 @@ const EmptyListIndicator = () => {
 
 const SearchModal = () => {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-  const {searching, setSearching} = useContext(MainContext);
+  const { searching, setSearching, currentTag, update } = useContext(MainContext);
   const [currentInput, setCurrentInput] = useState("");
   const [tags, setTags] = useState([]);
   const [showedTags, setShowedTags] = useState([]);
@@ -110,7 +132,7 @@ const SearchModal = () => {
 
   /** Used in the renderItem prop inside the FlatList. */
   const renderItem = useCallback(
-    ({item}) => <SearchListItem item={item} />,
+    ({ item }) => <SearchListItem item={item} />,
     []
   );
 
@@ -122,15 +144,20 @@ const SearchModal = () => {
       return;
     }
 
-    const filtered = tags.filter((t) => t.tag.match(inputLowerCase));
+    let filtered = tags.filter((t) => t.tag.match(inputLowerCase) && !t.tag.includes("comment"));
+    filtered = filtered.sort((a, b) => b.posts - a.posts);
+    filtered = filtered.slice(0, 10);
     setShowedTags(filtered);
   };
 
-  useEffect(() => {
+
+  const updateTags = () => {
     getTags().then((allTags) => {
+      allTags = allTags.sort((a, b) => b.posts - a.posts);
       setTags(allTags);
+
+      allTags = allTags.slice(0, 10);
       setShowedTags(allTags);
-      console.log("tags set: ", tags);
 
       const keyboardDidShowListener = Keyboard.addListener(
         "keyboardDidShow",
@@ -146,12 +173,20 @@ const SearchModal = () => {
         keyboardDidShowListener.remove();
       };
     });
+  }
+
+  useEffect(() => {
+    updateTags();
   }, []);
+
+  useEffect(() => {
+    updateTags();
+  }, [update])
 
   const keyExtractor = useCallback((item, index) => index.toString(), []);
 
   return (
-    <View style={{padidng: 0}}>
+    <View style={{ padidng: 0 }}>
       <Modal
         animationIn="slideInDown"
         animationOut="slideOutUp"
@@ -214,7 +249,13 @@ const SearchModal = () => {
               filterTags(value);
             }}
           />
-          <View style={{height: "100%", marginRight: 30, transform: [{rotate: '90deg'}]}}>
+          <View
+            style={{
+              height: "100%",
+              marginRight: 30,
+              transform: [{ rotate: "90deg" }],
+            }}
+          >
             <Icon
               name="back"
               color="black"
@@ -223,7 +264,6 @@ const SearchModal = () => {
               onPress={() => setSearching(false)}
             />
           </View>
-
         </View>
 
         <FlatList

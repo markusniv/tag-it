@@ -9,17 +9,19 @@ const MainProvider = ({children}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({});
   const [update, setUpdate] = useState(false);
+  const [commentUpdate, setCommentUpdate] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [searching, setSearching] = useState(false);
+  const [currentTag, setCurrentTag] = useState("");
+  const [confirmLogout, setConfirmLogout] = useState(false);
 
   const [loaded] = useFonts({
-    AdventPro: require('../assets/fonts/AdventPro.ttf'),
+    AdventPro: require("../assets/fonts/AdventPro.ttf"),
   });
 
   if (!loaded) {
     return null;
   }
-
 
   return (
     <MainContext.Provider
@@ -30,13 +32,19 @@ const MainProvider = ({children}) => {
         setUser,
         update,
         setUpdate,
+        commentUpdate,
+        setCommentUpdate,
         darkMode,
         setDarkMode,
         searchInput,
         setSearchInput,
         searching,
         setSearching,
-        loaded
+        loaded,
+        currentTag,
+        setCurrentTag,
+        confirmLogout,
+        setConfirmLogout,
       }}
     >
       {children}
