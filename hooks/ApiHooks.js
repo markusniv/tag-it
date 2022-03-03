@@ -183,6 +183,8 @@ const useMedia = (update) => {
         array.map(async (item) => {
           const response = await fetch(url + item.file_id);
           const json = await response.json();
+          const userAvatar = await getUserAvatar(item.user_id);
+          json.userAvatar = userAvatar;
           return json;
         })
       );

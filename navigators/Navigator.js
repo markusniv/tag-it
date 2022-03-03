@@ -231,6 +231,23 @@ const BottomNav = () => {
             headerStyle: {
               backgroundColor: colors.headerColor,
             },
+           header : () => (
+            <View style={{
+              width: "100%",
+              height: 150,
+              justifyContent: "space-around",
+              paddingTop: 20,
+              paddingBottom: 65,
+              alignItems: "center",
+              backgroundColor: colors.headerColor,
+            }}
+            >
+
+              <Text style={{color: colors.headerTintColor, fontSize: 24, fontFamily: 'AdventPro',}}>
+                Profile
+              </Text>
+            </View>
+            ),
             headerTintColor: colors.headerTintColor,
           }}
         />

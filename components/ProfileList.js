@@ -17,12 +17,12 @@ const ProfileList = ({navigation}) => {
     <View style={{height: '100%'}}>
       <FlatList
         horizontal={true}
-        style={{backgroundColor: "pink",}}
+        style={{backgroundColor: 'transparent',}}
         data={userMediaArray}
         keyExtractor={(item, index) => index.toString()}
         renderItem={
           ({item}) => <ProfileListItem
-            singlePost={item}
+            singleMedia={item}
           navigation={navigation}/>}
       />
     </View>

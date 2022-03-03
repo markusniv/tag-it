@@ -4,22 +4,25 @@ import {
   ListItem as NBListItem,
   Text,
 } from "react-native-elements";
-import {Image, TouchableOpacity, View} from "react-native";
+import {Image, StyleSheet, TouchableOpacity, View} from "react-native";
 
 
-const ProfileListItem = ({singlePost, navigation}) => {
+const ProfileListItem = ({singleMedia, navigation}) => {
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
 
-  console.log(singlePost)
+  console.log(singleMedia)
 
   return (
 
 
     <NBListItem
       containerStyle={{
-        backgroundColor: "red",
+        backgroundColor: "rgba(0, 0, 0, 0.3)",
+        borderWidth: 2,
+        borderColor: 'rgba(255 ,0, 0, 0.3)',
+        borderRadius: 20,
         height: 200,
-        width: 200,
+        width: 150,
         margin: 10,
         padding: 0,
         paddingBottom: 1,
@@ -40,14 +43,18 @@ const ProfileListItem = ({singlePost, navigation}) => {
         >
           <TouchableOpacity style={{width: '100%', height: '100%'}} onPress={() => {
             navigation.navigate("Post", {
-              media: {singlePost},
+              media: {singleMedia},
             });
           }}>
             <View style={{height: '100%', flex: 1, width: '100%', alignItems: 'center'}}>
-              <Image source={{uri: `${url}${singlePost.thumbnails.w160}`}}
+              <Text style={{fontWeight: 'bold', marginTop: 5, color: 'white'}}>{singleMedia.title}</Text>
+
+              <View style={{flex: 1, justifyContent: 'flex-end', width: '100%', height: '100%', alignItems: 'center'}}>
+              <Image source={{uri: `${url}${singleMedia.thumbnails.w160}`}}
                      resizeMode='cover'
-                     style={{width: '50%', height: '50%',}}
+                     style={{width: '70%', height: '70%' }}
               />
+              </View>
             </View>
           </TouchableOpacity>
 
