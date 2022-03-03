@@ -6,20 +6,23 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   SafeAreaView,
-  TouchableOpacity, FlatList
 } from "react-native";
-import {Button, Text, Icon} from "react-native-elements";
+import {Text} from "react-native-elements";
 import {MainContext} from "../contexts/MainContext";
 import colors from "../global/colors.json";
 import PropTypes from "prop-types";
 import MyListItem from "../components/MyListItem";
+import ProfileList from "../components/ProfileList";
 
 
 
 
-const Profile = ({singleMedia}) => {
+
+
+const Profile = ({navigation}) => {
   const {user} = useContext(MainContext);
-  console.log({user});
+
+
 
   return (
 
@@ -43,22 +46,22 @@ const Profile = ({singleMedia}) => {
           backgroundColor: colors.dark_mode_bg
         }}>
         <ScrollView style={{flex: 1, width: '100%'}} contentContainerStyle={{flexGrow: 1}}>
+          <View style={{
+            flex: 1,
+            top: '20%',
+            width: '80%',
+            alignSelf: 'center'
+          }}>
           <Text
             style={{
             alignSelf: 'center',
-            position: "absolute",
-            top: '20%',
             fontSize: 20,
+              margin:10,
             fontFamily: 'AdventPro',
             fontWeight: 'bold',
             color: 'white'
           }}>{user.username}</Text>
-          <View style={{
-            position: 'absolute',
-            top: '30%',
-            width: '80%',
-            alignSelf: 'center'
-          }}>
+
             <Text style={{
               fontSize: 16,
               color: 'white',
@@ -67,17 +70,14 @@ const Profile = ({singleMedia}) => {
               Consequuntur ex exercitationem illo ipsa modi nam optio sunt
               suscipit vel vitae! adfsd sdfg fd</Text>
           </View>
+          <View style={{flex: 1, marginTop: 150}}>
           <Text style={{
-            position: "absolute",
-            marginTop: 270,
             alignSelf: 'center',
             fontSize: 16,
             color: 'white',
             fontFamily: 'AdventPro',
           }}> </Text>
           <Text style={{
-            position: "absolute",
-            marginTop: 300,
             alignSelf: 'center',
             fontSize: 16,
             color: 'white',
@@ -86,16 +86,12 @@ const Profile = ({singleMedia}) => {
           <View style={{
             borderBottomColor: 'white',
             borderBottomWidth: StyleSheet.hairlineWidth,
-            position: 'absolute',
             width: '90%',
             alignSelf: 'center',
-            marginTop: 350,
             color: 'white',
           }}
           />
           <Text style={{
-            position: "absolute",
-            marginTop: 360,
             alignSelf: 'center',
             fontWeight: 'bold',
             fontSize: 24,
@@ -105,15 +101,15 @@ const Profile = ({singleMedia}) => {
           <View style={{
             borderBottomColor: 'white',
             borderBottomWidth: StyleSheet.hairlineWidth,
-            position: 'absolute',
             width: '90%',
             alignSelf: 'center',
-            marginTop: 400,
           }}
           />
-          <View style={{width: '100%', position: 'absolute', bottom: 20, backgroundColor: 'red'}}>
-
           </View>
+
+            <View style={{width: '100%', height: 220, flex: 1, marginTop: 50, marginHorizontal: 10}}>
+              <ProfileList navigation={navigation}/>
+            </View>
         </ScrollView>
         </SafeAreaView>
       </TouchableWithoutFeedback>
