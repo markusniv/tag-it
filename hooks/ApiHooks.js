@@ -12,13 +12,18 @@ const useMedia = (update) => {
   const [mediaArray, setMediaArray] = useState(JSON);
   const [userMediaArray, setUserMediaArray] = useState(JSON);
   const [commentArray, setCommentArray] = useState(JSON);
-  const {isLoggedIn, user, setUpdate} = useContext(MainContext);
+  const {isLoggedIn, user, setUpdate, loadingMedia, setLoadingMedia, firstFetch, setFirstFetch} = useContext(MainContext);
 
   const getMedia = async () => {
 
     const token = await AsyncStorage.getItem('userToken');
     const url = apiUrl + "media/";
     try {
+      
+      if (firstFetch) {
+        await setLoadingMedia(true);
+        console.log("loading media", true);
+      }
 
       const response = await fetch(`${apiUrl}tags/${tag}`);
       const array = await response.json();
@@ -67,6 +72,14 @@ const useMedia = (update) => {
       json = json.filter(item => item != undefined);
       setMediaArray(json);
       setUpdate(false);
+      
+      if (firstFetch) {
+        console.log("loading media", false);
+        await setFirstFetch(false);
+        return;
+      }
+      await setLoadingMedia(false);
+
     } catch (e) {
       throw new Error(e.message);
     }
