@@ -7,18 +7,13 @@ import LottieView from "lottie-react-native";
 /** Displays a modal with a loading animation when opening the application. */
 const LoadingModal = ({ visible }) => {
  
-/* 
-  useEffect(() => {
-    if ()
-  }, [visible])
- */
-
   return (
     <View style={{ padding: 0 }}>
       <Modal
         animationIn="fadeIn"
         animationOut="fadeOut"
-        animationInTiming={400}
+        animationInTiming={0}
+        animationOutTiming={400}
         backdropTransitionOutTiming={0}
         isVisible={visible}
         style={{

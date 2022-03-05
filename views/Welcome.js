@@ -13,9 +13,9 @@ import { useUser } from "../hooks/ApiHooks";
 import { useLogin } from "../hooks/ApiHooks";
 
 const Welcome = ({ navigation }) => {
-  const { setUser, setIsLoggedIn, setDarkMode, setUpdate } =
+  const { setUser, setIsLoggedIn, setDarkMode, setUpdate, setFirstFetch } =
     useContext(MainContext);
-    const {postLogin} = useLogin();
+  const { postLogin } = useLogin();
 
   const checkToken = async () => {
     const { getUserByToken } = useUser();
@@ -26,7 +26,8 @@ const Welcome = ({ navigation }) => {
       console.log(user);
       if (!user) {
         return new Error("Failed to log in!");
-      } else if (user.user_id == 676) { // user_id 676 is the default user.
+      } else if (user.user_id == 676) {
+        // user_id 676 is the default user.
         setUser(user);
         console.log("Using default user.");
         navigation.navigate("Tabs");
@@ -55,34 +56,33 @@ const Welcome = ({ navigation }) => {
     checkSettings();
     checkToken();
   }, []);
-  
+
   const logIn = () => navigation.navigate("Login");
   const register = () => navigation.navigate("Register");
 
   const skip = async () => {
     await useDefaultUser();
+    setFirstFetch(true);
     await navigation.navigate("Tabs");
-  }
+  };
 
   // Registers the user with default credentials in order to gain access to certain data.
   // Default user has restricted access in the application.
   const useDefaultUser = async () => {
     const data = {
-      "username": "default",
-      "password": "default",
-    }
+      username: "default",
+      password: "default",
+    };
     console.log(data);
     try {
       const userData = await postLogin(data);
-      await AsyncStorage.setItem('userToken', userData.token);
+      await AsyncStorage.setItem("userToken", userData.token);
       setUser(userData.user);
       setUpdate(true);
-      navigation.navigate("Tabs");
     } catch (error) {
       console.error(error);
     }
   };
-
 
   return (
     <SafeAreaView style={styles.container}>

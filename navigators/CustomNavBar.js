@@ -10,6 +10,7 @@ import { Icon } from "react-native-elements";
 import { useFonts } from "expo-font";
 import colors from "../global/colors.json";
 import { MainContext } from "../contexts/MainContext";
+import MoreModal from "../components/MoreModal";
 
 const getColors = () => {
   const { darkMode } = useContext(MainContext);
@@ -37,7 +38,7 @@ const getColors = () => {
 const CustomNavBar = ({ state, descriptors, navigation, position }) => {
   const colors = getColors();
   const [keyboardShown, setKeyboardShown] = useState(false);
-
+  const [showMore, setShowMore] = useState(false);
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
@@ -164,14 +165,24 @@ const CustomNavBar = ({ state, descriptors, navigation, position }) => {
                 </View>
               );
             })}
-            <TouchableOpacity style={styles.btnContainer}>
-                <Icon
-                  style={styles.logo_tiny}
-                  name="more-horiz"
-                  type="material"
-                  color={colors.headerTintColor}
-                  size={30}
-                />
+            <TouchableOpacity style={styles.btnContainer} onPress={() => setShowMore(true)}>
+              <Icon
+                style={styles.logo_tiny}
+                name="more-horiz"
+                type="material"
+                color={colors.headerTintColor}
+                size={30}
+              />
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: colors.headerTintColor,
+                  fontFamily: "AdventPro",
+                }}
+              >
+                More
+              </Text>
+              <MoreModal visible={showMore} setVisible={setShowMore}/>
             </TouchableOpacity>
           </View>
         </View>

@@ -159,12 +159,5 @@ const ConfirmModal = ({reason, id, visible, setVisible, deleteUpdate, setDeleteU
   );
 };
 
-const styles = StyleSheet.create({
-  btnStyle: {
-    backgroundColor: "#FB4E4E",
-    width: "100%",
-    height: "100%",
-  },
-});
 
 export default ConfirmModal;

@@ -62,7 +62,7 @@ const HomeTopNavigator = () => {
           fontSize: 18,
         },
         tabBarIndicatorStyle: { backgroundColor: colors.highlightColor },
-        lazy: true,
+        /*     lazy: true, */
       }}
       screenListeners={() => setSearchInput("")}
     >
@@ -126,6 +126,128 @@ const BottomNav = () => {
   }, []);
 
   const colors = getColors();
+
+  if (isLoggedIn) {
+    return (
+      <Tab.Navigator
+        initialRouteName="Home"
+        tabBar={(props) => <CustomNavBar {...props} />}
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeTopNavigator}
+          options={{
+            headerStyle: {
+              backgroundColor: colors.headerColor,
+              height: 130,
+            },
+            header: () => (
+              <View
+                style={{
+                  width: "100%",
+                  height: 130,
+                  justifyContent: "space-around",
+                  paddingTop: 20,
+                  paddingBottom: 20,
+                  alignItems: "center",
+                  backgroundColor: colors.headerColor,
+                }}
+              >
+                <View
+                  style={{
+                    width: "100%",
+                    padding: 10,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent:
+                      currentTag === "" ? "flex-end" : "space-between",
+                  }}
+                >
+                  {currentTag !== "" && (
+                    <Icon
+                      style={{ height: 50, width: 50 }}
+                      name="arrow-back"
+                      color={colors.headerTintColor}
+                      size={40}
+                      onPress={() => setCurrentTag("")}
+                    />
+                  )}
+                  <Icon
+                    style={{ height: 50, width: 50 }}
+                    name="search"
+                    color={colors.headerTintColor}
+                    size={40}
+                    onPress={() => setSearching(true)}
+                  />
+                </View>
+
+                <SearchModal />
+
+                <Text
+                  style={{
+                    color: colors.headerTintColor,
+                    fontSize: 24,
+                    fontFamily: "AdventPro",
+                  }}
+                >
+                  {currentTag === "" ? "Home" : `t/${currentTag}`}
+                </Text>
+              </View>
+            ),
+            headerTintColor: colors.headerTintColor,
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            headerStyle: {
+              backgroundColor: colors.headerColor,
+            },
+            headerTintColor: colors.headerTintColor,
+          }}
+        />
+        <Tab.Screen
+          name="Create"
+          component={Create}
+          options={{
+            headerStyle: {
+              backgroundColor: colors.headerColor,
+              height: StatusBar.currentHeight,
+            },
+            headerTintColor: colors.headerTintColor,
+          }}
+        />
+        <Tab.Screen
+          name="Settings"
+          component={Settings}
+          options={{
+            headerStyle: {
+              backgroundColor: colors.headerColor,
+            },
+            headerTitleAlign: "center",
+            headerTintColor: colors.headerTintColor,
+            headerTitleStyle: {
+              fontFamily: "AdventPro",
+            },
+          }}
+        />
+
+        <Tab.Screen
+          name="Post"
+          component={Post}
+          options={{
+            headerStyle: {
+              backgroundColor: colors.headerColor,
+              height: StatusBar.currentHeight,
+            },
+            headerTintColor: colors.headerTintColor,
+          }}
+        />
+      </Tab.Navigator>
+    );
+  }
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -209,31 +331,6 @@ const BottomNav = () => {
           headerTintColor: colors.headerTintColor,
         }}
       />
-      {isLoggedIn && (
-        <Tab.Screen
-          name="Create"
-          component={Create}
-          options={{
-            headerStyle: {
-              backgroundColor: colors.headerColor,
-              height: StatusBar.currentHeight,
-            },
-            headerTintColor: colors.headerTintColor,
-          }}
-        />
-      )}
-      {isLoggedIn && (
-        <Tab.Screen
-          name="Profile"
-          component={Profile}
-          options={{
-            headerStyle: {
-              backgroundColor: colors.headerColor,
-            },
-            headerTintColor: colors.headerTintColor,
-          }}
-        />
-      )}
       <Tab.Screen
         name="Post"
         component={Post}
@@ -254,7 +351,7 @@ const Navigator = () => {
 
   return (
     <NavigationContainer>
-      <LoadingModal visible={loadingMedia}/>
+      <LoadingModal visible={loadingMedia} />
       <StackScreen />
     </NavigationContainer>
   );
