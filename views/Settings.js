@@ -20,7 +20,6 @@ const Settings = ({navigation}) => {
     setDarkMode,
     confirmLogout,
     setConfirmLogout,
-    setFirstFetch,
   } = useContext(MainContext);
   const [confirmVisible, setConfirmVisible] = useState(false);
   let bgColor,
@@ -44,6 +43,7 @@ const Settings = ({navigation}) => {
     bgColorFaded = colors.light_mode_header_faded;
   }
 
+  /** Logs out the user and navigates to the Welcome screen. */
   const logout = () => {
     AsyncStorage.clear();
     setIsLoggedIn(false);
@@ -57,8 +57,10 @@ const Settings = ({navigation}) => {
     }
   }, [confirmLogout]);
 
+  /** Displays the ConfirmModal.js */
   const showConfirm = () => setConfirmVisible(true);
 
+  /** Navigates to the Login screen */
   const showLogin = () => navigation.navigate("Login");
 
   return (

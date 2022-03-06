@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import Modal from "react-native-modal";
-import { View, Text, Image, Dimensions, ImageBackground } from "react-native";
+import { View, Text, ImageBackground } from "react-native";
 import LottieView from "lottie-react-native";
 
 
