@@ -62,7 +62,7 @@ const HomeTopNavigator = () => {
           fontSize: 18,
         },
         tabBarIndicatorStyle: { backgroundColor: colors.highlightColor },
-        /*     lazy: true, */
+        lazy: true,
       }}
       screenListeners={() => setSearchInput("")}
     >
