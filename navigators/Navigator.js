@@ -1,19 +1,19 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import CustomNavBar from "./CustomNavBar";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import {NavigationContainer} from "@react-navigation/native";
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
 import Home from "../views/Home";
 import Login from "../views/Login";
 import Profile from "../views/Profile";
 import Create from "../views/Create";
 import Post from "../views/Post";
 import Popular from "../views/Popular";
-import { View, Text, StatusBar, ActivityIndicator, Image } from "react-native";
-import { Icon } from "react-native-elements";
+import {View, Text, StatusBar, ActivityIndicator, Image} from "react-native";
+import {Icon} from "react-native-elements";
 import Settings from "../views/Settings";
-import { MainContext } from "../contexts/MainContext";
+import {MainContext} from "../contexts/MainContext";
 import colors from "../global/colors.json";
 import Welcome from "../views/Welcome";
 import SearchModal from "../components/SearchModal";
@@ -26,7 +26,7 @@ const Stack = createNativeStackNavigator();
 const HomeTopTab = createMaterialTopTabNavigator();
 
 const getColors = () => {
-  const { darkMode } = useContext(MainContext);
+  const {darkMode} = useContext(MainContext);
 
   let bgColor,
     headerColor,
@@ -45,24 +45,24 @@ const getColors = () => {
     headerTintColor = colors.light_mode_header_tint;
     searchColor = colors.dark_mode_bg;
   }
-  return { bgColor, headerColor, headerTintColor, highlightColor, searchColor };
+  return {bgColor, headerColor, headerTintColor, highlightColor, searchColor};
 };
 
 const HomeTopNavigator = () => {
   const colors = getColors();
-  const { setSearchInput } = useContext(MainContext);
+  const {setSearchInput} = useContext(MainContext);
 
   return (
     <HomeTopTab.Navigator
       screenOptions={{
-        tabBarStyle: { backgroundColor: colors.headerColor },
+        tabBarStyle: {backgroundColor: colors.headerColor},
         tabBarLabelStyle: {
           color: colors.headerTintColor,
           fontFamily: "AdventPro",
           fontSize: 18,
         },
-        tabBarIndicatorStyle: { backgroundColor: colors.highlightColor },
-        /*     lazy: true, */
+        tabBarIndicatorStyle: {backgroundColor: colors.highlightColor},
+        lazy: true,
       }}
       screenListeners={() => setSearchInput("")}
     >
@@ -118,7 +118,7 @@ const StackScreen = () => {
 };
 
 const BottomNav = () => {
-  const { isLoggedIn, setSearching, currentTag, setCurrentTag } =
+  const {isLoggedIn, setSearching, currentTag, setCurrentTag} =
     useContext(MainContext);
 
   useEffect(() => {
@@ -165,7 +165,7 @@ const BottomNav = () => {
                 >
                   {currentTag !== "" && (
                     <Icon
-                      style={{ height: 50, width: 50 }}
+                      style={{height: 50, width: 50}}
                       name="arrow-back"
                       color={colors.headerTintColor}
                       size={40}
@@ -173,7 +173,7 @@ const BottomNav = () => {
                     />
                   )}
                   <Icon
-                    style={{ height: 50, width: 50 }}
+                    style={{height: 50, width: 50}}
                     name="search"
                     color={colors.headerTintColor}
                     size={40}
@@ -299,7 +299,7 @@ const BottomNav = () => {
               >
                 {currentTag !== "" && (
                   <Icon
-                    style={{ height: 50, width: 50 }}
+                    style={{height: 50, width: 50}}
                     name="arrow-back"
                     color={colors.headerTintColor}
                     size={40}
@@ -307,7 +307,7 @@ const BottomNav = () => {
                   />
                 )}
                 <Icon
-                  style={{ height: 50, width: 50 }}
+                  style={{height: 50, width: 50}}
                   name="search"
                   color={colors.headerTintColor}
                   size={40}
@@ -347,7 +347,7 @@ const BottomNav = () => {
 };
 
 const Navigator = () => {
-  const { loadingMedia } = useContext(MainContext);
+  const {loadingMedia} = useContext(MainContext);
 
   return (
     <NavigationContainer>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {
   Text,
   View,
@@ -6,13 +6,13 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
-import { Switch } from "react-native-elements";
-import { MainContext } from "../contexts/MainContext";
+import {Switch} from "react-native-elements";
+import {MainContext} from "../contexts/MainContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import colors from "../global/colors.json";
 import ConfirmModal from "../components/ConfirmModal";
 
-const Settings = ({ navigation }) => {
+const Settings = ({navigation}) => {
   const {
     isLoggedIn,
     setIsLoggedIn,
@@ -92,7 +92,7 @@ const Settings = ({ navigation }) => {
         />
 
         {/* Switch container */}
-        <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <View style={{alignItems: "center", justifyContent: "center"}}>
           {/* Dark mode switch */}
           <View style={styles.switchContainer}>
             <Text
@@ -120,7 +120,7 @@ const Settings = ({ navigation }) => {
           </View>
         </View>
 
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <View style={{justifyContent: "center", alignItems: "center"}}>
           <TouchableOpacity
             style={{
               borderRadius: 10,
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   switch: {
-    transform: [{ scaleX: 1.6 }, { scaleY: 1.6 }],
+    transform: [{scaleX: 1.6}, {scaleY: 1.6}],
     marginRight: 16,
   },
 });

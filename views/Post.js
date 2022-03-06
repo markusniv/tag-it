@@ -15,6 +15,8 @@ import {Icon} from 'react-native-elements/dist/icons/Icon';
 import CommentImage from '../images/comment.png';
 import {useFocusEffect} from "@react-navigation/native";
 import ConfirmModal from '../components/ConfirmModal';
+import LottieView from "lottie-react-native";
+
 
 const Post = ({navigation, route}) => {
   const video = React.useRef(null);
@@ -34,9 +36,10 @@ const Post = ({navigation, route}) => {
   const [commentInput, setCommentInput] = useState('');
   const [activated, setActivated] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingComments, setLoadingComments] = useState(true);
 
   const {getComments} = useMedia();
-  const [commentArray, setCommentArray] = useState({})
+  const [commentArray, setCommentArray] = useState([])
 
   const loadComments = async () => {
     const comments = await getComments(singleMedia.file_id)
@@ -51,6 +54,7 @@ const Post = ({navigation, route}) => {
 
   if (darkMode) bgColor = colors.dark_mode_bg;
 
+  // Only load comments when screen is focused
   useFocusEffect(
     React.useCallback(() => {
       loadComments();
@@ -60,6 +64,12 @@ const Post = ({navigation, route}) => {
     }, [singleMedia, commentUpdate])
   );
 
+  // Check if comments loaded already, and if so, change loading status to false
+  useEffect(() => {
+    if (commentArray.length !== 0) setLoadingComments(false);
+  }, [commentArray])
+
+  // If deleting a comment finished correctly, navigate back to Home screen
   useEffect(() => {
     if (deleteUpdate) navigation.navigate("Home");
   }, [deleteUpdate])
@@ -208,11 +218,21 @@ const Post = ({navigation, route}) => {
           </View>}
           <Divider style={{width: "95%", alignSelf: "center", }} />
           <View style={styles.commentSection}>
-            {commentArray != {} &&
-              <CommentList
-                commentArray={commentArray}
+            {/* When loading comments, display a loading animation */}
+            {(!loadingComments) ? (<CommentList
+              commentArray={commentArray}
+            />) : (
+              <LottieView
+                source={require("../animations/88404-loading-bubbles.json")}
+                autoPlay
+                loop
+                style={{
+                  height: "50%",
+                  backgroundColor: "transparent",
+                  alignSelf: "center"
+                }}
               />
-            }
+            )}
           </View>
 
         </ScrollView>
@@ -233,6 +253,9 @@ const styles = StyleSheet.create({
     marginTop: 5,
     paddingHorizontal: 10,
     paddingVertical: 10,
+  },
+  commentSection: {
+    width: "100%",
   },
   createComment: {
     flex: 1,
