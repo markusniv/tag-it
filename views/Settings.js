@@ -44,9 +44,9 @@ const Settings = ({navigation}) => {
     bgColorFaded = colors.light_mode_header_faded;
   }
 
-  const logout = async () => {
+  const logout = () => {
+    AsyncStorage.clear();
     setIsLoggedIn(false);
-    await AsyncStorage.clear();
     navigation.navigate("Welcome");
   };
 
