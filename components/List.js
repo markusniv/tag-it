@@ -35,7 +35,6 @@ const List = ({navigation}) => {
     return sliced;
   }
 
-  // Renders the list items inside the FlatList.
   const renderItem = useCallback(
     ({item}) => <ListItem navigation={navigation} singleMedia={item} />,
     []
@@ -44,18 +43,13 @@ const List = ({navigation}) => {
   const keyExtractor = useCallback((item, index) => index.toString(), []);
 
 
-  // Adjusts the amount of displayed in the FlatList.
+  // Adjusts the amount of posts displayed in the FlatList.
   const onEndReached = () => {
     const mediaLength = Object.keys(mediaArray).length;
     if (loadCapacity < mediaLength) {
       if (loadCapacity + LOAD_SIZE >= mediaLength) setLoadCapacity(mediaLength);
       else if (loadCapacity + LOAD_SIZE < mediaLength) setLoadCapacity(loadCapacity + LOAD_SIZE);
     }
-    console.log("Load capacity", loadCapacity, "mediaLength", mediaLength);
-  }
-
-  const onRefresh = () => {
-    setUpdate(true);
   }
 
   useEffect(() => {
@@ -95,7 +89,7 @@ const List = ({navigation}) => {
         refreshControl={
           <RefreshControl
             refreshing={update}
-            onRefresh={onRefresh}
+            onRefresh={() => setUpdate(true)}
           />
         }
       />

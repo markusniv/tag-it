@@ -12,6 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import colors from "../global/colors.json";
 import ConfirmModal from "../components/ConfirmModal";
 
+/** Displays settings, which contains a toggle for darkmode and a login/logout button. */
 const Settings = ({ navigation }) => {
   const {
     isLoggedIn,
@@ -20,7 +21,6 @@ const Settings = ({ navigation }) => {
     setDarkMode,
     confirmLogout,
     setConfirmLogout,
-    setFirstFetch,
   } = useContext(MainContext);
   const [confirmVisible, setConfirmVisible] = useState(false);
   let bgColor,
@@ -44,6 +44,7 @@ const Settings = ({ navigation }) => {
     bgColorFaded = colors.light_mode_header_faded;
   }
 
+  /** Logs out the user and navigates to the Welcome screen. */
   const logout = () => {
     AsyncStorage.clear();
     setIsLoggedIn(false);
@@ -57,8 +58,10 @@ const Settings = ({ navigation }) => {
     }
   }, [confirmLogout]);
 
+  /** Displays the ConfirmModal.js */
   const showConfirm = () => setConfirmVisible(true);
 
+  /** Navigates to the Login screen */
   const showLogin = () => navigation.navigate("Login");
 
   return (
@@ -91,9 +94,7 @@ const Settings = ({ navigation }) => {
           setVisible={setConfirmVisible}
         />
 
-        {/* Switch container */}
         <View style={{ alignItems: "center", justifyContent: "center" }}>
-          {/* Dark mode switch */}
           <View style={styles.switchContainer}>
             <Text
               style={{
