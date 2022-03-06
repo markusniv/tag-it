@@ -36,7 +36,7 @@ const Post = ({navigation, route}) => {
   const [commentInput, setCommentInput] = useState('');
   const [activated, setActivated] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [loadingComments, setLoadingComments] = useState(true);
+
 
   const {getComments} = useMedia();
   const [commentArray, setCommentArray] = useState([])
@@ -46,7 +46,7 @@ const Post = ({navigation, route}) => {
     setCommentArray(comments)
   }
 
-  const {darkMode, update, commentUpdate, setCommentUpdate, user, setDisplayConfirmWindow} = useContext(MainContext);
+  const {darkMode, update, commentUpdate, setCommentUpdate, user, loadingComments} = useContext(MainContext);
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [deleteUpdate, setDeleteUpdate] = useState(false);
 
@@ -59,15 +59,10 @@ const Post = ({navigation, route}) => {
     React.useCallback(() => {
       loadComments();
       return () => {
-
+        setCommentArray([]);
       };
     }, [singleMedia, commentUpdate])
   );
-
-  // Check if comments loaded already, and if so, change loading status to false
-  useEffect(() => {
-    if (commentArray.length !== 0) setLoadingComments(false);
-  }, [commentArray])
 
   // If deleting a comment finished correctly, navigate back to Home screen
   useEffect(() => {
@@ -219,9 +214,13 @@ const Post = ({navigation, route}) => {
           <Divider style={{width: "95%", alignSelf: "center", }} />
           <View style={styles.commentSection}>
             {/* When loading comments, display a loading animation */}
-            {(!loadingComments) ? (<CommentList
-              commentArray={commentArray}
-            />) : (
+            {(!loadingComments) ? (
+              (commentArray.length > 0) ? (
+                <CommentList commentArray={commentArray} />
+              ) : (
+                <Text style={styles.fontMidCentered}>No comments yet, be the first one!</Text>
+              )
+            ) : (
               <LottieView
                 source={require("../animations/88404-loading-bubbles.json")}
                 autoPlay
@@ -229,7 +228,7 @@ const Post = ({navigation, route}) => {
                 style={{
                   height: "50%",
                   backgroundColor: "transparent",
-                  alignSelf: "center"
+                  alignSelf: "center",
                 }}
               />
             )}
@@ -285,6 +284,12 @@ const styles = StyleSheet.create({
     fontFamily: "AdventPro",
     color: "white",
     fontSize: 18,
+  },
+  fontMidCentered: {
+    fontFamily: "AdventPro",
+    color: "white",
+    fontSize: 18,
+    alignSelf: "center",
   },
   fontBig: {
     fontFamily: "AdventPro",

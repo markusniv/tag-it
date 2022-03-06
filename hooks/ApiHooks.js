@@ -1,8 +1,8 @@
-import { useEffect, useState, useContext } from "react";
+import {useEffect, useState, useContext} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import data from "../global/tag.json";
-import { MainContext } from "../contexts/MainContext";
+import {MainContext} from "../contexts/MainContext";
 
 const apiUrl = "https://media.mw.metropolia.fi/wbma/";
 const tag = data.tag;
@@ -21,6 +21,7 @@ const useMedia = (update) => {
     setFirstFetch,
     changingAccount,
     setChangingAccount,
+    setLoadingComments,
   } = useContext(MainContext);
 
   const getMedia = async () => {
@@ -93,6 +94,7 @@ const useMedia = (update) => {
   };
 
   const getComments = async (post) => {
+    setLoadingComments(true)
     const token = await AsyncStorage.getItem("userToken");
     const url = apiUrl + "media/";
     try {
@@ -136,6 +138,7 @@ const useMedia = (update) => {
         })
       );
       setUpdate(false);
+      setLoadingComments(false)
       return json;
     } catch (e) {
       throw new Error(e.message);
@@ -159,7 +162,7 @@ const useMedia = (update) => {
       if (like.user_id === user.user_id) liked = true;
     });
 
-    return { amount: Object.keys(json).length, liked };
+    return {amount: Object.keys(json).length, liked};
   };
 
   // Fetches user info with the given id.
@@ -347,7 +350,7 @@ const useMedia = (update) => {
         "x-access-token": token,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ file_id: id }),
+      body: JSON.stringify({file_id: id}),
     };
 
     try {
@@ -421,7 +424,7 @@ const useLogin = () => {
     }
   };
 
-  return { postLogin };
+  return {postLogin};
 };
 
 const useUser = () => {
@@ -429,7 +432,7 @@ const useUser = () => {
     try {
       const options = {
         method: "GET",
-        headers: { "x-access-token": token },
+        headers: {"x-access-token": token},
       };
       const response = await fetch(apiUrl + "users/user", options);
       const userData = await response.json();
@@ -448,7 +451,7 @@ const useUser = () => {
     try {
       const options = {
         method: "GET",
-        headers: { "x-access-token": token },
+        headers: {"x-access-token": token},
       };
       const response = await fetch(apiUrl + "users/" + id, options);
       const userData = await response.json();
@@ -505,7 +508,7 @@ const useUser = () => {
     }
   };
 
-  return { getUserByToken, postUser, checkUser, getUserById };
+  return {getUserByToken, postUser, checkUser, getUserById};
 };
 
 /** Gets all the tags containing "tagit_" */
@@ -514,7 +517,7 @@ const getTags = async () => {
   try {
     const options = {
       method: "GET",
-      headers: { "x-access-token": token },
+      headers: {"x-access-token": token},
     };
     const response = await fetch(`${apiUrl}tags`, options);
     const tags = await response.json();
@@ -571,4 +574,4 @@ const getTagsWithPostAmount = (array) => {
   return duplicates;
 };
 
-export { useMedia, useLogin, useUser, getTags };
+export {useMedia, useLogin, useUser, getTags};
