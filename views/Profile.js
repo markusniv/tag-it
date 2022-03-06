@@ -23,7 +23,21 @@ const Profile = ({navigation}) => {
   const {update} = useContext(MainContext);
   const {userMediaArray} = useMedia(update);
 
-  console.log(userMediaArray.userAvatar)
+  const [displayedMedia, setDisplayedMedia] = useState({});
+  let mediaArray;
+
+
+
+
+  useEffect( () => {
+    if(Object.keys(userMediaArray).length > 0) {
+      mediaArray = userMediaArray.filter(item => item.title !== 'comment');
+      setDisplayedMedia(mediaArray)
+
+    }
+  }, [userMediaArray])
+
+
 
   return (
 
@@ -80,7 +94,7 @@ const Profile = ({navigation}) => {
                 marginBottom: 20,
                 color: 'white',
                 fontFamily: 'AdventPro',
-              }}>13 posts</Text>
+              }}>{displayedMedia.length} Posts</Text>
               <View style={{
                 borderBottomColor: 'white',
                 borderBottomWidth: StyleSheet.hairlineWidth,

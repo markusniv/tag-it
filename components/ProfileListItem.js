@@ -7,11 +7,12 @@ import {
 import {Image, StyleSheet, TouchableOpacity, View} from "react-native";
 
 
+
 const ProfileListItem = ({singleMedia, navigation}) => {
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
 
-  console.log(singleMedia)
 
+  console.log(singleMedia)
   return (
 
 

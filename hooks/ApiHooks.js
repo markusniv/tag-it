@@ -184,7 +184,11 @@ const useMedia = (update) => {
           const response = await fetch(url + item.file_id);
           const json = await response.json();
           const userAvatar = await getUserAvatar(item.user_id);
+          let tags = await getMediaTags(item.file_id);
+
+          json.tag = tags
           json.userAvatar = userAvatar;
+
           return json;
         })
       );
