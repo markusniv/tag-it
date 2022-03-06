@@ -14,8 +14,9 @@ const MainProvider = ({ children }) => {
   const [searching, setSearching] = useState(false);
   const [currentTag, setCurrentTag] = useState("");
   const [confirmLogout, setConfirmLogout] = useState(false);
-  const [loadingMedia, setLoadingMedia] = useState(true);
+  const [loadingMedia, setLoadingMedia] = useState(false);
   const [firstFetch, setFirstFetch] = useState(true);
+
   const [loaded] = useFonts({
     AdventPro: require("../assets/fonts/AdventPro.ttf"),
   });

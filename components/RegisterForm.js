@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {useUser} from '../hooks/ApiHooks';
@@ -61,11 +61,10 @@ const RegisterForm = ({navigation}) => {
           rules={{
             required: {value: true},
             validate: (value) => {
-              const {password} = getValues();
-              if (value === password) {
+              if (value.length > 2) {
                 return true;
               } else {
-                return 'Passwords do not match.';
+                return 'Username must be at least 3 characters.';
               }
 
             }, catch(e) {

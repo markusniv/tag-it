@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 
 
 const LoginForm = ({navigation}) => {
-  const {setIsLoggedIn, setUser, setUpdate, setFirstFetch} = useContext(MainContext);
+  const {setIsLoggedIn, setUser, setUpdate} = useContext(MainContext);
   const {postLogin} = useLogin();
   const register = () => navigation.navigate("Register");
   const backbutton = () => navigation.navigate("Welcome");
@@ -33,7 +33,6 @@ const LoginForm = ({navigation}) => {
       await AsyncStorage.setItem('userToken', userData.token);
       setUser(userData.user);
       setIsLoggedIn(true);
-      setFirstFetch(true);
       setUpdate(true);
       navigation.navigate("Home");
     } catch (error) {

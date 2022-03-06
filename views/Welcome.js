@@ -13,7 +13,7 @@ import { useUser } from "../hooks/ApiHooks";
 import { useLogin } from "../hooks/ApiHooks";
 
 const Welcome = ({ navigation }) => {
-  const { setUser, setIsLoggedIn, setDarkMode, setUpdate, setFirstFetch } =
+  const { setUser, setIsLoggedIn, setDarkMode, setUpdate } =
     useContext(MainContext);
   const { postLogin } = useLogin();
 
@@ -62,7 +62,6 @@ const Welcome = ({ navigation }) => {
 
   const skip = async () => {
     await useDefaultUser();
-    setFirstFetch(true);
     await navigation.navigate("Tabs");
   };
 
