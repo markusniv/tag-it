@@ -93,16 +93,15 @@ const useMedia = (update) => {
     }
   };
 
-  const getComments = async (post) => {
-    setLoadingComments(true)
+  const getComments = async (post, signal) => {
     const token = await AsyncStorage.getItem("userToken");
     const url = apiUrl + "media/";
     try {
-      const response = await fetch(`${apiUrl}tags/${tag}comment_${post}`);
+      const response = await fetch(`${apiUrl}tags/${tag}comment_${post}`, {signal: signal});
       const array = await response.json();
       const json = await Promise.all(
         array.map(async (item) => {
-          const response = await fetch(url + item.file_id);
+          const response = await fetch(url + item.file_id, {signal: signal});
           const json = await response.json();
 
           // Fetching likes for the file and adding it to the json object.
@@ -115,9 +114,9 @@ const useMedia = (update) => {
             };
 
             // Fetching likes, user info and tags.
-            const likes = await getFavourites(item.file_id);
-            const user = await getUserInfo(item.user_id, options);
-            let tags = await getMediaTags(item.file_id);
+            const likes = await getFavourites(item.file_id, signal);
+            const user = await getUserInfo(item.user_id, options, signal);
+            let tags = await getMediaTags(item.file_id, signal);
 
             // Filtering "tagit_" tag from the array of tags.
             tags = tags.filter((t) => t.tag != tag);
@@ -138,7 +137,6 @@ const useMedia = (update) => {
         })
       );
       setUpdate(false);
-      setLoadingComments(false)
       return json;
     } catch (e) {
       throw new Error(e.message);
@@ -146,7 +144,7 @@ const useMedia = (update) => {
   };
 
   // Fetches all the likes for the chosen post.
-  const getFavourites = async (id) => {
+  const getFavourites = async (id, signal) => {
     const token = await AsyncStorage.getItem("userToken");
     const options = {
       method: "GET",
@@ -155,7 +153,7 @@ const useMedia = (update) => {
       },
     };
     let liked = false;
-    const response = await fetch(`${apiUrl}favourites/file/${id}`, options);
+    const response = await fetch(`${apiUrl}favourites/file/${id}`, options, {signal: signal});
     const json = await response.json();
 
     await json.map((like) => {
@@ -166,14 +164,14 @@ const useMedia = (update) => {
   };
 
   // Fetches user info with the given id.
-  const getUserInfo = async (id, options) => {
-    const response = await fetch(`${apiUrl}users/${id}`, options);
+  const getUserInfo = async (id, options, signal) => {
+    const response = await fetch(`${apiUrl}users/${id}`, options, {signal: signal});
     const user = await response.json();
     return user;
   };
 
-  const getMediaTags = async (id) => {
-    const response = await fetch(`${apiUrl}tags/file/${id}`);
+  const getMediaTags = async (id, signal) => {
+    const response = await fetch(`${apiUrl}tags/file/${id}`, {signal: signal});
     const tags = await response.json();
     return tags;
   };

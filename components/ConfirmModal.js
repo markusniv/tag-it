@@ -29,9 +29,9 @@ const getColors = () => {
   return {bgColor, headerColor, headerTintColor, highlightColor, searchColor};
 };
 
-const ConfirmModal = ({reason, id, visible, setVisible, deleteUpdate, setDeleteUpdate}) => {
+const ConfirmModal = ({reason, id, visible, setVisible}) => {
   const colors = getColors();
-  const {setConfirmLogout, commentUpdate, setCommentUpdate, update, setUpdate} =
+  const {setConfirmLogout, commentUpdate, setCommentUpdate, update, setUpdate, deleteUpdate, setDeleteUpdate} =
     useContext(MainContext);
   const {deleteMedia} = useMedia();
 
@@ -59,7 +59,7 @@ const ConfirmModal = ({reason, id, visible, setVisible, deleteUpdate, setDeleteU
   }
 
   return (
-    <View style={{padidng: 0}}>
+    <View style={{padding: 0}}>
       <Modal
         animationIn="slideInDown"
         animationOut="slideOutUp"
@@ -149,7 +149,7 @@ const ConfirmModal = ({reason, id, visible, setVisible, deleteUpdate, setDeleteU
             >
               <Text style={{fontFamily: "AdventPro", fontSize: 20, color: colors.headerTintColor}}>
                 {reason == "logout" && "Confirm"}
-                {reason == ("delete_comment" && "delete_post") && "Delete"}
+                {reason == ("delete_comment" || "delete_post") && "Delete"}
               </Text>
             </TouchableOpacity>
           </View>
