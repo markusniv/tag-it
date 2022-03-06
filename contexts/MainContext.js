@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
-import { useFonts } from "expo-font";
+import {useFonts} from "expo-font";
 
 const MainContext = React.createContext({});
 
-const MainProvider = ({ children }) => {
+const MainProvider = ({children}) => {
   const [darkMode, setDarkMode] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({});
@@ -16,6 +16,7 @@ const MainProvider = ({ children }) => {
   const [confirmLogout, setConfirmLogout] = useState(false);
   const [loadingMedia, setLoadingMedia] = useState(false);
   const [firstFetch, setFirstFetch] = useState(true);
+  const [loadingComments, setLoadingComments] = useState(true);
 
   const [loaded] = useFonts({
     AdventPro: require("../assets/fonts/AdventPro.ttf"),
@@ -51,6 +52,8 @@ const MainProvider = ({ children }) => {
         setLoadingMedia,
         firstFetch,
         setFirstFetch,
+        loadingComments,
+        setLoadingComments,
       }}
     >
       {children}
@@ -62,4 +65,4 @@ MainProvider.propTypes = {
   children: PropTypes.node,
 };
 
-export { MainContext, MainProvider };
+export {MainContext, MainProvider};
