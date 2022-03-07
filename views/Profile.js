@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {
   View,
   StyleSheet,
@@ -9,16 +9,16 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
-import { Icon, Text } from "react-native-elements";
-import { MainContext } from "../contexts/MainContext";
+import {Icon, Text} from "react-native-elements";
+import {MainContext} from "../contexts/MainContext";
 import colors from "../global/colors.json";
 import PropTypes from "prop-types";
 import MyListItem from "../components/MyListItem";
 import ProfileList from "../components/ProfileList";
-import { useMedia } from "../hooks/ApiHooks";
+import {useMedia} from "../hooks/ApiHooks";
 
 const getColors = () => {
-  const { darkMode } = useContext(MainContext);
+  const {darkMode} = useContext(MainContext);
 
   let bgColor,
     headerColor,
@@ -37,16 +37,16 @@ const getColors = () => {
     headerTintColor = colors.light_mode_header_tint;
     searchColor = colors.dark_mode_bg;
   }
-  return { bgColor, headerColor, headerTintColor, highlightColor, searchColor };
+  return {bgColor, headerColor, headerTintColor, highlightColor, searchColor};
 };
 
-const Profile = ({ navigation, route }) => {
+const Profile = ({navigation, route}) => {
   const colors = getColors();
-  const { user, updateAvatar } = useContext(MainContext);
+  const {user, updateAvatar} = useContext(MainContext);
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
-  const { update } = useContext(MainContext);
-  const { userMediaArray } = useMedia(update);
-  const { getUserAvatar } = useMedia(update);
+  const {update} = useContext(MainContext);
+  const {userMediaArray} = useMedia(update);
+  const {getUserAvatar} = useMedia(update);
 
   const [displayedMedia, setDisplayedMedia] = useState({});
   const [displayComments, setDisplayComments] = useState({});
@@ -90,11 +90,11 @@ const Profile = ({ navigation, route }) => {
           position: "absolute",
           top: "-19%",
           left: "5%",
-          transform: [{ rotateY: "180deg" }],
+          transform: [{rotateY: "180deg"}],
         }}
       >
         <Icon
-          style={{ height: 40, width: 40, zIndex: 10 }}
+          style={{height: 40, width: 40, zIndex: 10}}
           name="arrow-forward"
           color={"white"}
           size={40}
@@ -104,18 +104,18 @@ const Profile = ({ navigation, route }) => {
 
       {!showOtherUser && (
         <View
-          style={{ zIndex: 10, position: "absolute", top: "-19%", right: "5%" }}
+          style={{zIndex: 10, position: "absolute", top: "-19%", right: "5%"}}
         >
           <Icon
             singleMedia={userMediaArray}
             navigation={navigation}
-            style={{ height: 40, width: 40, zIndex: 10 }}
+            style={{height: 40, width: 40, zIndex: 10}}
             name="settings"
             color={colors.headerTintColor}
             size={40}
             onPress={() =>
               navigation.navigate("ProfileSettings", {
-                avatarUrl: { displayAvatar },
+                avatarUrl: {displayAvatar},
               })
             }
           />
@@ -134,18 +134,16 @@ const Profile = ({ navigation, route }) => {
           borderRadius: 75,
         }}
       >
-        {displayAvatar == "" && otherUserAvatar == "" && (
+        {(displayAvatar == "" && otherUserAvatar == "") ? (
           <Icon name="person" size={150} />
+        ) : (
+          <Image
+            source={{
+              uri: !showOtherUser ? displayAvatar : route.params.userAvatar,
+            }}
+            style={{width: "100%", height: "100%", borderRadius: 75}}
+          />
         )}
-        {displayAvatar != "" ||
-          (otherUserAvatar != "" && (
-            <Image
-              source={{
-                uri: !showOtherUser ? displayAvatar : route.params.userAvatar,
-              }}
-              style={{ width: "100%", height: "100%", borderRadius: 75 }}
-            />
-          ))}
       </View>
 
       <TouchableWithoutFeedback>
@@ -156,8 +154,8 @@ const Profile = ({ navigation, route }) => {
           }}
         >
           <ScrollView
-            style={{ flex: 1, width: "100%" }}
-            contentContainerStyle={{ flexGrow: 1 }}
+            style={{flex: 1, width: "100%"}}
+            contentContainerStyle={{flexGrow: 1}}
           >
             <View
               style={{
@@ -192,7 +190,7 @@ const Profile = ({ navigation, route }) => {
               </Text>
             </View>
             {!showOtherUser && (
-              <View style={{ flex: 1, marginTop: 150 }}>
+              <View style={{flex: 1, marginTop: 150}}>
                 <Text
                   style={{
                     alignSelf: "center",
