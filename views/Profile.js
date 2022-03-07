@@ -19,23 +19,42 @@ import {useMedia} from "../hooks/ApiHooks";
 const Profile = ({navigation}) => {
   const {user} = useContext(MainContext);
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
-
   const {update} = useContext(MainContext);
+  const {getUserAvatar} = useMedia(update);
   const {userMediaArray} = useMedia(update);
 
   const [displayedMedia, setDisplayedMedia] = useState({});
+  const [displayComments, setDisplayComments] = useState({});
+  const [displayAvatar, setDisplayAvatar] = useState({});
   let mediaArray;
+  let commentArray;
+  let avatar
 
 
 
+  useEffect(() => {
+    if (Object.keys(userMediaArray).length > 0) {
+      mediaArray = userMediaArray.filter(item => item.title !== 'comment' && !item.title.includes('avatar'));
 
-  useEffect( () => {
-    if(Object.keys(userMediaArray).length > 0) {
-      mediaArray = userMediaArray.filter(item => item.title !== 'comment');
       setDisplayedMedia(mediaArray)
 
     }
+
   }, [userMediaArray])
+
+  useEffect(() => {
+    if (Object.keys(userMediaArray).length > 0) {
+      commentArray = userMediaArray.filter(item => item.title === 'comment');
+
+      setDisplayComments(commentArray)
+
+    }
+
+  }, [userMediaArray])
+
+
+
+
 
 
 
@@ -44,17 +63,39 @@ const Profile = ({navigation}) => {
 
     <View style={styles.container}>
 
-      <Image source={{uri: `${url}${userMediaArray.userAvatar}` }}
-        style={{
-        position: 'absolute',
-        zIndex: 10,
-        backgroundColor: 'red',
-        alignSelf: 'center',
-        top: -70,
-        height: 150,
-        width: 150,
-        borderRadius: 75,
-      }}/>
+      <View style={{zIndex: 10, position: 'absolute', top: '-19%', left: '5%', transform: [{rotateY: '180deg'}]}}>
+        <Icon
+          style={{height: 40, width: 40, zIndex: 10,}}
+          name='arrow-forward'
+          color={'white'}
+          size={40}
+          onPress={() => navigation.navigate("Home")}/>
+      </View>
+
+      <View style={{zIndex: 10, position: 'absolute', top: '-19%', right: '5%',}}>
+        <Icon singleMedia={userMediaArray} navigation={navigation}
+          style={{height: 40, width: 40, zIndex: 10,}}
+          name='settings'
+          color={'white'}
+          size={40}
+          onPress={() => navigation.navigate("ProfileSettings")}/>
+      </View>
+
+
+      <Image
+             style={{
+               position: 'absolute',
+               backgroundColor: 'red',
+               zIndex: 10,
+               alignSelf: 'center',
+               top: -70,
+               height: 150,
+               width: 150,
+               borderRadius: 75,
+             }}/>
+
+
+
       <TouchableWithoutFeedback>
         <SafeAreaView style={{
           flex: 1,
@@ -82,9 +123,7 @@ const Profile = ({navigation}) => {
                 color: 'white',
                 fontFamily: 'AdventPro',
                 margin: 30,
-              }}>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Consequuntur ex exercitationem illo ipsa modi nam optio sunt
-                suscipit vel vitae! adfsd sdfg fd</Text>
+              }}></Text>
             </View>
             <View style={{flex: 1, marginTop: 150}}>
 
@@ -94,7 +133,7 @@ const Profile = ({navigation}) => {
                 marginBottom: 20,
                 color: 'white',
                 fontFamily: 'AdventPro',
-              }}>{displayedMedia.length} Posts</Text>
+              }}>{displayedMedia.length} Posts and {displayComments.length} comments</Text>
               <View style={{
                 borderBottomColor: 'white',
                 borderBottomWidth: StyleSheet.hairlineWidth,

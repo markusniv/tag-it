@@ -43,7 +43,7 @@ const useMedia = (update) => {
             let tags = await getMediaTags(item.file_id);
 
             // Filtering "tagit_" tag from the array of tags.
-            tags = tags.filter(t => t.tag !== tag && !t.tag.includes("tagit_comment"));
+            tags = tags.filter(t => t.tag !== tag && !t.tag.includes("tagit_comment") && !t.tag.includes("tagit_avatar"));
 
             if (tags[0] == undefined) return;
             else tags = tags[0].tag.split("_")[1];
@@ -159,7 +159,7 @@ const useMedia = (update) => {
   };
 
   const getUserAvatar = async (id) => {
-    const response = await fetch(`${apiUrl}tags/avatar_${id}`);
+    const response = await fetch(`${apiUrl}tags/${tag}avatar_${id}`);
     const json = await response.json();
     if (response.ok && Object.keys(json).length > 0) return `${apiUrl}uploads/${json[0].filename}`;
     return "";
@@ -185,6 +185,7 @@ const useMedia = (update) => {
           const json = await response.json();
           const userAvatar = await getUserAvatar(item.user_id);
           let tags = await getMediaTags(item.file_id);
+
 
           json.tag = tags
           json.userAvatar = userAvatar;

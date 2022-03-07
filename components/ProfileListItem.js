@@ -53,13 +53,11 @@ const ProfileListItem = ({singleMedia, navigation}) => {
               <View style={{flex: 1, justifyContent: 'flex-end', width: '100%', height: '100%', alignItems: 'center'}}>
               <Image source={{uri: `${url}${singleMedia.thumbnails.w160}`}}
                      resizeMode='cover'
-                     style={{width: '70%', height: '70%' }}
+                     style={{width: 100, height: 100, borderRadius: 10, }}
               />
               </View>
             </View>
           </TouchableOpacity>
-
-
         </View>
       </NBListItem.Content>
     </NBListItem>

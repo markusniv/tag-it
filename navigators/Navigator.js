@@ -18,6 +18,7 @@ import colors from "../global/colors.json";
 import Welcome from "../views/Welcome";
 import SearchModal from "../components/SearchModal";
 import Register from "../views/Register";
+import ProfileSettings from "../views/ProfileSettings";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -104,6 +105,17 @@ const StackScreen = () => {
       <Stack.Screen
         name="Login"
         component={Login}
+        options={{
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: colors.headerColor,
+          },
+          headerTintColor: "white",
+        }}
+      />
+      <Stack.Screen
+        name="ProfileSettings"
+        component={ProfileSettings}
         options={{
           headerShown: false,
           headerStyle: {
