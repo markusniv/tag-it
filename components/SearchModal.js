@@ -29,6 +29,7 @@ const getColors = () => {
   return { bgColor, headerColor, headerTintColor, highlightColor, searchColor };
 };
 
+/** A customized ListItem used in the FlatList of SearchModal. */
 const SearchListItem = ({ item }) => {
   const { setCurrentTag, setSearching } = useContext(MainContext);
   const colors = getColors();

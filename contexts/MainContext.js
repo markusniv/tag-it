@@ -4,6 +4,7 @@ import {useFonts} from "expo-font";
 
 const MainContext = React.createContext({});
 
+/** Provides global data for react components. */
 const MainProvider = ({children}) => {
   const [darkMode, setDarkMode] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);

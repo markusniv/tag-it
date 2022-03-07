@@ -6,6 +6,7 @@ import {MainContext} from "../contexts/MainContext";
 const Profile = () => {
   const {isLoggedIn, setIsLoggedIn} = useContext(MainContext);
 
+
   return (
     <View style={styles.container}>
       <Text>Profile view</Text>

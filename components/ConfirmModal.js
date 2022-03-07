@@ -29,12 +29,14 @@ const getColors = () => {
   return {bgColor, headerColor, headerTintColor, highlightColor, searchColor};
 };
 
+/** Displays a popup window according to the given reason. */
 const ConfirmModal = ({reason, id, visible, setVisible, deleteUpdate, setDeleteUpdate}) => {
   const colors = getColors();
   const {setConfirmLogout, commentUpdate, setCommentUpdate, update, setUpdate} =
     useContext(MainContext);
   const {deleteMedia} = useMedia();
 
+  /** Deletes the chosen post. */
   const deletePost = async (id) => {
     const remove = await deleteMedia(id);
     if (remove) {
@@ -47,6 +49,7 @@ const ConfirmModal = ({reason, id, visible, setVisible, deleteUpdate, setDeleteU
     }
   }
 
+  /** Deletes the chosen comment. */
   const deleteComment = async (id) => {
     const remove = await deleteMedia(id);
     if (remove) {

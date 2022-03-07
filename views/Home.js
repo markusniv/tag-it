@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {SafeAreaView, ImageBackground} from "react-native";
 import List from "../components/List";
 
-/** Used for displaying the Home screen, which contains a list of recently added and popular posts. */
+/** Displays the Home screen, which contains a list of recently added and popular posts. */
 const Home = ({navigation}) => {
 
   console.log("Rendering Home component");

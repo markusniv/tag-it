@@ -10,7 +10,6 @@ const LOAD_SIZE = 4;
 /** Sorts the array of posts into a descending order according to the time_added date. */
 const sortRecent = (data) => {
   let dataArray = data;
-  console.log(data);
   if (Object.keys(data).length > 0)
     dataArray = dataArray.sort((a, b) => new Date(b.time_added).getTime() - new Date(a.time_added).getTime());
   return dataArray;

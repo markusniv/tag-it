@@ -12,6 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import colors from "../global/colors.json";
 import ConfirmModal from "../components/ConfirmModal";
 
+/** Displays the settings, containing a logout/login button and a toggle for darkmode. */
 const Settings = ({navigation}) => {
   const {
     isLoggedIn,

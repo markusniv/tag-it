@@ -87,6 +87,9 @@ const ListItem = ({singleMedia, navigation}) => {
     setCurrentLikes(newLikes.amount);
   };
 
+  /** Navigates to the Profile screen with parameters. */
+  const showProfile = () => navigation.navigate("Profile", singleMedia);
+
   useEffect(() => {
     setCurrentLikes(singleMedia.likes);
     setLiked(singleMedia.postLiked);
@@ -116,11 +119,12 @@ const ListItem = ({singleMedia, navigation}) => {
           }}
         >
           <View style={styles.postInfoContainer}>
-            <TouchableOpacity style={styles.postInfo}>
+            <TouchableOpacity style={styles.postInfo} onPress={showProfile}>
               {singleMedia.userAvatar !== "" ? (
                 <Image
                   source={{uri: singleMedia.userAvatar}}
                   style={styles.postInfoImage}
+                  containerStyle={styles.postInfoImage}
                   resizeMode="contain"
                 />
               ) : (
