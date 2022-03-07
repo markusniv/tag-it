@@ -20,15 +20,13 @@ const Profile = ({navigation}) => {
   const {user} = useContext(MainContext);
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
   const {update} = useContext(MainContext);
-  const {getUserAvatar} = useMedia(update);
   const {userMediaArray} = useMedia(update);
 
   const [displayedMedia, setDisplayedMedia] = useState({});
   const [displayComments, setDisplayComments] = useState({});
-  const [displayAvatar, setDisplayAvatar] = useState({});
   let mediaArray;
   let commentArray;
-  let avatar
+
 
 
 
@@ -51,7 +49,6 @@ const Profile = ({navigation}) => {
     }
 
   }, [userMediaArray])
-
 
 
 
@@ -119,11 +116,12 @@ const Profile = ({navigation}) => {
                 }}>{user.username}</Text>
 
               <Text style={{
-                fontSize: 16,
+                fontSize: 20,
                 color: 'white',
                 fontFamily: 'AdventPro',
-                margin: 30,
-              }}></Text>
+                alignSelf: 'center',
+                margin: 20,
+              }}>{user.email}</Text>
             </View>
             <View style={{flex: 1, marginTop: 150}}>
 

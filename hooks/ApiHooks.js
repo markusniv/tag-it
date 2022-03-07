@@ -464,6 +464,28 @@ const useUser = () => {
     }
   }
 
+  const putUser = async (data) => {
+    const token = await AsyncStorage.getItem('userToken');
+    console.log(data);
+    const options = {
+      method: 'PUT',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    };
+    try {
+      const response = await fetch(apiUrl + "users", options);
+      if (!response.ok) {
+        return new Error('Failed to modify a user!');
+      }
+      return response.json();
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
   const checkUser = async (username) => {
     try {
       const options = {
@@ -484,7 +506,7 @@ const useUser = () => {
     }
   }
 
-  return {getUserByToken, postUser, checkUser, getUserById};
+  return {getUserByToken, postUser, checkUser, getUserById, putUser};
 }
 
 

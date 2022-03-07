@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import {Button, Icon, Image, Input} from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
-import {useMedia} from "../hooks/ApiHooks";
+import {useMedia, useUser} from "../hooks/ApiHooks";
 import {MainContext} from "../contexts/MainContext";
 import {Controller, useForm} from "react-hook-form";
 import CommentImage from "../images/comment.png";
@@ -22,7 +22,9 @@ const ProfileSettings = ({navigation, singleMedia}) => {
   const [file, setFile] = useState({});
   const [image, setImage] = useState(null);
   const {postMedia} = useMedia();
+  const {putUser} = useUser();
   const {user} = useContext(MainContext);
+
 
 
   const selectFile = async () => {
@@ -52,6 +54,7 @@ const ProfileSettings = ({navigation, singleMedia}) => {
     control,
     handleSubmit,
     formState: {errors},
+    getValues,
   } = useForm({
     defaultValues: {
       username: '',
@@ -70,6 +73,26 @@ const ProfileSettings = ({navigation, singleMedia}) => {
     })
     await postMedia(formData, title);
   }
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    try {
+      if(data.username === ""){
+        delete data.username
+      }
+      if(data.password === ""){
+        delete data.password
+      }
+      if(data.email === ""){
+        delete data.email
+      }
+      const userData = await putUser(data);
+      console.log('register onSubmit', userData);
+      await navigation.navigate("Profile");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 
 
@@ -136,20 +159,12 @@ const ProfileSettings = ({navigation, singleMedia}) => {
           <ImageBackground source={require('../images/mobile_background2_tagit.png')}
                            style={styles.background}
                            resizeMode={'cover'}/>
-
+          <View style={styles.inputForm}>
           <Controller
             control={control}
             rules={{
               required: {value: false},
-              validate: (value) => {
-                const {password} = getValues();
-                if (value === password) {
-                  return true;
-                } else {
-                  return 'Passwords do not match.';
-                }
-
-              }, catch(e) {
+               catch(e) {
                 new Error("error");
               }
 
@@ -192,36 +207,7 @@ const ProfileSettings = ({navigation, singleMedia}) => {
           />
 
 
-          <Controller
-            control={control}
-            rules={{
-              required: {value: false},
-              validate: (value) => {
-                const {password} = getValues();
-                if (value === password) {
-                  return true;
-                } else {
-                  return 'Passwords do not match.';
-                }
-              },
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                rightIcon={{name: 'vpn-key', color: 'white'}}
-                autoCapitalize="none"
-                secureTextEntry={true}
-                placeholder="Confirm Password"
-                errorMessage={
-                  errors.confirmPassword && errors.confirmPassword.message
-                }
-              />
-            )}
-            name="confirmPassword"
-          />
+
 
           <Controller
             control={control}
@@ -243,9 +229,10 @@ const ProfileSettings = ({navigation, singleMedia}) => {
             )}
             name="email"
           />
-
+          </View>
 
           <Button title="Submit"
+                  onPress={handleSubmit(onSubmit)}
                   titleStyle={{
                     fontSize: 22,
                     fontFamily: 'AdventPro',
@@ -273,6 +260,16 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     zIndex: -10
+  },
+  inputForm: {
+    width: '90%',
+    left: '5%',
+    padding: 0,
+    color: 'white',
+  },
+  input: {
+    color: 'white',
+    fontFamily: 'AdventPro',
   },
 });
 
