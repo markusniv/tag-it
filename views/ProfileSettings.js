@@ -151,7 +151,6 @@ const ProfileSettings = ({navigation, route}) => {
             {image && <Image source={{uri: image}} containerStyle={{width: 150, height: 150, borderRadius: 75, }} onPress={selectFile} />}
             {!image && <Image source={{uri: avatarUrl.displayAvatar}}
               style={{
-                backgroundColor: "red",
                 height: "100%",
                 width: "100%",
                 borderRadius: 75,
