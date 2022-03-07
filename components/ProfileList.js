@@ -14,7 +14,6 @@ const ProfileList = ({navigation}) => {
 
 
 
-
   useEffect(() => {
     if (Object.keys(userMediaArray).length > 0) {
       mediaArray = userMediaArray.filter(item => item.title !== 'comment');

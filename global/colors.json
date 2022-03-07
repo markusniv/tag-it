@@ -4,7 +4,7 @@
   "dark_mode_header": "#242632",
   "dark_mode_header_tint": "white",
   "light_mode_bg": "white",
-  "light_mode_header": "white",
+  "light_mode_header": "#e9ebfa",
   "light_mode_header_tint": "black",
   "light_mode_header_faded": "#FFFFFF99",
   "highlight_color": "red",
