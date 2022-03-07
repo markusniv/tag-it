@@ -15,9 +15,10 @@ import ConfirmModal from './ConfirmModal';
 
 
 const CommentListItem = ({singleComment}) => {
-  const {darkMode, isLoggedIn, user, setDisplayConfirmWindow} = useContext(MainContext);
+  const {darkMode, isLoggedIn, user, loadingComments} = useContext(MainContext);
   const {likeMedia, removeLike, getFavourites, deleteMedia} = useMedia();
   const [currentLikes, setCurrentLikes] = useState(0);
+  const [comment, setComment] = useState(singleComment);
   const [liked, setLiked] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
 
@@ -53,8 +54,13 @@ const CommentListItem = ({singleComment}) => {
     setCurrentLikes(newLikes.amount);
   }
 
+  const cleanUp = () => {
+    setCurrentLikes(0)
+    setLiked(false)
+    setComment({})
+  }
 
-  useEffect(() => {
+  const setLikes = () => {
     if (isLoggedIn) {
       setCurrentLikes(singleComment.likes);
       setLiked(singleComment.postLiked);
@@ -64,9 +70,17 @@ const CommentListItem = ({singleComment}) => {
       setCurrentLikes(0);
       setLiked(false);
     }
+  }
 
-    console.log(`ListItem ${singleComment.title} rerendered.`);
-  }, [singleComment])
+  useEffect(() => {
+    setLikes();
+  }, [comment])
+
+  useEffect(() => {
+    return () => {
+      cleanUp();
+    }
+  }, [])
 
   return (
     <NBListItem
@@ -76,45 +90,49 @@ const CommentListItem = ({singleComment}) => {
         paddingBottom: 1,
       }}
     >
-      <NBListItem.Content>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            alignSelf: "center",
-            width: "95%",
-            height: "100%",
-            display: "flex",
-            borderRadius: 5,
-            padding: 10,
-            margin: 5,
-            backgroundColor: singleComment.user === user.username ? ownCommentColor : bgColorFaded,
-          }}
-        >
-          <View style={styles.commentText}>
-            {singleComment.user && (
-              <Text style={{color: headerTintColor, fontFamily: 'AdventPro', fontSize: 12}}>
-                Posted by /user/{singleComment.user}
-              </Text>
-            )}
-            <Text style={{color: headerTintColor, fontFamily: 'AdventPro', fontSize: 16}}>{singleComment.description}</Text>
-          </View>
-          <View style={styles.actions}>
-            {singleComment.user === user.username &&
-              <MaterialCommunityIcons name="delete" color={headerTintColor} size={30} onPress={() => setConfirmVisible(true)} />
-            }
-            {currentLikes >= 0 && <TouchableOpacity style={styles.likesContainer} onPress={toggleLike}>
-              <MaterialCommunityIcons name="arrow-up-bold-outline" color={liked ? highlightColor : headerTintColor} size={30} />
-              <Text style={{color: liked ? highlightColor : headerTintColor, fontSize: 15, fontFamily: 'AdventPro', }}>{currentLikes}</Text>
-            </TouchableOpacity>
-            }
-          </View>
+      {/* Check that comment isn't undefined / an empty object */}
+      {comment && Object.keys(comment).length !== 0 &&
 
-        </View>
-        <ConfirmModal reason="delete_comment" id={singleComment.file_id} visible={confirmVisible} setVisible={setConfirmVisible} />
+        <NBListItem.Content>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              alignSelf: "center",
+              width: "95%",
+              height: "100%",
+              display: "flex",
+              borderRadius: 5,
+              padding: 10,
+              margin: 5,
+              backgroundColor: singleComment.user === user.username ? ownCommentColor : bgColorFaded,
+            }}
+          >
+            <View style={styles.commentText}>
+              {singleComment.user && (
+                <Text style={{color: headerTintColor, fontFamily: 'AdventPro', fontSize: 12}}>
+                  Posted by /user/{singleComment.user}
+                </Text>
+              )}
+              <Text style={{color: headerTintColor, fontFamily: 'AdventPro', fontSize: 16}}>{singleComment.description}</Text>
+            </View>
+            <View style={styles.actions}>
+              {singleComment.user === user.username &&
+                <MaterialCommunityIcons name="delete" color={headerTintColor} size={30} onPress={() => setConfirmVisible(true)} />
+              }
+              {currentLikes >= 0 && <TouchableOpacity style={styles.likesContainer} onPress={toggleLike}>
+                <MaterialCommunityIcons name="arrow-up-bold-outline" color={liked ? highlightColor : headerTintColor} size={30} />
+                <Text style={{color: liked ? highlightColor : headerTintColor, fontSize: 15, fontFamily: 'AdventPro', }}>{currentLikes}</Text>
+              </TouchableOpacity>
+              }
+            </View>
 
-      </NBListItem.Content>
-    </NBListItem>
+          </View>
+          <ConfirmModal reason="delete_comment" id={singleComment.file_id} visible={confirmVisible} setVisible={setConfirmVisible} />
+
+        </NBListItem.Content>
+      }
+    </NBListItem >
   );
 }
 

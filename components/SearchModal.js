@@ -123,7 +123,8 @@ const EmptyListIndicator = () => {
 
 const SearchModal = () => {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-  const { searching, setSearching, currentTag, update } = useContext(MainContext);
+  const { searching, setSearching, currentTag, update } =
+    useContext(MainContext);
   const [currentInput, setCurrentInput] = useState("");
   const [tags, setTags] = useState([]);
   const [showedTags, setShowedTags] = useState([]);
@@ -144,12 +145,13 @@ const SearchModal = () => {
       return;
     }
 
-    let filtered = tags.filter((t) => t.tag.match(inputLowerCase) && !t.tag.includes("comment"));
+    let filtered = tags.filter(
+      (t) => t.tag.match(inputLowerCase) && !t.tag.includes("comment")
+    );
     filtered = filtered.sort((a, b) => b.posts - a.posts);
     filtered = filtered.slice(0, 10);
     setShowedTags(filtered);
   };
-
 
   const updateTags = () => {
     getTags().then((allTags) => {
@@ -158,30 +160,29 @@ const SearchModal = () => {
 
       allTags = allTags.slice(0, 10);
       setShowedTags(allTags);
-
-      const keyboardDidShowListener = Keyboard.addListener(
-        "keyboardDidShow",
-        () => setKeyboardVisible(true)
-      );
-      const keyboardDidHideListener = Keyboard.addListener(
-        "keyboardDidHide",
-        () => setKeyboardVisible(false)
-      );
-
-      return () => {
-        keyboardDidHideListener.remove();
-        keyboardDidShowListener.remove();
-      };
     });
-  }
+  };
 
   useEffect(() => {
     updateTags();
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => setKeyboardVisible(true)
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => setKeyboardVisible(false)
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
   }, []);
 
   useEffect(() => {
     updateTags();
-  }, [update])
+  }, [update]);
 
   const keyExtractor = useCallback((item, index) => index.toString(), []);
 

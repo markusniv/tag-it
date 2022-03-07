@@ -10,7 +10,7 @@ import Profile from "../views/Profile";
 import Create from "../views/Create";
 import Post from "../views/Post";
 import Popular from "../views/Popular";
-import {View, Text, StatusBar} from "react-native";
+import {View, Text, StatusBar, ActivityIndicator, Image} from "react-native";
 import {Icon} from "react-native-elements";
 import Settings from "../views/Settings";
 import {MainContext} from "../contexts/MainContext";
@@ -18,7 +18,11 @@ import colors from "../global/colors.json";
 import Welcome from "../views/Welcome";
 import SearchModal from "../components/SearchModal";
 import Register from "../views/Register";
+
 import ProfileSettings from "../views/ProfileSettings";
+
+import LoadingModal from "../components/LoadingModal";
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -137,6 +141,128 @@ const BottomNav = () => {
   }, []);
 
   const colors = getColors();
+
+  if (isLoggedIn) {
+    return (
+      <Tab.Navigator
+        initialRouteName="Home"
+        tabBar={(props) => <CustomNavBar {...props} />}
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeTopNavigator}
+          options={{
+            headerStyle: {
+              backgroundColor: colors.headerColor,
+              height: 130,
+            },
+            header: () => (
+              <View
+                style={{
+                  width: "100%",
+                  height: 130,
+                  justifyContent: "space-around",
+                  paddingTop: 20,
+                  paddingBottom: 20,
+                  alignItems: "center",
+                  backgroundColor: colors.headerColor,
+                }}
+              >
+                <View
+                  style={{
+                    width: "100%",
+                    padding: 10,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent:
+                      currentTag === "" ? "flex-end" : "space-between",
+                  }}
+                >
+                  {currentTag !== "" && (
+                    <Icon
+                      style={{height: 50, width: 50}}
+                      name="arrow-back"
+                      color={colors.headerTintColor}
+                      size={40}
+                      onPress={() => setCurrentTag("")}
+                    />
+                  )}
+                  <Icon
+                    style={{height: 50, width: 50}}
+                    name="search"
+                    color={colors.headerTintColor}
+                    size={40}
+                    onPress={() => setSearching(true)}
+                  />
+                </View>
+
+                <SearchModal />
+
+                <Text
+                  style={{
+                    color: colors.headerTintColor,
+                    fontSize: 24,
+                    fontFamily: "AdventPro",
+                  }}
+                >
+                  {currentTag === "" ? "Home" : `t/${currentTag}`}
+                </Text>
+              </View>
+            ),
+            headerTintColor: colors.headerTintColor,
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            headerStyle: {
+              backgroundColor: colors.headerColor,
+            },
+            headerTintColor: colors.headerTintColor,
+          }}
+        />
+        <Tab.Screen
+          name="Create"
+          component={Create}
+          options={{
+            headerStyle: {
+              backgroundColor: colors.headerColor,
+              height: StatusBar.currentHeight,
+            },
+            headerTintColor: colors.headerTintColor,
+          }}
+        />
+        <Tab.Screen
+          name="Settings"
+          component={Settings}
+          options={{
+            headerStyle: {
+              backgroundColor: colors.headerColor,
+            },
+            headerTitleAlign: "center",
+            headerTintColor: colors.headerTintColor,
+            headerTitleStyle: {
+              fontFamily: "AdventPro",
+            },
+          }}
+        />
+
+        <Tab.Screen
+          name="Post"
+          component={Post}
+          options={{
+            headerStyle: {
+              backgroundColor: colors.headerColor,
+              height: StatusBar.currentHeight,
+            },
+            headerTintColor: colors.headerTintColor,
+          }}
+        />
+      </Tab.Navigator>
+    );
+  }
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -220,6 +346,7 @@ const BottomNav = () => {
           headerTintColor: colors.headerTintColor,
         }}
       />
+
       {isLoggedIn && (
         <Tab.Screen
           name="Create"
@@ -243,27 +370,29 @@ const BottomNav = () => {
             headerStyle: {
               backgroundColor: colors.headerColor,
             },
-           header : () => (
-            <View style={{
-              width: "100%",
-              height: 150,
-              justifyContent: "space-around",
-              paddingTop: 20,
-              paddingBottom: 65,
-              alignItems: "center",
-              backgroundColor: colors.headerColor,
-            }}
-            >
+            header : () => (
+              <View style={{
+                width: "100%",
+                height: 150,
+                justifyContent: "space-around",
+                paddingTop: 20,
+                paddingBottom: 65,
+                alignItems: "center",
+                backgroundColor: colors.headerColor,
+              }}
+              >
 
-              <Text style={{color: colors.headerTintColor, fontSize: 24, fontFamily: 'AdventPro',}}>
-                Profile
-              </Text>
-            </View>
+                <Text style={{color: colors.headerTintColor, fontSize: 24, fontFamily: 'AdventPro',}}>
+                  Profile
+                </Text>
+              </View>
             ),
+
             headerTintColor: colors.headerTintColor,
           }}
         />
       )}
+
       <Tab.Screen
         name="Post"
         component={Post}
@@ -280,8 +409,11 @@ const BottomNav = () => {
 };
 
 const Navigator = () => {
+  const {loadingMedia} = useContext(MainContext);
+
   return (
     <NavigationContainer>
+      <LoadingModal visible={loadingMedia} />
       <StackScreen />
     </NavigationContainer>
   );

@@ -15,6 +15,8 @@ import {Icon} from 'react-native-elements/dist/icons/Icon';
 import CommentImage from '../images/comment.png';
 import {useFocusEffect} from "@react-navigation/native";
 import ConfirmModal from '../components/ConfirmModal';
+import LottieView from "lottie-react-native";
+
 
 const Post = ({navigation, route}) => {
   const video = React.useRef(null);
@@ -35,35 +37,44 @@ const Post = ({navigation, route}) => {
   const [activated, setActivated] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const {getComments} = useMedia();
-  const [commentArray, setCommentArray] = useState({})
 
-  const loadComments = async () => {
-    const comments = await getComments(singleMedia.file_id)
+  const {getComments} = useMedia();
+  const [commentArray, setCommentArray] = useState([])
+
+  const loadComments = async (signal) => {
+    const comments = await getComments(singleMedia.file_id, signal)
     setCommentArray(comments)
   }
 
-  const {darkMode, update, commentUpdate, setCommentUpdate, user, setDisplayConfirmWindow} = useContext(MainContext);
+  const {darkMode, update, commentUpdate, setCommentUpdate, user, loadingComments, setLoadingComments, deleteUpdate} = useContext(MainContext);
   const [confirmVisible, setConfirmVisible] = useState(false);
-  const [deleteUpdate, setDeleteUpdate] = useState(false);
 
   let bgColor;
 
   if (darkMode) bgColor = colors.dark_mode_bg;
 
+  // Only load comments when screen is focused
   useFocusEffect(
     React.useCallback(() => {
-      loadComments();
+      const ac = new AbortController();
+      setLoadingComments(true)
+      Promise.all([
+        loadComments(ac.signal)
+      ]).then(() => setLoadingComments(false))
+        .catch(ex => console.log("aborted"));
       return () => {
-
+        setCommentArray([]);
+        ac.abort();
       };
     }, [singleMedia, commentUpdate])
   );
 
+  // If deleting a post finished correctly, navigate back to Home screen
   useEffect(() => {
     if (deleteUpdate) navigation.navigate("Home");
   }, [deleteUpdate])
 
+  // Submit a comment
   const onSubmit = async (data) => {
     const formData = new FormData();
 
@@ -83,11 +94,11 @@ const Post = ({navigation, route}) => {
     console.log(formData);
     const upload = await postMedia(formData, commentTag);
     if (upload) {
-      setUpdate(!commentUpdate);
+      setCommentUpdate(!commentUpdate);
       setTimeout(() => {
         setLoading(false);
         loadComments();
-        setUpdate(!commentUpdate);
+        setCommentUpdate(!commentUpdate);
       }, 1000);
     }
   }
@@ -121,7 +132,7 @@ const Post = ({navigation, route}) => {
               size={40} />
           </TouchableOpacity>
         }
-        <ConfirmModal reason="delete_post" id={singleMedia.file_id} visible={confirmVisible} setVisible={setConfirmVisible} deleteUpdate={deleteUpdate} setDeleteUpdate={setDeleteUpdate} />
+        <ConfirmModal reason="delete_post" id={singleMedia.file_id} visible={confirmVisible} setVisible={setConfirmVisible} />
 
         <ScrollView style={{marginTop: 75}} nestedScrollEnabled={true} keyboardShouldPersistTaps="handled">
           <View style={styles.top}>
@@ -208,11 +219,25 @@ const Post = ({navigation, route}) => {
           </View>}
           <Divider style={{width: "95%", alignSelf: "center", }} />
           <View style={styles.commentSection}>
-            {commentArray != {} &&
-              <CommentList
-                commentArray={commentArray}
+            {/* When loading comments, display a loading animation */}
+            {(!loadingComments) ? (
+              (commentArray.length > 0) ? (
+                <CommentList commentArray={commentArray} />
+              ) : (
+                <Text style={styles.fontMidCentered}>No comments yet, be the first one!</Text>
+              )
+            ) : (
+              <LottieView
+                source={require("../animations/88404-loading-bubbles.json")}
+                autoPlay
+                loop
+                style={{
+                  height: "50%",
+                  backgroundColor: "transparent",
+                  alignSelf: "center",
+                }}
               />
-            }
+            )}
           </View>
 
         </ScrollView>
@@ -233,6 +258,9 @@ const styles = StyleSheet.create({
     marginTop: 5,
     paddingHorizontal: 10,
     paddingVertical: 10,
+  },
+  commentSection: {
+    width: "100%",
   },
   createComment: {
     flex: 1,
@@ -262,6 +290,12 @@ const styles = StyleSheet.create({
     fontFamily: "AdventPro",
     color: "white",
     fontSize: 18,
+  },
+  fontMidCentered: {
+    fontFamily: "AdventPro",
+    color: "white",
+    fontSize: 18,
+    alignSelf: "center",
   },
   fontBig: {
     fontFamily: "AdventPro",

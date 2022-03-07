@@ -14,6 +14,10 @@ const MainProvider = ({children}) => {
   const [searching, setSearching] = useState(false);
   const [currentTag, setCurrentTag] = useState("");
   const [confirmLogout, setConfirmLogout] = useState(false);
+  const [loadingMedia, setLoadingMedia] = useState(false);
+  const [firstFetch, setFirstFetch] = useState(true);
+  const [loadingComments, setLoadingComments] = useState(true);
+  const [deleteUpdate, setDeleteUpdate] = useState(false);
 
   const [loaded] = useFonts({
     AdventPro: require("../assets/fonts/AdventPro.ttf"),
@@ -45,6 +49,14 @@ const MainProvider = ({children}) => {
         setCurrentTag,
         confirmLogout,
         setConfirmLogout,
+        loadingMedia,
+        setLoadingMedia,
+        firstFetch,
+        setFirstFetch,
+        loadingComments,
+        setLoadingComments,
+        deleteUpdate,
+        setDeleteUpdate,
       }}
     >
       {children}

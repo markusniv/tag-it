@@ -42,13 +42,13 @@ const LoginForm = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ position: 'absolute', top: '5%', left: '5%', transform: [{rotateY: '180deg'}]}}>
+      <View style={{ position: 'absolute', top: '5%', left: '5%'}}>
         <Icon
           style={{height: 40, width: 40, }}
-          name="arrow-forward"
+          name="arrow-back"
           color={'white'}
           size={40}
-          onPress={() => {backbutton()}}
+          onPress={backbutton}
         />
       </View>
       <Image source={require('../images/logo.png')} resizeMode={'contain'} style={styles.logo}/>

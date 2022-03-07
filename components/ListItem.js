@@ -18,7 +18,6 @@ const getTimeAddedString = (time) => {
   let currentDate = new Date();
   let timeAdded = new Date(time);
  
-  // Calculating the time difference in different units.
   let secondsDifference = (currentDate.getTime() - timeAdded.getTime()) / 1000;
   let minutesDifference = Math.abs(Math.round(secondsDifference / 60));
   let hoursDifference = Math.floor(minutesDifference / 60);
@@ -49,6 +48,7 @@ const getTimeAddedString = (time) => {
   return description;
 };
 
+/** Displays a customized ListItem used in List.js and PopularList.js */
 const ListItem = ({singleMedia, navigation}) => {
   const {darkMode, update, isLoggedIn} = useContext(MainContext);
   const {likeMedia, removeLike, getFavourites} = useMedia(update);
@@ -92,8 +92,6 @@ const ListItem = ({singleMedia, navigation}) => {
     setLiked(singleMedia.postLiked);
     console.log(`ListItem ${singleMedia.title} rendered.`);
   }, [singleMedia]);
-
-/*   console.log("singlemedia is", singleMedia); */
 
   return (
     <NBListItem
@@ -289,7 +287,6 @@ const styles = StyleSheet.create({
   postInfoImage: {
     width: 55,
     height: 55,
-    /*   backgroundColor: "black", */
     marginRight: 20,
     borderRadius: 30,
     justifyContent: "center",

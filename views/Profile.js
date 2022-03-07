@@ -52,15 +52,12 @@ const Profile = ({navigation}) => {
 
 
 
-
-
-
   return (
 
 
     <View style={styles.container}>
 
-      <View style={{zIndex: 10, position: 'absolute', top: '-19%', left: '5%', transform: [{rotateY: '180deg'}]}}>
+      <View style={{zIndex: 10, position: 'absolute', top: 0, left: '5%', transform: [{rotateY: '180deg'}]}}>
         <Icon
           style={{height: 40, width: 40, zIndex: 10,}}
           name='arrow-forward'
@@ -69,7 +66,7 @@ const Profile = ({navigation}) => {
           onPress={() => navigation.navigate("Home")}/>
       </View>
 
-      <View style={{zIndex: 10, position: 'absolute', top: '-19%', right: '5%',}}>
+      <View style={{zIndex: 10, position: 'absolute', top: 0, right: '5%',}}>
         <Icon singleMedia={userMediaArray} navigation={navigation}
           style={{height: 40, width: 40, zIndex: 10,}}
           name='settings'

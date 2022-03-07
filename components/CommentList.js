@@ -7,28 +7,30 @@ import {useMedia} from "../hooks/ApiHooks";
 import {useFocusEffect} from "@react-navigation/native";
 
 const CommentList = ({commentArray}) => {
-  const {darkMode} = useContext(MainContext);
-  const [comments, setComments] = useState(commentArray)
+  const {darkMode, loadingComments} = useContext(MainContext);
+  const [comments, setComments] = useState(commentArray);
 
   let bgColor;
   if (darkMode) bgColor = colors.dark_mode_bg;
 
+  const Load = () => {
+    if (!loadingComments) return comments.map((comment) => <CommentListItem singleComment={comment} key={comment.file_id} />)
+  }
+
   useEffect(() => {
-    setComments(commentArray)
+    setComments(commentArray);
   }, [commentArray])
 
+  useEffect(() => {
+    return () => {
+      setComments([]);
+    }
+  }, [])
   return (
     <View>
-      <FlatList
-        nestedScrollEnabled={true}
-        keyboardShouldPersistTaps="handled"
-        style={{backgroundColor: "transparent"}}
-        data={comments}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={
-          ({item}) => <CommentListItem
-            singleComment={item} />}
-      />
+      {
+        Load()
+      }
     </View>
   );
 };
