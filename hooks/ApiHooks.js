@@ -560,7 +560,7 @@ const getTagsWithPostAmount = (array) => {
   }
 
   duplicates = duplicates.filter(
-    (item) => item.tag !== "tagit_" && !item.tag.includes("tagit_comment")
+    (item) => item.tag !== "tagit_" && !item.tag.includes("tagit_comment") && !item.tag.includes("tagit_avatar")
   );
 
   // Removing the "tagit_" portion of the tags.
