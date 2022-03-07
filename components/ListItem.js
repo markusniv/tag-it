@@ -11,6 +11,7 @@ import {useMedia} from "../hooks/ApiHooks";
 import colors from "../global/colors.json";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 
+
 // Formats the time separation between the current date and the date the post was made.
 const getTimeAddedString = (time) => {
   let description = "";
@@ -252,6 +253,25 @@ const ListItem = ({singleMedia, navigation}) => {
     </NBListItem>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const styles = StyleSheet.create({
   image: {

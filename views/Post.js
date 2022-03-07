@@ -41,14 +41,13 @@ const Post = ({navigation, route}) => {
   const {getComments} = useMedia();
   const [commentArray, setCommentArray] = useState([])
 
-  const loadComments = async () => {
-    const comments = await getComments(singleMedia.file_id)
+  const loadComments = async (signal) => {
+    const comments = await getComments(singleMedia.file_id, signal)
     setCommentArray(comments)
   }
 
-  const {darkMode, update, commentUpdate, setCommentUpdate, user, loadingComments} = useContext(MainContext);
+  const {darkMode, update, commentUpdate, setCommentUpdate, user, loadingComments, setLoadingComments, deleteUpdate} = useContext(MainContext);
   const [confirmVisible, setConfirmVisible] = useState(false);
-  const [deleteUpdate, setDeleteUpdate] = useState(false);
 
   let bgColor;
 
@@ -57,18 +56,25 @@ const Post = ({navigation, route}) => {
   // Only load comments when screen is focused
   useFocusEffect(
     React.useCallback(() => {
-      loadComments();
+      const ac = new AbortController();
+      setLoadingComments(true)
+      Promise.all([
+        loadComments(ac.signal)
+      ]).then(() => setLoadingComments(false))
+        .catch(ex => console.log("aborted"));
       return () => {
         setCommentArray([]);
+        ac.abort();
       };
     }, [singleMedia, commentUpdate])
   );
 
-  // If deleting a comment finished correctly, navigate back to Home screen
+  // If deleting a post finished correctly, navigate back to Home screen
   useEffect(() => {
     if (deleteUpdate) navigation.navigate("Home");
   }, [deleteUpdate])
 
+  // Submit a comment
   const onSubmit = async (data) => {
     const formData = new FormData();
 
@@ -88,11 +94,11 @@ const Post = ({navigation, route}) => {
     console.log(formData);
     const upload = await postMedia(formData, commentTag);
     if (upload) {
-      setUpdate(!commentUpdate);
+      setCommentUpdate(!commentUpdate);
       setTimeout(() => {
         setLoading(false);
         loadComments();
-        setUpdate(!commentUpdate);
+        setCommentUpdate(!commentUpdate);
       }, 1000);
     }
   }
@@ -126,7 +132,7 @@ const Post = ({navigation, route}) => {
               size={40} />
           </TouchableOpacity>
         }
-        <ConfirmModal reason="delete_post" id={singleMedia.file_id} visible={confirmVisible} setVisible={setConfirmVisible} deleteUpdate={deleteUpdate} setDeleteUpdate={setDeleteUpdate} />
+        <ConfirmModal reason="delete_post" id={singleMedia.file_id} visible={confirmVisible} setVisible={setConfirmVisible} />
 
         <ScrollView style={{marginTop: 75}} nestedScrollEnabled={true} keyboardShouldPersistTaps="handled">
           <View style={styles.top}>
