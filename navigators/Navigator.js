@@ -18,7 +18,11 @@ import colors from "../global/colors.json";
 import Welcome from "../views/Welcome";
 import SearchModal from "../components/SearchModal";
 import Register from "../views/Register";
+
+import ProfileSettings from "../views/ProfileSettings";
+
 import LoadingModal from "../components/LoadingModal";
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -105,6 +109,17 @@ const StackScreen = () => {
       <Stack.Screen
         name="Login"
         component={Login}
+        options={{
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: colors.headerColor,
+          },
+          headerTintColor: "white",
+        }}
+      />
+      <Stack.Screen
+        name="ProfileSettings"
+        component={ProfileSettings}
         options={{
           headerShown: false,
           headerStyle: {
@@ -204,6 +219,23 @@ const BottomNav = () => {
             headerStyle: {
               backgroundColor: colors.headerColor,
             },
+            header : () => (
+              <View style={{
+                width: "100%",
+                height: 150,
+                justifyContent: "space-around",
+                paddingTop: 20,
+                paddingBottom: 65,
+                alignItems: "center",
+                backgroundColor: colors.headerColor,
+              }}
+              >
+
+                <Text style={{color: colors.headerTintColor, fontSize: 24, fontFamily: 'AdventPro',}}>
+                  Profile
+                </Text>
+              </View>
+            ),
             headerTintColor: colors.headerTintColor,
           }}
         />
@@ -331,6 +363,52 @@ const BottomNav = () => {
           headerTintColor: colors.headerTintColor,
         }}
       />
+
+      {isLoggedIn && (
+        <Tab.Screen
+          name="Create"
+          component={Create}
+          options={{
+            headerStyle: {
+              backgroundColor: colors.headerColor,
+              height: StatusBar.currentHeight,
+            },
+            headerTintColor: colors.headerTintColor,
+
+          }}
+
+        />
+      )}
+      {isLoggedIn && (
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            headerStyle: {
+              backgroundColor: colors.headerColor,
+            },
+           header : () => (
+            <View style={{
+              width: "100%",
+              height: 150,
+              justifyContent: "space-around",
+              paddingTop: 20,
+              paddingBottom: 65,
+              alignItems: "center",
+              backgroundColor: colors.headerColor,
+            }}
+            >
+
+              <Text style={{color: colors.headerTintColor, fontSize: 24, fontFamily: 'AdventPro',}}>
+                Profile
+              </Text>
+            </View>
+            ),
+            headerTintColor: colors.headerTintColor,
+          }}
+        />
+      )}
+
       <Tab.Screen
         name="Post"
         component={Post}

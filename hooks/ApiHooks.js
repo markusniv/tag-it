@@ -56,9 +56,9 @@ const useMedia = (update) => {
             let tags = await getMediaTags(item.file_id);
 
             // Filtering "tagit_" tag from the array of tags.
-            tags = tags.filter(
-              (t) => t.tag !== tag && !t.tag.includes("tagit_comment")
-            );
+
+            tags = tags.filter(t => t.tag !== tag && !t.tag.includes("tagit_comment") && !t.tag.includes("tagit_avatar"));
+
 
             if (tags[0] == undefined) return;
             else tags = tags[0].tag.split("_")[1];
@@ -74,6 +74,8 @@ const useMedia = (update) => {
             json.user_email = user.email;
             json.user_id = user.user_id;
             json.tag = tags;
+
+
           }
           return json;
         })
@@ -177,40 +179,50 @@ const useMedia = (update) => {
   };
 
   const getUserAvatar = async (id) => {
-    const response = await fetch(`${apiUrl}tags/avatar_${id}`);
+    const response = await fetch(`${apiUrl}tags/${tag}avatar_${id}`);
     const json = await response.json();
     if (response.ok && Object.keys(json).length > 0)
       return `${apiUrl}uploads/${json[0].filename}`;
     return "";
   };
 
-  /*   const getMyMedia = async () => {
-      const token = await AsyncStorage.getItem('userToken');
-      const url = apiUrl + "media/";
-  
-      const options = {
-        method: 'GET',
-        headers: {
-          'x-access-token': token,
-        },
-      };
-  
-      try {
-        const response = await fetch(`${apiUrl}media/user`, options);
-        const array = await response.json();
-        const json = await Promise.all(
-          array.map(async (item) => {
-            const response = await fetch(url + item.file_id);
-            const json = await response.json();
-            return json;
-          })
-        );
-  
-        setUserMediaArray(json);
-      } catch (e) {
-        throw new Error(e.message);
-      }
-    } */
+  const getMyMedia = async () => {
+    const token = await AsyncStorage.getItem('userToken');
+    const url = apiUrl + "media/";
+
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+
+    try {
+      const response = await fetch(`${apiUrl}media/user`, options);
+      const array = await response.json();
+      const json = await Promise.all(
+        array.map(async (item) => {
+          const response = await fetch(url + item.file_id);
+          const json = await response.json();
+          const userAvatar = await getUserAvatar(item.user_id);
+          let tags = await getMediaTags(item.file_id);
+
+          // Adding user data to the JSON object
+          json.user = user.username;
+          json.user_email = user.email;
+          json.user_id = user.user_id;
+          json.tag = tags
+          json.userAvatar = userAvatar;
+
+          return json;
+        })
+      );
+
+      setUserMediaArray(json);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
 
   const postMedia = async (data, userTag) => {
     const token = await AsyncStorage.getItem("userToken");
@@ -312,6 +324,18 @@ const useMedia = (update) => {
     }
   };
 
+  // Delete old avatar to make room for new one
+  const deleteAvatar = async () => {
+    try {
+      const response = await fetch(apiUrl + `tags/${tag}avatar_${user.user_id}`)
+      const json = await response.json();
+      const deleteResponse = await deleteMedia(json[0].file_id);
+      return deleteResponse;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   const putMedia = async (data, id) => {
     const token = await AsyncStorage.getItem("userToken");
     console.log(data);
@@ -386,7 +410,7 @@ const useMedia = (update) => {
 
   useEffect(async () => {
     await getMedia();
-    /*     await getMyMedia(); */
+    await getMyMedia();
   }, [update, isLoggedIn]);
   return {
     mediaArray,
@@ -399,6 +423,8 @@ const useMedia = (update) => {
     removeLike,
     getFavourites,
     getComments,
+    getUserAvatar,
+    deleteAvatar,
   };
 };
 
@@ -483,6 +509,28 @@ const useUser = () => {
     }
   };
 
+  const putUser = async (data) => {
+    const token = await AsyncStorage.getItem('userToken');
+    console.log(data);
+    const options = {
+      method: 'PUT',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    };
+    try {
+      const response = await fetch(apiUrl + "users", options);
+      if (!response.ok) {
+        return new Error('Failed to modify a user!');
+      }
+      return response.json();
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
   const checkUser = async (username) => {
     try {
       const options = {
@@ -506,8 +554,11 @@ const useUser = () => {
     }
   };
 
-  return {getUserByToken, postUser, checkUser, getUserById};
-};
+
+  return {getUserByToken, postUser, checkUser, getUserById, putUser};
+}
+
+
 
 /** Gets all the tags containing "tagit_" */
 const getTags = async () => {
@@ -520,7 +571,9 @@ const getTags = async () => {
     const response = await fetch(`${apiUrl}tags`, options);
     const tags = await response.json();
 
+
     const tagItTags = tags.filter((t) => t.tag.includes(tag));
+
 
     let tagsWithDuplicates = getTagsWithPostAmount(tagItTags);
 
@@ -572,4 +625,6 @@ const getTagsWithPostAmount = (array) => {
   return duplicates;
 };
 
+
 export {useMedia, useLogin, useUser, getTags};
+
