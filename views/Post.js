@@ -22,6 +22,7 @@ const Post = ({navigation, route}) => {
   const video = React.useRef(null);
   const [status, setStatus] = useState({});
   const {postMedia} = useMedia();
+  const {postComment} = useMedia();
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
   const {media} = route.params;
   const singleMedia = media.singleMedia;
@@ -76,23 +77,12 @@ const Post = ({navigation, route}) => {
 
   // Submit a comment
   const onSubmit = async (data) => {
-    const formData = new FormData();
-
-    const title = "comment"
-    const imageUri = ReactImage.resolveAssetSource(CommentImage).uri
-    const fileName = "comment.png"
-    const type = "image/png"
-    formData.append("title", title);
-    formData.append("description", data.comment);
-    formData.append("file", {
-      uri: imageUri,
-      name: fileName,
-      type: type,
-    })
-    const commentTag = `comment_${singleMedia.file_id}`;
+    const comment = {
+      "file_id": singleMedia.file_id,
+      "comment": data.comment,
+    }
     setLoading(true);
-    console.log(formData);
-    const upload = await postMedia(formData, commentTag);
+    const upload = await postComment(comment);
     if (upload) {
       setCommentUpdate(!commentUpdate);
       setTimeout(() => {

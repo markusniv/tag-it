@@ -92,56 +92,84 @@ const useMedia = (update) => {
       throw new Error(e.message);
     }
   };
-
   const getComments = async (post, signal) => {
-    const token = await AsyncStorage.getItem("userToken");
-    const url = apiUrl + "media/";
+    const url = apiUrl + `comments/file/${post}`;
     try {
-      const response = await fetch(`${apiUrl}tags/${tag}comment_${post}`, {signal: signal});
-      const array = await response.json();
-      const json = await Promise.all(
-        array.map(async (item) => {
-          const response = await fetch(url + item.file_id, {signal: signal});
-          const json = await response.json();
-
-          // Fetching likes for the file and adding it to the json object.
-          if (isLoggedIn) {
-            const options = {
-              method: "GET",
-              headers: {
-                "x-access-token": token,
-              },
-            };
-
-            // Fetching likes, user info and tags.
-            const likes = await getFavourites(item.file_id, signal);
-            const user = await getUserInfo(item.user_id, options, signal);
-            let tags = await getMediaTags(item.file_id, signal);
-
-            // Filtering "tagit_" tag from the array of tags.
-            tags = tags.filter((t) => t.tag != tag);
-            if (tags[0] == undefined) tags = "main";
-            else tags = tags[0].tag.split("_")[1];
-
-            // Adding Like data to the JSON object
-            json.likes = likes.amount;
-            json.postLiked = likes.liked;
-
-            // Adding user data to the JSON object
-            json.user = user.username;
-            json.user_email = user.email;
-            json.user_id = user.user_id;
-            json.tag = tags;
-          }
-          return json;
-        })
-      );
-      setUpdate(false);
+      const response = await fetch(url, {signal: signal});
+      const json = response.json();
+      return json
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  const postComment = async (post) => {
+    const token = await AsyncStorage.getItem("userToken");
+    const url = apiUrl + "comments";
+    try {
+      const options = {
+        method: "POST",
+        headers: {
+          "x-access-token": token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(post),
+      };
+      const response = await fetch(url, options)
+      const json = await response.json();
       return json;
     } catch (e) {
-      throw new Error(e.message);
+      console.error(e);
     }
-  };
+  }
+  /*   const getComments = async (post, signal) => {
+      const token = await AsyncStorage.getItem("userToken");
+      const url = apiUrl + "media/";
+      try {
+        const response = await fetch(`${apiUrl}tags/${tag}comment_${post}`, {signal: signal});
+        const array = await response.json();
+        const json = await Promise.all(
+          array.map(async (item) => {
+            const response = await fetch(url + item.file_id, {signal: signal});
+            const json = await response.json();
+  
+            // Fetching likes for the file and adding it to the json object.
+            if (isLoggedIn) {
+              const options = {
+                method: "GET",
+                headers: {
+                  "x-access-token": token,
+                },
+              };
+  
+              // Fetching likes, user info and tags.
+              const likes = await getFavourites(item.file_id, signal);
+              const user = await getUserInfo(item.user_id, options, signal);
+              let tags = await getMediaTags(item.file_id, signal);
+  
+              // Filtering "tagit_" tag from the array of tags.
+              tags = tags.filter((t) => t.tag != tag);
+              if (tags[0] == undefined) tags = "main";
+              else tags = tags[0].tag.split("_")[1];
+  
+              // Adding Like data to the JSON object
+              json.likes = likes.amount;
+              json.postLiked = likes.liked;
+  
+              // Adding user data to the JSON object
+              json.user = user.username;
+              json.user_email = user.email;
+              json.user_id = user.user_id;
+              json.tag = tags;
+            }
+            return json;
+          })
+        );
+        setUpdate(false);
+        return json;
+      } catch (e) {
+        throw new Error(e.message);
+      }
+    }; */
 
   // Fetches all the likes for the chosen post.
   const getFavourites = async (id, signal) => {
@@ -399,6 +427,7 @@ const useMedia = (update) => {
     removeLike,
     getFavourites,
     getComments,
+    postComment,
   };
 };
 

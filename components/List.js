@@ -61,7 +61,7 @@ const List = ({navigation}) => {
 
       const sliced = sliceData(mediaArray, loadCapacity);
       setDisplayedMedia(sliced);
-     
+
       if (searchInput === "") {
         return;
       }
@@ -75,26 +75,23 @@ const List = ({navigation}) => {
 
 
   return (
-    <View>
-      <FlatList
-        style={{backgroundColor: "transparent"}}
-        showsVerticalScrollIndicator={false}
-        data={displayedMedia}
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={0.2}
-        removeClippedSubviews={true}
-        maxToRenderPerBatch={2}
-        refreshControl={
-          <RefreshControl
-            refreshing={update}
-            onRefresh={() => setUpdate(true)}
-          />
-        }
-      />
-
-    </View>
+    <FlatList
+      style={{backgroundColor: "transparent"}}
+      showsVerticalScrollIndicator={false}
+      data={displayedMedia}
+      keyExtractor={keyExtractor}
+      renderItem={renderItem}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={0.2}
+      maxToRenderPerBatch={1}
+      removeClippedSubviews
+      refreshControl={
+        <RefreshControl
+          refreshing={update}
+          onRefresh={() => setUpdate(true)}
+        />
+      }
+    />
   );
 };
 

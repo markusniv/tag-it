@@ -1,5 +1,5 @@
 import {StyleSheet, View, TouchableOpacity} from "react-native";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState, useMemo} from "react";
 import {
   ListItem as NBListItem,
   Text,
@@ -17,7 +17,7 @@ const getTimeAddedString = (time) => {
 
   let currentDate = new Date();
   let timeAdded = new Date(time);
- 
+
   let secondsDifference = (currentDate.getTime() - timeAdded.getTime()) / 1000;
   let minutesDifference = Math.abs(Math.round(secondsDifference / 60));
   let hoursDifference = Math.floor(minutesDifference / 60);
@@ -306,4 +306,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListItem;
+export default React.memo(ListItem);

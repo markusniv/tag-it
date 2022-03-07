@@ -111,12 +111,12 @@ const CommentListItem = ({singleComment}) => {
             <View style={styles.commentText}>
               {singleComment.user && (
                 <Text style={{color: headerTintColor, fontFamily: 'AdventPro', fontSize: 12}}>
-                  Posted by /user/{singleComment.user}
+                  Posted by /user/{singleComment.user_id}
                 </Text>
               )}
-              <Text style={{color: headerTintColor, fontFamily: 'AdventPro', fontSize: 16}}>{singleComment.description}</Text>
+              <Text style={{color: headerTintColor, fontFamily: 'AdventPro', fontSize: 16}}>{singleComment.comment}</Text>
             </View>
-            <View style={styles.actions}>
+            {/*             <View style={styles.actions}>
               {singleComment.user === user.username &&
                 <MaterialCommunityIcons name="delete" color={headerTintColor} size={30} onPress={() => setConfirmVisible(true)} />
               }
@@ -125,7 +125,7 @@ const CommentListItem = ({singleComment}) => {
                 <Text style={{color: liked ? highlightColor : headerTintColor, fontSize: 15, fontFamily: 'AdventPro', }}>{currentLikes}</Text>
               </TouchableOpacity>
               }
-            </View>
+            </View> */}
 
           </View>
           <ConfirmModal reason="delete_comment" id={singleComment.file_id} visible={confirmVisible} setVisible={setConfirmVisible} />
