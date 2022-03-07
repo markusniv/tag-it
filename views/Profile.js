@@ -21,13 +21,23 @@ const Profile = ({navigation}) => {
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
   const {update} = useContext(MainContext);
   const {userMediaArray} = useMedia(update);
+  const {getUserAvatar} = useMedia(update);
 
   const [displayedMedia, setDisplayedMedia] = useState({});
   const [displayComments, setDisplayComments] = useState({});
+  const [displayAvatar, setDisplayAvatar] = useState("");
+  const [loadedAvatar, setLoadedAvatar] = useState(false);
+
   let mediaArray;
   let commentArray;
 
 
+  const getAvatar = async () => {
+    await getUserAvatar(user.user_id).then((avatar) => {
+      setDisplayAvatar(avatar);
+    })
+    console.log(displayAvatar);
+  }
 
 
   useEffect(() => {
@@ -50,6 +60,9 @@ const Profile = ({navigation}) => {
 
   }, [userMediaArray])
 
+  useEffect( () => {
+    getAvatar()
+  }, [loadedAvatar]);
 
 
   return (
@@ -57,7 +70,7 @@ const Profile = ({navigation}) => {
 
     <View style={styles.container}>
 
-      <View style={{zIndex: 10, position: 'absolute', top: 0, left: '5%', transform: [{rotateY: '180deg'}]}}>
+      <View style={{zIndex: 10, position: 'absolute', top: '-19%', left: '5%', transform: [{rotateY: '180deg'}]}}>
         <Icon
           style={{height: 40, width: 40, zIndex: 10,}}
           name='arrow-forward'
@@ -66,7 +79,7 @@ const Profile = ({navigation}) => {
           onPress={() => navigation.navigate("Home")}/>
       </View>
 
-      <View style={{zIndex: 10, position: 'absolute', top: 0, right: '5%',}}>
+      <View style={{zIndex: 10, position: 'absolute', top: '-19%', right: '5%',}}>
         <Icon singleMedia={userMediaArray} navigation={navigation}
           style={{height: 40, width: 40, zIndex: 10,}}
           name='settings'
@@ -76,7 +89,7 @@ const Profile = ({navigation}) => {
       </View>
 
 
-      <Image
+      <Image source={{uri: displayAvatar}}
              style={{
                position: 'absolute',
                backgroundColor: 'red',

@@ -48,8 +48,6 @@ const ProfileSettings = ({navigation, singleMedia}) => {
     }
   }
 
-
-
   const {
     control,
     handleSubmit,

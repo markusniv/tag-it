@@ -408,6 +408,7 @@ const useMedia = (update) => {
     removeLike,
     getFavourites,
     getComments,
+    getUserAvatar,
   };
 };
 
