@@ -15,9 +15,9 @@ const ProfileList = ({navigation}) => {
 
 
 
-  useEffect( () => {
-    if(Object.keys(userMediaArray).length > 0) {
-      mediaArray = userMediaArray.filter(item => item.title !== 'comment' && !item.title.includes('avatar'));
+  useEffect(() => {
+    if (Object.keys(userMediaArray).length > 0) {
+      mediaArray = userMediaArray.filter(item => item.title !== 'comment');
       setDisplayedMedia(mediaArray)
 
     }
@@ -27,13 +27,13 @@ const ProfileList = ({navigation}) => {
     <View style={{height: '100%'}}>
       <FlatList
         horizontal={true}
-        style={{backgroundColor: 'transparent',}}
+        style={{backgroundColor: 'transparent', }}
         data={displayedMedia}
         keyExtractor={(item, index) => index.toString()}
         renderItem={
           ({item}) => <ProfileListItem
             singleMedia={item}
-            navigation={navigation}/>}
+            navigation={navigation} />}
       />
     </View>
   );

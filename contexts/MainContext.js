@@ -18,6 +18,7 @@ const MainProvider = ({children}) => {
   const [firstFetch, setFirstFetch] = useState(true);
   const [loadingComments, setLoadingComments] = useState(true);
   const [deleteUpdate, setDeleteUpdate] = useState(false);
+  const [updateAvatar, setUpdateAvatar] = useState(false);
 
   const [loaded] = useFonts({
     AdventPro: require("../assets/fonts/AdventPro.ttf"),
@@ -57,6 +58,8 @@ const MainProvider = ({children}) => {
         setLoadingComments,
         deleteUpdate,
         setDeleteUpdate,
+        updateAvatar,
+        setUpdateAvatar,
       }}
     >
       {children}

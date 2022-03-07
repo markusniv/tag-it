@@ -17,7 +17,7 @@ import {useMedia} from "../hooks/ApiHooks";
 
 
 const Profile = ({navigation}) => {
-  const {user} = useContext(MainContext);
+  const {user, updateAvatar} = useContext(MainContext);
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
   const {update} = useContext(MainContext);
   const {userMediaArray} = useMedia(update);
@@ -26,7 +26,6 @@ const Profile = ({navigation}) => {
   const [displayedMedia, setDisplayedMedia] = useState({});
   const [displayComments, setDisplayComments] = useState({});
   const [displayAvatar, setDisplayAvatar] = useState("");
-  const [loadedAvatar, setLoadedAvatar] = useState(false);
 
   let mediaArray;
   let commentArray;
@@ -60,9 +59,9 @@ const Profile = ({navigation}) => {
 
   }, [userMediaArray])
 
-  useEffect( () => {
+  useEffect(() => {
     getAvatar()
-  }, [loadedAvatar]);
+  }, [displayAvatar, updateAvatar]);
 
 
   return (
@@ -72,34 +71,34 @@ const Profile = ({navigation}) => {
 
       <View style={{zIndex: 10, position: 'absolute', top: '-19%', left: '5%', transform: [{rotateY: '180deg'}]}}>
         <Icon
-          style={{height: 40, width: 40, zIndex: 10,}}
+          style={{height: 40, width: 40, zIndex: 10, }}
           name='arrow-forward'
           color={'white'}
           size={40}
-          onPress={() => navigation.navigate("Home")}/>
+          onPress={() => navigation.navigate("Home")} />
       </View>
 
-      <View style={{zIndex: 10, position: 'absolute', top: '-19%', right: '5%',}}>
+      <View style={{zIndex: 10, position: 'absolute', top: '-19%', right: '5%', }}>
         <Icon singleMedia={userMediaArray} navigation={navigation}
-          style={{height: 40, width: 40, zIndex: 10,}}
+          style={{height: 40, width: 40, zIndex: 10, }}
           name='settings'
           color={'white'}
           size={40}
-          onPress={() => navigation.navigate("ProfileSettings")}/>
+          onPress={() => navigation.navigate("ProfileSettings", {avatarUrl: {displayAvatar}})} />
       </View>
 
 
       <Image source={{uri: displayAvatar}}
-             style={{
-               position: 'absolute',
-               backgroundColor: 'red',
-               zIndex: 10,
-               alignSelf: 'center',
-               top: -70,
-               height: 150,
-               width: 150,
-               borderRadius: 75,
-             }}/>
+        style={{
+          position: 'absolute',
+          backgroundColor: 'red',
+          zIndex: 10,
+          alignSelf: 'center',
+          top: -70,
+          height: 150,
+          width: 150,
+          borderRadius: 75,
+        }} />
 
 
 
@@ -170,7 +169,7 @@ const Profile = ({navigation}) => {
             </View>
 
             <View style={{width: '100%', height: 220, flex: 1, marginTop: 50, marginHorizontal: 10}}>
-              <ProfileList navigation={navigation}/>
+              <ProfileList navigation={navigation} />
             </View>
           </ScrollView>
         </SafeAreaView>

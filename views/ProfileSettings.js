@@ -15,17 +15,18 @@ import {useMedia, useUser} from "../hooks/ApiHooks";
 import {MainContext} from "../contexts/MainContext";
 import {Controller, useForm} from "react-hook-form";
 import CommentImage from "../images/comment.png";
+import reactDom from 'react-dom';
 
 
-const ProfileSettings = ({navigation, singleMedia}) => {
+const ProfileSettings = ({navigation, route}) => {
 
   const [file, setFile] = useState({});
   const [image, setImage] = useState(null);
-  const {postMedia} = useMedia();
+  const {postMedia, deleteAvatar} = useMedia();
   const {putUser} = useUser();
-  const {user} = useContext(MainContext);
+  const {user, updateAvatar, setUpdateAvatar} = useContext(MainContext);
 
-
+  const {avatarUrl} = route.params;
 
   const selectFile = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -61,27 +62,30 @@ const ProfileSettings = ({navigation, singleMedia}) => {
   });
 
   const postAvatar = async () => {
-    const title = 'avatar_' + user.user_id;
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("file", {
-      uri: file.uri,
-      name: file.fileName,
-      type: file.mimeType
-    })
-    await postMedia(formData, title);
+    await deleteAvatar().then(async () => {
+      const title = 'avatar_' + user.user_id;
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("file", {
+        uri: file.uri,
+        name: file.fileName,
+        type: file.mimeType
+      })
+      await postMedia(formData, title);
+      setUpdateAvatar(!updateAvatar);
+    });
   }
 
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      if(data.username === ""){
+      if (data.username === "") {
         delete data.username
       }
-      if(data.password === ""){
+      if (data.password === "") {
         delete data.password
       }
-      if(data.email === ""){
+      if (data.email === "") {
         delete data.email
       }
       const userData = await putUser(data);
@@ -94,8 +98,8 @@ const ProfileSettings = ({navigation, singleMedia}) => {
 
 
 
-  useEffect( () => {
-    if (file && Object.keys(file).length !== 0){
+  useEffect(() => {
+    if (file && Object.keys(file).length !== 0) {
       postAvatar()
     }
   }, [file])
@@ -112,7 +116,7 @@ const ProfileSettings = ({navigation, singleMedia}) => {
       }}>
         <View style={{position: 'absolute', top: '5%', left: '5%', transform: [{rotateY: '180deg'}]}}>
           <Icon
-            style={{height: 40, width: 40, zIndex: 10,}}
+            style={{height: 40, width: 40, zIndex: 10, }}
             name="arrow-forward"
             color={'white'}
             size={40}
@@ -142,108 +146,111 @@ const ProfileSettings = ({navigation, singleMedia}) => {
             borderWidth: 1,
             backgroundColor: 'white',
             marginBottom: 30,
-          }}>
-            {image && <Image source={{uri: image}} containerStyle={{width: 150, height: 150, borderRadius: 75,}} />}
-            {!image && <Icon
-              size={150}
-              name="person"
-              color={'black'}
-              onPress={selectFile}
-            />
+
+          }} >
+            {image && <Image source={{uri: image}} containerStyle={{width: 150, height: 150, borderRadius: 75, }} onPress={selectFile} />}
+            {!image && <Image source={{uri: avatarUrl.displayAvatar}}
+              style={{
+                backgroundColor: "red",
+                height: "100%",
+                width: "100%",
+                borderRadius: 75,
+              }}
+              onPress={selectFile} />
             }
           </View>
 
 
           <ImageBackground source={require('../images/mobile_background2_tagit.png')}
-                           style={styles.background}
-                           resizeMode={'cover'}/>
+            style={styles.background}
+            resizeMode={'cover'} />
           <View style={styles.inputForm}>
-          <Controller
-            control={control}
-            rules={{
-              required: {value: false},
-               catch(e) {
-                new Error("error");
-              }
+            <Controller
+              control={control}
+              rules={{
+                required: {value: false},
+                catch(e) {
+                  new Error("error");
+                }
 
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                rightIcon={{name: 'person', color: 'white'}}
-                autoCapitalize="none"
-                placeholder="Username"
-                errorMessage={errors.username && errors.username.message}
-              />
-            )}
-            name="username"
-          />
-          {errors.username && <Text>{errors.username.message}</Text>}
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <Input
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  rightIcon={{name: 'person', color: 'white'}}
+                  autoCapitalize="none"
+                  placeholder="Username"
+                  errorMessage={errors.username && errors.username.message}
+                />
+              )}
+              name="username"
+            />
+            {errors.username && <Text>{errors.username.message}</Text>}
 
-          <Controller
-            control={control}
-            rules={{
-              required: false,
-              minLength: {value: 5, message: "Password must be at least 5 characters long"},
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                autoCapitalize="none"
-                rightIcon={{name: 'vpn-key', color: 'white'}}
-                secureTextEntry={true}
-                placeholder="Password"
-              />
-            )}
-            name="password"
-          />
-
-
+            <Controller
+              control={control}
+              rules={{
+                required: false,
+                minLength: {value: 5, message: "Password must be at least 5 characters long"},
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <Input
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  autoCapitalize="none"
+                  rightIcon={{name: 'vpn-key', color: 'white'}}
+                  secureTextEntry={true}
+                  placeholder="Password"
+                />
+              )}
+              name="password"
+            />
 
 
-          <Controller
-            control={control}
-            rules={{
-              required: false,
-              pattern: {value: /^\S+@\S+\.\S+$/, message: "Not email"}
 
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                rightIcon={{name: 'mail', color: 'white'}}
-                autoCapitalize="none"
-                placeholder="Email"
-              />
-            )}
-            name="email"
-          />
+
+            <Controller
+              control={control}
+              rules={{
+                required: false,
+                pattern: {value: /^\S+@\S+\.\S+$/, message: "Not email"}
+
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <Input
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  rightIcon={{name: 'mail', color: 'white'}}
+                  autoCapitalize="none"
+                  placeholder="Email"
+                />
+              )}
+              name="email"
+            />
           </View>
 
           <Button title="Submit"
-                  onPress={handleSubmit(onSubmit)}
-                  titleStyle={{
-                    fontSize: 22,
-                    fontFamily: 'AdventPro',
-                  }}
-                  containerStyle={{
-                    margin: 70,
-                    borderRadius: 10,
-                    bottom: '0%',
-                    alignSelf: 'center',
-                    width: '90%',
-                    height: 70,
-                  }}
-                  buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}}/>
+            onPress={handleSubmit(onSubmit)}
+            titleStyle={{
+              fontSize: 22,
+              fontFamily: 'AdventPro',
+            }}
+            containerStyle={{
+              margin: 70,
+              borderRadius: 10,
+              bottom: '0%',
+              alignSelf: 'center',
+              width: '90%',
+              height: 70,
+            }}
+            buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}} />
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>

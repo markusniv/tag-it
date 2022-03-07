@@ -207,7 +207,10 @@ const useMedia = (update) => {
           const userAvatar = await getUserAvatar(item.user_id);
           let tags = await getMediaTags(item.file_id);
 
-
+          // Adding user data to the JSON object
+          json.user = user.username;
+          json.user_email = user.email;
+          json.user_id = user.user_id;
           json.tag = tags
           json.userAvatar = userAvatar;
 
@@ -321,6 +324,18 @@ const useMedia = (update) => {
     }
   };
 
+  // Delete old avatar to make room for new one
+  const deleteAvatar = async () => {
+    try {
+      const response = await fetch(apiUrl + `tags/${tag}avatar_${user.user_id}`)
+      const json = await response.json();
+      const deleteResponse = await deleteMedia(json[0].file_id);
+      return deleteResponse;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   const putMedia = async (data, id) => {
     const token = await AsyncStorage.getItem("userToken");
     console.log(data);
@@ -409,6 +424,7 @@ const useMedia = (update) => {
     getFavourites,
     getComments,
     getUserAvatar,
+    deleteAvatar,
   };
 };
 
