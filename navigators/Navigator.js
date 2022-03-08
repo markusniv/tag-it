@@ -363,51 +363,33 @@ const BottomNav = () => {
           headerTintColor: colors.headerTintColor,
         }}
       />
-
-      {isLoggedIn && (
-        <Tab.Screen
-          name="Create"
-          component={Create}
-          options={{
-            headerStyle: {
-              backgroundColor: colors.headerColor,
-              height: StatusBar.currentHeight,
-            },
-            headerTintColor: colors.headerTintColor,
-
-          }}
-
-        />
-      )}
-      {isLoggedIn && (
-        <Tab.Screen
+      <Tab.Screen
           name="Profile"
           component={Profile}
           options={{
             headerStyle: {
               backgroundColor: colors.headerColor,
             },
-           header : () => (
-            <View style={{
-              width: "100%",
-              height: 150,
-              justifyContent: "space-around",
-              paddingTop: 20,
-              paddingBottom: 65,
-              alignItems: "center",
-              backgroundColor: colors.headerColor,
-            }}
-            >
+            header : () => (
+              <View style={{
+                width: "100%",
+                height: 150,
+                justifyContent: "space-around",
+                paddingTop: 20,
+                paddingBottom: 65,
+                alignItems: "center",
+                backgroundColor: colors.headerColor,
+              }}
+              >
 
-              <Text style={{color: colors.headerTintColor, fontSize: 24, fontFamily: 'AdventPro',}}>
-                Profile
-              </Text>
-            </View>
+                <Text style={{color: colors.headerTintColor, fontSize: 24, fontFamily: 'AdventPro',}}>
+                  Profile
+                </Text>
+              </View>
             ),
             headerTintColor: colors.headerTintColor,
           }}
         />
-      )}
 
       <Tab.Screen
         name="Post"

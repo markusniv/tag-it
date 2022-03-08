@@ -39,6 +39,7 @@ const CustomNavBar = ({ state, descriptors, navigation, position }) => {
   const colors = getColors();
   const [keyboardShown, setKeyboardShown] = useState(false);
   const [showMore, setShowMore] = useState(false);
+  const { isLoggedIn } = useContext(MainContext);
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
@@ -111,7 +112,7 @@ const CustomNavBar = ({ state, descriptors, navigation, position }) => {
                 iconName = "notifications";
               else if (route.name === "Profile") iconName = "person";
               else if (route.name === "Settings") iconName = "settings";
-              if (route.name === "Post") return;
+              if (route.name === "Post" || route.name === "Profile" && !isLoggedIn) return;
               return (
                 <View
                   style={route.name == "Create" ? styles.createHolder : ""}

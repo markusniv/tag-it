@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {ImageBackground, View, StyleSheet, Image} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {MainContext} from '../contexts/MainContext';
@@ -36,7 +36,7 @@ const LoginForm = ({navigation, previousScreen}) => {
       setUser(userData.user);
       setIsLoggedIn(true);
       setUpdate(true);
-      navigation.navigate("Tabs");
+      await navigation.navigate("Tabs");
     } catch (error) {
       console.error(error);
     }
@@ -102,7 +102,6 @@ const LoginForm = ({navigation, previousScreen}) => {
         here!</Text>
 
       <Button title="Login"
-
         onPress={handleSubmit(onSubmit)}
         titleStyle={{
           fontSize: 22,

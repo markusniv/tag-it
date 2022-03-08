@@ -229,14 +229,6 @@ const Post = ({navigation, route}) => {
                   maxLength={300}
                   autoCapitalize="none"
                   placeholder="Comment"
-                  /*                   rightIcon={
-                                      <Icon
-                                        name='comment'
-                                        type='font-awesome'
-                                        size={30}
-                                        color="white"
-                                      />
-                                    } */
                   errorMessage={errors.comment && errors.comment.message}
                   errorStyle={{
                     fontFamily: "AdventPro",
