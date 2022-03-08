@@ -9,11 +9,13 @@ import PropTypes from "prop-types";
 
 
 
-const LoginForm = ({navigation}) => {
+const LoginForm = ({navigation, previousScreen}) => {
   const {setIsLoggedIn, setUser, setUpdate} = useContext(MainContext);
   const {postLogin} = useLogin();
   const register = () => navigation.navigate("Register");
-  const backbutton = () => navigation.navigate("Welcome");
+  const backbutton = () => {
+    navigation.goBack();
+  }
 
   const {
     control,
@@ -42,7 +44,7 @@ const LoginForm = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ position: 'absolute', top: '5%', left: '5%'}}>
+      <View style={{position: 'absolute', top: '5%', left: '5%'}}>
         <Icon
           style={{height: 40, width: 40, }}
           name="arrow-back"
@@ -51,7 +53,7 @@ const LoginForm = ({navigation}) => {
           onPress={backbutton}
         />
       </View>
-      <Image source={require('../images/logo.png')} resizeMode={'contain'} style={styles.logo}/>
+      <Image source={require('../images/logo.png')} resizeMode={'contain'} style={styles.logo} />
 
       <Text style={styles.loginText}> Login </Text>
       <View style={styles.inputForm}>
@@ -101,20 +103,20 @@ const LoginForm = ({navigation}) => {
 
       <Button title="Login"
 
-              onPress={handleSubmit(onSubmit)}
-              titleStyle={{
-                fontSize: 22,
-                fontFamily: 'AdventPro',
-              }}
-              containerStyle={{
-                position: 'absolute',
-                borderRadius: 10,
-                bottom: '8%',
-                alignSelf: 'center',
-                width: '90%',
-                height: 70,
-              }}
-              buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}}/>
+        onPress={handleSubmit(onSubmit)}
+        titleStyle={{
+          fontSize: 22,
+          fontFamily: 'AdventPro',
+        }}
+        containerStyle={{
+          position: 'absolute',
+          borderRadius: 10,
+          bottom: '8%',
+          alignSelf: 'center',
+          width: '90%',
+          height: 70,
+        }}
+        buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}} />
 
     </View>
   );

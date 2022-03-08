@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import LoginForm from "../components/LoginForm";
 
 const Login = ({navigation}) => {
+  //const [previousScreen, setPreviousScreen] = useState(navigation.state.params.previous_screen);
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss} >
       <SafeAreaView style={{
@@ -23,11 +24,11 @@ const Login = ({navigation}) => {
           <View style={styles.form}>
 
             <ImageBackground source={require('../images/mobile_background2_tagit.png')}
-                             style={styles.background}
-                             resizeMode={'cover'}/>
+              style={styles.background}
+              resizeMode={'cover'} />
 
 
-            <LoginForm navigation={navigation}/>
+            <LoginForm navigation={navigation} />
 
           </View>
         </ScrollView>

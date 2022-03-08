@@ -218,7 +218,7 @@ const Post = ({navigation, route}) => {
               disabled={!activated}
             />
           </View>}
-          {user.user_id === 676 && <Text style={styles.fontMidCentered}>Please login to comment!</Text>}
+          {user.user_id === 676 && <Text style={styles.fontMidCenteredUnderline} onPress={() => navigation.navigate("Login")}>Please login to comment!</Text>}
           <Divider style={{width: "95%", alignSelf: "center", }} />
           <View style={styles.commentSection}>
             {/* When loading comments, display a loading animation */}
@@ -245,7 +245,7 @@ const Post = ({navigation, route}) => {
         </ScrollView>
 
       </SafeAreaView>
-    </ImageBackground>
+    </ImageBackground >
   );
 };
 
@@ -298,6 +298,14 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     alignSelf: "center",
+  },
+  fontMidCenteredUnderline: {
+    fontFamily: "AdventPro",
+    color: "red",
+    fontSize: 18,
+    alignSelf: "center",
+    textDecorationLine: "underline",
+    padding: 10,
   },
   fontBig: {
     fontFamily: "AdventPro",
