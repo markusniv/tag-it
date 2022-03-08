@@ -31,6 +31,7 @@ const LoginForm = ({navigation, previousScreen}) => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
+      await AsyncStorage.clear();
       const userData = await postLogin(data);
       await AsyncStorage.setItem('userToken', userData.token);
       setUser(userData.user);
