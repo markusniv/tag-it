@@ -158,6 +158,7 @@ const Post = ({navigation, route}) => {
             <Text style={styles.fontMid}>{singleMedia.description}</Text>
             <Text style={styles.fontSmall}>By {singleMedia.user}</Text>
           </View>
+          { /* Check that user is logged in before displaying commenting box */}
           {user.user_id != 676 && <View style={styles.createComment}>
             <Controller
               control={control}
@@ -217,6 +218,7 @@ const Post = ({navigation, route}) => {
               disabled={!activated}
             />
           </View>}
+          {user.user_id === 676 && <Text style={styles.fontMidCentered}>Please login to comment!</Text>}
           <Divider style={{width: "95%", alignSelf: "center", }} />
           <View style={styles.commentSection}>
             {/* When loading comments, display a loading animation */}
@@ -224,7 +226,7 @@ const Post = ({navigation, route}) => {
               (commentArray.length > 0) ? (
                 <CommentList commentArray={commentArray} />
               ) : (
-                <Text style={styles.fontMidCentered}>No comments yet, be the first one!</Text>
+                (user.user_id !== 676) ? (<Text style={styles.fontMidCentered}>No comments yet, be the first one!</Text>) : ((<Text style={styles.fontMidCentered}>No comments here yet.</Text>))
               )
             ) : (
               <LottieView
