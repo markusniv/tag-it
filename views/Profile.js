@@ -50,7 +50,7 @@ const Profile = ({navigation, route}) => {
   const {getUserAvatar, getUserMedia} = useMedia(update);
 
   const [displayedMedia, setDisplayedMedia] = useState([]);
-  const [displayComments, setDisplayComments] = useState({});
+  const [displayComments, setDisplayComments] = useState([]);
   const [displayAvatar, setDisplayAvatar] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -92,6 +92,10 @@ const Profile = ({navigation, route}) => {
       );
       setDisplayedMedia(mediaArray);
       setDisplayComments(commentArray);
+      setLoading(false);
+    } else {
+      setDisplayedMedia([]);
+      setDisplayComments([]);
       setLoading(false);
     }
   }, [userMediaArray, route.params]);
@@ -261,6 +265,14 @@ const Profile = ({navigation, route}) => {
                 }}
               />
             </View>
+            {!loading && displayedMedia.length === 0 &&
+              <Text style={{
+                fontSize: 20,
+                alignSelf: "center",
+                fontFamily: "AdventPro",
+                color: colors.headerTintColor,
+              }}>No posts yet!</Text>
+            }
 
             <View
               style={{

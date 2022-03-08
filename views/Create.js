@@ -97,7 +97,7 @@ const Create = ({navigation}) => {
       name: file.fileName,
       type: file.mimeType,
     })
-    const userTag = data.tag;
+    const userTag = data.tag.toLowerCase();
     setLoading(true);
     const upload = await postMedia(formData, userTag);
     if (upload) {
