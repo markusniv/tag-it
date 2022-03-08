@@ -17,8 +17,37 @@ import {useFocusEffect} from "@react-navigation/native";
 import ConfirmModal from '../components/ConfirmModal';
 import LottieView from "lottie-react-native";
 
+const getColors = () => {
+  const {darkMode} = useContext(MainContext);
+
+  let bgColor,
+    headerColor,
+    headerTintColor,
+    searchColor,
+    buttonColor = colors.button_color,
+    highlightColor = colors.highlight_color,
+    bgColorFaded;
+
+  if (darkMode) {
+    bgColor = colors.dark_mode_bg;
+    headerColor = colors.dark_mode_header;
+    headerTintColor = colors.dark_mode_header_tint;
+    searchColor = colors.light_mode_bg;
+    bgColorFaded = "transparent";
+  } else {
+    bgColor = colors.light_mode_bg;
+    headerColor = colors.light_mode_header;
+    headerTintColor = colors.light_mode_header_tint;
+    searchColor = colors.dark_mode_bg;
+    bgColorFaded = colors.light_mode_header_faded
+  }
+  return {bgColor, buttonColor, headerColor, headerTintColor, highlightColor, searchColor, bgColorFaded};
+};
 
 const Post = ({navigation, route}) => {
+  const colors = getColors();
+  const darkBackgroundImage = require("../images/mobile_background2_tagit.png");
+  const lightBackgroundImage = require("../images/mobile_background2_tagit_light.png");
   const video = React.useRef(null);
   const [status, setStatus] = useState({});
   const {postMedia} = useMedia();
@@ -48,10 +77,6 @@ const Post = ({navigation, route}) => {
 
   const {darkMode, update, commentUpdate, setCommentUpdate, user, loadingComments, setLoadingComments, deleteUpdate} = useContext(MainContext);
   const [confirmVisible, setConfirmVisible] = useState(false);
-
-  let bgColor;
-
-  if (darkMode) bgColor = colors.dark_mode_bg;
 
   // Only load comments when screen is focused
   useFocusEffect(
@@ -110,17 +135,17 @@ const Post = ({navigation, route}) => {
     <ImageBackground
       resizeMode="cover"
       style={{width: "100%", height: "100%"}}
-      source={require("../images/mobile_background2_tagit.png")}
+      source={darkMode ? darkBackgroundImage : lightBackgroundImage}
     >
       <SafeAreaView style={{
         flex: 1,
-        backgroundColor: "transparent",
+        backgroundColor: "transparent"
       }}>
         <TouchableOpacity style={{position: 'absolute', top: '5%', left: '5%', transform: [{rotateY: '180deg'}]}} onPress={onPress} >
           <Icon
             style={{height: 40, width: 40}}
             name='arrow-forward'
-            color={'white'}
+            color={colors.headerTintColor}
             size={40} />
         </TouchableOpacity>
         {singleMedia.user === user.username &&
@@ -128,7 +153,7 @@ const Post = ({navigation, route}) => {
             <Icon
               style={{height: 40, width: 40}}
               name='delete'
-              color={'white'}
+              color={colors.headerTintColor}
               size={40} />
           </TouchableOpacity>
         }
@@ -136,7 +161,11 @@ const Post = ({navigation, route}) => {
 
         <ScrollView style={{marginTop: 75}} nestedScrollEnabled={true} keyboardShouldPersistTaps="handled">
           <View style={styles.top}>
-            <Text style={styles.fontBig}>{singleMedia.title}</Text>
+            <Text style={{
+              fontFamily: "AdventPro",
+              color: colors.headerTintColor,
+              fontSize: 26,
+            }}>{singleMedia.title}</Text>
 
             {fileType === "image" ? (
               <Image
@@ -155,8 +184,16 @@ const Post = ({navigation, route}) => {
                 onPlaybackStatusUpdate={(status) => setStatus(() => status)}
               />
             )}
-            <Text style={styles.fontMid}>{singleMedia.description}</Text>
-            <Text style={styles.fontSmall}>By {singleMedia.user}</Text>
+            <Text style={{
+              fontFamily: "AdventPro",
+              color: colors.headerTintColor,
+              fontSize: 18,
+            }}>{singleMedia.description}</Text>
+            <Text style={{
+              fontFamily: "AdventPro",
+              color: colors.headerTintColor,
+              fontSize: 14,
+            }}>By {singleMedia.user}</Text>
           </View>
           { /* Check that user is logged in before displaying commenting box */}
           {user.user_id != 676 && <View style={styles.createComment}>
@@ -179,7 +216,11 @@ const Post = ({navigation, route}) => {
                 <Input
                   inputContainerStyle={styles.inputContainer}
                   containerStyle={{width: "50%", flex: 1}}
-                  style={styles.fontSmall}
+                  style={{
+                    fontFamily: "AdventPro",
+                    color: colors.headerTintColor,
+                    fontSize: 14,
+                  }}
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={commentInput}
@@ -197,7 +238,11 @@ const Post = ({navigation, route}) => {
                                       />
                                     } */
                   errorMessage={errors.comment && errors.comment.message}
-                  errorStyle={styles.fontSmall}
+                  errorStyle={{
+                    fontFamily: "AdventPro",
+                    color: colors.highlightColor,
+                    fontSize: 14,
+                  }}
                 />
               )}
               name="comment"
@@ -205,9 +250,13 @@ const Post = ({navigation, route}) => {
             <Button title="Post"
               loading={loading}
               onPress={handleSubmit(onSubmit)}
-              titleStyle={styles.fontSmall}
+              titleStyle={{
+                fontFamily: "AdventPro",
+                color: colors.headerTintColor,
+                fontSize: 14,
+              }}
               buttonStyle={{
-                backgroundColor: colors.button_color,
+                backgroundColor: colors.buttonColor,
                 width: "100%",
                 height: "100%",
               }}
@@ -218,15 +267,40 @@ const Post = ({navigation, route}) => {
               disabled={!activated}
             />
           </View>}
-          {user.user_id === 676 && <Text style={styles.fontMidCenteredUnderline} onPress={() => navigation.navigate("Login")}>Please login to comment!</Text>}
+          {user.user_id === 676 && <Text style={{
+            fontFamily: "AdventPro",
+            color: "red",
+            fontSize: 18,
+            alignSelf: "center",
+            textDecorationLine: "underline",
+            padding: 10,
+          }} onPress={() => navigation.navigate("Login")}>Please login to comment!</Text>}
           <Divider style={{width: "95%", alignSelf: "center", }} />
-          <View style={styles.commentSection}>
+          <View style={{
+            width: "95%",
+            borderColor: "rgba(0, 0, 0, 0.1)",
+            backgroundColor: "rgba(0, 0, 0, 0.3)",
+            borderWidth: 5,
+            borderRadius: 10,
+            alignSelf: "center",
+            margin: 5
+          }}>
             {/* When loading comments, display a loading animation */}
             {(!loadingComments) ? (
               (commentArray.length > 0) ? (
                 <CommentList commentArray={commentArray} />
               ) : (
-                (user.user_id !== 676) ? (<Text style={styles.fontMidCentered}>No comments yet, be the first one!</Text>) : ((<Text style={styles.fontMidCentered}>No comments here yet.</Text>))
+                (user.user_id !== 676) ? (<Text style={{
+                  fontFamily: "AdventPro",
+                  color: colors.headerTintColor,
+                  fontSize: 18,
+                  alignSelf: "center",
+                }}>No comments yet, be the first one!</Text>) : ((<Text style={{
+                  fontFamily: "AdventPro",
+                  color: colors.headerTintColor,
+                  fontSize: 18,
+                  alignSelf: "center",
+                }}>No comments here yet.</Text>))
               )
             ) : (
               <LottieView
@@ -282,35 +356,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     borderBottomWidth: 0,
     width: "100%",
-  },
-  fontSmall: {
-    fontFamily: "AdventPro",
-    color: "white",
-    fontSize: 14,
-  },
-  fontMid: {
-    fontFamily: "AdventPro",
-    color: "white",
-    fontSize: 18,
-  },
-  fontMidCentered: {
-    fontFamily: "AdventPro",
-    color: "white",
-    fontSize: 18,
-    alignSelf: "center",
-  },
-  fontMidCenteredUnderline: {
-    fontFamily: "AdventPro",
-    color: "red",
-    fontSize: 18,
-    alignSelf: "center",
-    textDecorationLine: "underline",
-    padding: 10,
-  },
-  fontBig: {
-    fontFamily: "AdventPro",
-    color: "white",
-    fontSize: 26,
   },
 
 });
