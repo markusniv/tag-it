@@ -68,6 +68,7 @@ const Profile = ({navigation, route}) => {
   };
 
   useEffect(async () => {
+    console.log("loading");
     setLoading(true);
     setDisplayedMedia([]);
     if (showOtherUser) {

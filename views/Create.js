@@ -169,9 +169,14 @@ const Create = ({navigation}) => {
                   value: 3,
                   message: 'Tag must be atleast 3 characters',
                 },
+                pattern: {
+                  value: /^(\d|\w)+$/,
+                  message: "Invalid tag, no spaces or special characters allowed!"
+                },
                 onChange: (e) => {
                   setTagInput(e.target.value);
-                  if (e.target.value.length >= 3) {
+                  // Check that input is over 3 characters long and has no spaces or special characters
+                  if (e.target.value.length >= 3 && /^(\d|\w)+$/.test(e.target.value)) {
                     setActivated({
                       tag: true,
                       title: activated.title,
