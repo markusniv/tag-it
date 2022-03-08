@@ -29,7 +29,7 @@ const List = ({navigation}) => {
   const sliceData = (array, capacity) => {
     let withTags = sortRecent(array);
 
-    if (currentTag !== "") withTags = array.filter(item => item.tag === currentTag);
+    if (currentTag !== "") withTags = array.filter(item => item.tag.toLowerCase() === currentTag.toLowerCase());
     const sliced = withTags.filter((item, idx) => (idx < capacity));
     return sliced;
   }
@@ -60,7 +60,7 @@ const List = ({navigation}) => {
 
       const sliced = sliceData(mediaArray, loadCapacity);
       setDisplayedMedia(sliced);
-     
+
       if (searchInput === "") {
         return;
       }
