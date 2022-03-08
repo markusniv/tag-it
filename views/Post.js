@@ -99,6 +99,10 @@ const Post = ({navigation, route}) => {
     if (deleteUpdate) navigation.navigate("Home");
   }, [deleteUpdate])
 
+  useEffect(() => {
+    console.log(user)
+    console.log(singleMedia);
+  }, [])
   // Submit a comment
   const onSubmit = async (data) => {
     const formData = new FormData();

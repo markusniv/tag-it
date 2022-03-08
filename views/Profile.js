@@ -67,7 +67,12 @@ const Profile = ({navigation, route}) => {
 
   useEffect(async () => {
     if (showOtherUser) {
-      let media = await getUserMedia(route.params.user_id);
+      const otherUser = {
+        user_id: route.params.user_id,
+        user: route.params.user,
+        email: route.params.user_email,
+      }
+      let media = await getUserMedia(otherUser);
       media = media.filter(
         (item) => item.title !== "comment" && !item.title.includes("avatar")
       );
@@ -195,64 +200,64 @@ const Profile = ({navigation, route}) => {
                 {!showOtherUser ? user.email : route.params.user_email}
               </Text>
             </View>
-              <View style={{flex: 1, marginTop: 150}}>
-                <Text
-                  style={{
-                    alignSelf: "center",
-                    fontSize: 16,
-                    marginBottom: 20,
-                    color: colors.headerTintColor,
-                    fontFamily: "AdventPro",
-                  }}
-                >
-                  {displayedMedia.length > 0 ? displayedMedia.length : 0}{" "}
-                  {displayedMedia.length == 1 ? " post " : " posts "}
-                  and {displayComments.length > 0 ? displayComments.length : 0}
-                  {displayComments.length == 1 ? " comment" : " comments"}
-                </Text>
-                <View
-                  style={{
-                    borderBottomColor: colors.headerTintColor,
-                    borderBottomWidth: StyleSheet.hairlineWidth,
-                    width: "90%",
-                    marginBottom: 3,
-                    alignSelf: "center",
-                    color: colors.headerTintColor,
-                  }}
-                />
-                <Text
-                  style={{
-                    alignSelf: "center",
-                    fontSize: 24,
-                    margin: 5,
-                    color: colors.headerTintColor,
-                    fontFamily: "AdventPro",
-                  }}
-                >
-                  Posts
-                </Text>
-                <View
-                  style={{
-                    borderBottomColor: colors.headerTintColor,
-                    borderBottomWidth: StyleSheet.hairlineWidth,
-                    width: "90%",
-                    marginTop: 3,
-                    alignSelf: "center",
-                  }}
-                />
-              </View>
-
-              <View
+            <View style={{flex: 1, marginTop: 150}}>
+              <Text
                 style={{
-                  width: "100%",
-                  height: 220,
-                  flex: 1,
-                  marginTop: 50,
-                  marginHorizontal: 10,
+                  alignSelf: "center",
+                  fontSize: 16,
+                  marginBottom: 20,
+                  color: colors.headerTintColor,
+                  fontFamily: "AdventPro",
                 }}
               >
-                <ProfileList navigation={navigation} media={displayedMedia} />
-              </View>
+                {displayedMedia.length > 0 ? displayedMedia.length : 0}{" "}
+                {displayedMedia.length == 1 ? " post " : " posts "}
+                and {displayComments.length > 0 ? displayComments.length : 0}
+                {displayComments.length == 1 ? " comment" : " comments"}
+              </Text>
+              <View
+                style={{
+                  borderBottomColor: colors.headerTintColor,
+                  borderBottomWidth: StyleSheet.hairlineWidth,
+                  width: "90%",
+                  marginBottom: 3,
+                  alignSelf: "center",
+                  color: colors.headerTintColor,
+                }}
+              />
+              <Text
+                style={{
+                  alignSelf: "center",
+                  fontSize: 24,
+                  margin: 5,
+                  color: colors.headerTintColor,
+                  fontFamily: "AdventPro",
+                }}
+              >
+                Posts
+              </Text>
+              <View
+                style={{
+                  borderBottomColor: colors.headerTintColor,
+                  borderBottomWidth: StyleSheet.hairlineWidth,
+                  width: "90%",
+                  marginTop: 3,
+                  alignSelf: "center",
+                }}
+              />
+            </View>
+
+            <View
+              style={{
+                width: "100%",
+                height: 220,
+                flex: 1,
+                marginTop: 50,
+                marginHorizontal: 10,
+              }}
+            >
+              <ProfileList navigation={navigation} media={displayedMedia} />
+            </View>
           </ScrollView>
         </SafeAreaView>
       </TouchableWithoutFeedback>
