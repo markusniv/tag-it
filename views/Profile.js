@@ -16,6 +16,7 @@ import PropTypes from "prop-types";
 import MyListItem from "../components/MyListItem";
 import ProfileList from "../components/ProfileList";
 import {useMedia} from "../hooks/ApiHooks";
+import LottieView from "lottie-react-native";
 
 const getColors = () => {
   const {darkMode} = useContext(MainContext);
@@ -51,6 +52,7 @@ const Profile = ({navigation, route}) => {
   const [displayedMedia, setDisplayedMedia] = useState([]);
   const [displayComments, setDisplayComments] = useState({});
   const [displayAvatar, setDisplayAvatar] = useState("");
+  const [loading, setLoading] = useState(false);
 
   let mediaArray;
   let commentArray;
@@ -66,6 +68,8 @@ const Profile = ({navigation, route}) => {
   };
 
   useEffect(async () => {
+    setLoading(true);
+    setDisplayedMedia([]);
     if (showOtherUser) {
       const otherUser = {
         user_id: route.params.user_id,
@@ -77,6 +81,7 @@ const Profile = ({navigation, route}) => {
         (item) => item.title !== "comment" && !item.title.includes("avatar")
       );
       setDisplayedMedia(media);
+      setLoading(false);
       console.log(media);
     } else if (Object.keys(userMediaArray).length > 0) {
       mediaArray = userMediaArray.filter(
@@ -87,6 +92,7 @@ const Profile = ({navigation, route}) => {
       );
       setDisplayedMedia(mediaArray);
       setDisplayComments(commentArray);
+      setLoading(false);
     }
   }, [userMediaArray, route.params]);
 
@@ -201,20 +207,29 @@ const Profile = ({navigation, route}) => {
               </Text>
             </View>
             <View style={{flex: 1, marginTop: 150}}>
-              <Text
-                style={{
-                  alignSelf: "center",
-                  fontSize: 16,
-                  marginBottom: 20,
-                  color: colors.headerTintColor,
-                  fontFamily: "AdventPro",
-                }}
-              >
-                {displayedMedia.length > 0 ? displayedMedia.length : 0}{" "}
-                {displayedMedia.length == 1 ? " post " : " posts "}
-                and {displayComments.length > 0 ? displayComments.length : 0}
-                {displayComments.length == 1 ? " comment" : " comments"}
-              </Text>
+              {loading ? (<Text style={{
+                alignSelf: "center",
+                fontSize: 16,
+                marginBottom: 20,
+                color: colors.headerTintColor,
+                fontFamily: "AdventPro",
+              }}>Loading...</Text>) : (
+                <Text
+                  style={{
+                    alignSelf: "center",
+                    fontSize: 16,
+                    marginBottom: 20,
+                    color: colors.headerTintColor,
+                    fontFamily: "AdventPro",
+                  }}
+                >
+                  {(displayedMedia.length > 0) ? displayedMedia.length : 0}{" "}
+                  {(displayedMedia.length == 1) ? " post " : " posts "}
+                  and {displayComments.length > 0 ? displayComments.length : 0}
+                  {displayComments.length == 1 ? " comment" : " comments"}
+                </Text>
+              )}
+
               <View
                 style={{
                   borderBottomColor: colors.headerTintColor,
@@ -256,7 +271,21 @@ const Profile = ({navigation, route}) => {
                 marginHorizontal: 10,
               }}
             >
-              <ProfileList navigation={navigation} media={displayedMedia} />
+              {(!loading) ? (
+                <ProfileList navigation={navigation} media={displayedMedia} />
+              ) : (
+                <LottieView
+                  source={require("../animations/88404-loading-bubbles.json")}
+                  autoPlay
+                  loop
+                  style={{
+                    height: "50%",
+                    backgroundColor: "transparent",
+                    alignSelf: "center",
+                  }}
+                />
+              )}
+
             </View>
           </ScrollView>
         </SafeAreaView>
