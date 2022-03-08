@@ -4,10 +4,11 @@ import {useForm, Controller} from 'react-hook-form';
 import {useUser} from '../hooks/ApiHooks';
 import {Input, Button, Text, Icon} from 'react-native-elements';
 import {MainContext} from "../contexts/MainContext";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RegisterForm = ({navigation}) => {
   const {postUser, checkUsername} = useUser();
+  const {setRelogging, firstFetch, setUpdate, setIsLoggedIn, setUser} = useContext(MainContext);
   const login = () => navigation.navigate("Login");
 
   const {
@@ -29,10 +30,15 @@ const RegisterForm = ({navigation}) => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
+      await AsyncStorage.clear();
       delete data.confirmPassword;
       const userData = await postUser(data);
-      console.log('register onSubmit', userData);
-      navigation.navigate("Tabs");
+      await AsyncStorage.setItem('userToken', userData.token);
+      setUser(userData.user);
+      if (!firstFetch) await setRelogging(true);
+      await setIsLoggedIn(true);
+      await setUpdate(true);
+      await navigation.navigate("Tabs");
     } catch (error) {
       console.error(error);
     }

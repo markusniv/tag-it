@@ -1,8 +1,8 @@
-import {useEffect, useState, useContext} from "react";
+import { useEffect, useState, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import data from "../global/tag.json";
-import {MainContext} from "../contexts/MainContext";
+import { MainContext } from "../contexts/MainContext";
 
 const apiUrl = "https://media.mw.metropolia.fi/wbma/";
 const tag = data.tag;
@@ -22,13 +22,15 @@ const useMedia = (update) => {
     changingAccount,
     setChangingAccount,
     setLoadingComments,
+    relogging,
+    setRelogging,
   } = useContext(MainContext);
 
   const getMedia = async () => {
     const token = await AsyncStorage.getItem("userToken");
     const url = apiUrl + "media/";
     try {
-      if (firstFetch) {
+      if (firstFetch || relogging) {
         await setLoadingMedia(true);
         console.log("loading media", true);
       }
@@ -57,8 +59,12 @@ const useMedia = (update) => {
 
             // Filtering "tagit_" tag from the array of tags.
 
-            tags = tags.filter(t => t.tag !== tag && !t.tag.includes("tagit_comment") && !t.tag.includes("tagit_avatar"));
-
+            tags = tags.filter(
+              (t) =>
+                t.tag !== tag &&
+                !t.tag.includes("tagit_comment") &&
+                !t.tag.includes("tagit_avatar")
+            );
 
             if (tags[0] == undefined) return;
             else tags = tags[0].tag.split("_")[1];
@@ -74,8 +80,6 @@ const useMedia = (update) => {
             json.user_email = user.email;
             json.user_id = user.user_id;
             json.tag = tags;
-
-
           }
           return json;
         })
@@ -89,6 +93,7 @@ const useMedia = (update) => {
         await setFirstFetch(false);
         return;
       }
+      await setRelogging(false);
       await setLoadingMedia(false);
     } catch (e) {
       throw new Error(e.message);
@@ -99,11 +104,13 @@ const useMedia = (update) => {
     const token = await AsyncStorage.getItem("userToken");
     const url = apiUrl + "media/";
     try {
-      const response = await fetch(`${apiUrl}tags/${tag}comment_${post}`, {signal: signal});
+      const response = await fetch(`${apiUrl}tags/${tag}comment_${post}`, {
+        signal: signal,
+      });
       const array = await response.json();
       const json = await Promise.all(
         array.map(async (item) => {
-          const response = await fetch(url + item.file_id, {signal: signal});
+          const response = await fetch(url + item.file_id, { signal: signal });
           const json = await response.json();
 
           // Fetching likes for the file and adding it to the json object.
@@ -155,25 +162,31 @@ const useMedia = (update) => {
       },
     };
     let liked = false;
-    const response = await fetch(`${apiUrl}favourites/file/${id}`, options, {signal: signal});
+    const response = await fetch(`${apiUrl}favourites/file/${id}`, options, {
+      signal: signal,
+    });
     const json = await response.json();
 
     await json.map((like) => {
       if (like.user_id === user.user_id) liked = true;
     });
 
-    return {amount: Object.keys(json).length, liked};
+    return { amount: Object.keys(json).length, liked };
   };
 
   // Fetches user info with the given id.
   const getUserInfo = async (id, options, signal) => {
-    const response = await fetch(`${apiUrl}users/${id}`, options, {signal: signal});
+    const response = await fetch(`${apiUrl}users/${id}`, options, {
+      signal: signal,
+    });
     const user = await response.json();
     return user;
   };
 
   const getMediaTags = async (id, signal) => {
-    const response = await fetch(`${apiUrl}tags/file/${id}`, {signal: signal});
+    const response = await fetch(`${apiUrl}tags/file/${id}`, {
+      signal: signal,
+    });
     const tags = await response.json();
     return tags;
   };
@@ -187,13 +200,13 @@ const useMedia = (update) => {
   };
 
   const getMyMedia = async () => {
-    const token = await AsyncStorage.getItem('userToken');
+    const token = await AsyncStorage.getItem("userToken");
     const url = apiUrl + "media/";
 
     const options = {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'x-access-token': token,
+        "x-access-token": token,
       },
     };
 
@@ -206,7 +219,9 @@ const useMedia = (update) => {
           const json = await response.json();
           const userAvatar = await getUserAvatar(item.user_id);
           let tags = await getMediaTags(item.file_id);
-          tags = tags.filter(t => t.tag !== "tagit_" && !t.tag.includes("tagit_avatar"));
+          tags = tags.filter(
+            (t) => t.tag !== "tagit_" && !t.tag.includes("tagit_avatar")
+          );
           if (tags[0] == undefined) return;
           else tags = tags[0].tag.split("_")[1];
 
@@ -226,17 +241,17 @@ const useMedia = (update) => {
     } catch (e) {
       throw new Error(e.message);
     }
-  }
+  };
 
   const getUserMedia = async (user) => {
-    const token = await AsyncStorage.getItem('userToken');
+    const token = await AsyncStorage.getItem("userToken");
     const url = apiUrl + "media/";
     console.log(user);
 
     const options = {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'x-access-token': token,
+        "x-access-token": token,
       },
     };
 
@@ -249,7 +264,9 @@ const useMedia = (update) => {
           const json = await response.json();
           const userAvatar = await getUserAvatar(item.user_id);
           let tags = await getMediaTags(item.file_id);
-          tags = tags.filter(t => t.tag !== "tagit_" && !t.tag.includes("tagit_avatar"));
+          tags = tags.filter(
+            (t) => t.tag !== "tagit_" && !t.tag.includes("tagit_avatar")
+          );
           if (tags[0] == undefined) return;
           else tags = tags[0].tag.split("_")[1];
 
@@ -269,9 +286,7 @@ const useMedia = (update) => {
     } catch (e) {
       throw new Error(e.message);
     }
-  }
-
-
+  };
 
   const postMedia = async (data, userTag) => {
     const token = await AsyncStorage.getItem("userToken");
@@ -376,14 +391,16 @@ const useMedia = (update) => {
   // Delete old avatar to make room for new one
   const deleteAvatar = async () => {
     try {
-      const response = await fetch(apiUrl + `tags/${tag}avatar_${user.user_id}`)
+      const response = await fetch(
+        apiUrl + `tags/${tag}avatar_${user.user_id}`
+      );
       const json = await response.json();
       const deleteResponse = await deleteMedia(json[0].file_id);
       return deleteResponse;
     } catch (e) {
       console.error(e);
     }
-  }
+  };
 
   const putMedia = async (data, id) => {
     const token = await AsyncStorage.getItem("userToken");
@@ -421,7 +438,7 @@ const useMedia = (update) => {
         "x-access-token": token,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({file_id: id}),
+      body: JSON.stringify({ file_id: id }),
     };
 
     try {
@@ -474,7 +491,7 @@ const useMedia = (update) => {
     getComments,
     getUserAvatar,
     deleteAvatar,
-    getUserMedia
+    getUserMedia,
   };
 };
 
@@ -498,7 +515,7 @@ const useLogin = () => {
     }
   };
 
-  return {postLogin};
+  return { postLogin };
 };
 
 const useUser = () => {
@@ -506,7 +523,7 @@ const useUser = () => {
     try {
       const options = {
         method: "GET",
-        headers: {"x-access-token": token},
+        headers: { "x-access-token": token },
       };
       const response = await fetch(apiUrl + "users/user", options);
       const userData = await response.json();
@@ -525,7 +542,7 @@ const useUser = () => {
     try {
       const options = {
         method: "GET",
-        headers: {"x-access-token": token},
+        headers: { "x-access-token": token },
       };
       const response = await fetch(apiUrl + "users/" + id, options);
       const userData = await response.json();
@@ -540,7 +557,7 @@ const useUser = () => {
   };
 
   const postUser = async (data) => {
-    console.log(data);
+    console.log("postuser data:", data);
     const options = {
       method: "POST",
       headers: {
@@ -550,36 +567,50 @@ const useUser = () => {
     };
     try {
       const response = await fetch(apiUrl + "users", options);
-      if (!response.ok) {
-        return new Error("Failed to create a user!");
+
+      const loginOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          "username": data.username,
+          "password": data.password,
+        }),
+      };
+
+      const loginResponse = await fetch(apiUrl + "login", loginOptions);
+      if (!loginResponse.ok) {
+        return new Error("Failed to retrieve data!");
       }
-      return response.json();
+
+      return loginResponse.json();
     } catch (e) {
       throw new Error(e.message);
     }
   };
 
   const putUser = async (data) => {
-    const token = await AsyncStorage.getItem('userToken');
+    const token = await AsyncStorage.getItem("userToken");
     console.log(data);
     const options = {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'x-access-token': token,
-        'Content-Type': 'application/json'
+        "x-access-token": token,
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     };
     try {
       const response = await fetch(apiUrl + "users", options);
       if (!response.ok) {
-        return new Error('Failed to modify a user!');
+        return new Error("Failed to modify a user!");
       }
       return response.json();
     } catch (e) {
       throw new Error(e.message);
     }
-  }
+  };
 
   const checkUser = async (username) => {
     try {
@@ -604,11 +635,8 @@ const useUser = () => {
     }
   };
 
-
-  return {getUserByToken, postUser, checkUser, getUserById, putUser};
-}
-
-
+  return { getUserByToken, postUser, checkUser, getUserById, putUser };
+};
 
 /** Gets all the tags containing "tagit_" */
 const getTags = async () => {
@@ -616,14 +644,12 @@ const getTags = async () => {
   try {
     const options = {
       method: "GET",
-      headers: {"x-access-token": token},
+      headers: { "x-access-token": token },
     };
     const response = await fetch(`${apiUrl}tags`, options);
     const tags = await response.json();
 
-
     const tagItTags = tags.filter((t) => t.tag.includes(tag));
-
 
     let tagsWithDuplicates = getTagsWithPostAmount(tagItTags);
 
@@ -663,7 +689,10 @@ const getTagsWithPostAmount = (array) => {
   }
 
   duplicates = duplicates.filter(
-    (item) => item.tag !== "tagit_" && !item.tag.includes("tagit_comment") && !item.tag.includes("tagit_avatar")
+    (item) =>
+      item.tag !== "tagit_" &&
+      !item.tag.includes("tagit_comment") &&
+      !item.tag.includes("tagit_avatar")
   );
 
   // Removing the "tagit_" portion of the tags.
@@ -675,6 +704,4 @@ const getTagsWithPostAmount = (array) => {
   return duplicates;
 };
 
-
-export {useMedia, useLogin, useUser, getTags};
-
+export { useMedia, useLogin, useUser, getTags };
