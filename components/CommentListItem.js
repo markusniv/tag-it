@@ -120,11 +120,47 @@ const CommentListItem = ({singleComment}) => {
               {singleComment.user === user.username &&
                 <MaterialCommunityIcons name="delete" color={headerTintColor} size={30} onPress={() => setConfirmVisible(true)} />
               }
-              {currentLikes >= 0 && <TouchableOpacity style={styles.likesContainer} onPress={toggleLike}>
-                <MaterialCommunityIcons name="arrow-up-bold-outline" color={liked ? highlightColor : headerTintColor} size={30} />
-                <Text style={{color: liked ? highlightColor : headerTintColor, fontSize: 15, fontFamily: 'AdventPro', }}>{currentLikes}</Text>
-              </TouchableOpacity>
-              }
+              {currentLikes >= 0 && isLoggedIn && (
+                <TouchableOpacity
+                  style={styles.likesContainer}
+                  onPress={toggleLike}
+                >
+                  <MaterialCommunityIcons
+                    name="arrow-up-bold-outline"
+                    color={liked ? highlightColor : headerTintColor}
+                    size={25}
+                  />
+                  <Text
+                    style={{
+                      color: liked ? highlightColor : headerTintColor,
+                      fontSize: 15,
+                      fontFamily: "AdventPro",
+                    }}
+                  >
+                    {currentLikes}
+                  </Text>
+                </TouchableOpacity>
+              )}
+              {currentLikes >= 0 && !isLoggedIn && (
+                <TouchableOpacity
+                  style={styles.likesContainer}
+                >
+                  <MaterialCommunityIcons
+                    name="arrow-up-bold-outline"
+                    color={headerTintColor}
+                    size={25}
+                  />
+                  <Text
+                    style={{
+                      color: headerTintColor,
+                      fontSize: 15,
+                      fontFamily: "AdventPro",
+                    }}
+                  >
+                    {currentLikes}
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
 
           </View>

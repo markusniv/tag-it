@@ -18,7 +18,7 @@ const getTimeAddedString = (time) => {
 
   let currentDate = new Date();
   let timeAdded = new Date(time);
- 
+
   let secondsDifference = (currentDate.getTime() - timeAdded.getTime()) / 1000;
   let minutesDifference = Math.abs(Math.round(secondsDifference / 60));
   let hoursDifference = Math.floor(minutesDifference / 60);
@@ -174,7 +174,7 @@ const ListItem = ({singleMedia, navigation}) => {
               </TouchableOpacity>
             )}
             {currentLikes >= 0 && !isLoggedIn && (
-              <View
+              <TouchableOpacity
                 style={styles.likesContainer}
               >
                 <MaterialCommunityIcons
@@ -191,7 +191,7 @@ const ListItem = ({singleMedia, navigation}) => {
                 >
                   {currentLikes}
                 </Text>
-              </View>
+              </TouchableOpacity>
             )}
           </View>
           <TouchableOpacity
