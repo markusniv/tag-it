@@ -195,7 +195,6 @@ const Profile = ({navigation, route}) => {
                 {!showOtherUser ? user.email : route.params.user_email}
               </Text>
             </View>
-            {!showOtherUser && (
               <View style={{flex: 1, marginTop: 150}}>
                 <Text
                   style={{
@@ -242,7 +241,6 @@ const Profile = ({navigation, route}) => {
                   }}
                 />
               </View>
-            )}
 
               <View
                 style={{

@@ -73,7 +73,7 @@ const ProfileListItem = ({singleMedia, navigation}) => {
             });
           }}>
             <View style={{height: '100%', flex: 1, width: '100%', alignItems: 'center'}}>
-              <Text style={{fontWeight: 'bold', marginTop: 5, color: colors.headerTintColor}}>{singleMedia.title}</Text>
+              <Text style={{marginTop: 5, color: colors.headerTintColor, fontFamily: "AdventPro"}}>{singleMedia.title}</Text>
 
               <View style={{flex: 1, justifyContent: 'flex-end', width: '100%', height: '100%', alignItems: 'center'}}>
               <Image source={{uri: `${url}${singleMedia.thumbnails.w160}`}}
