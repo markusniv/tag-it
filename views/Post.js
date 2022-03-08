@@ -125,6 +125,8 @@ const Post = ({navigation, route}) => {
     if (upload) {
       setCommentUpdate(!commentUpdate);
       setTimeout(() => {
+        setCommentInput("");
+        setActivated(false);
         setLoading(false);
         loadComments();
         setCommentUpdate(!commentUpdate);
