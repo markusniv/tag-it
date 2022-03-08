@@ -1,11 +1,11 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import {useFonts} from "expo-font";
+import { useFonts } from "expo-font";
 
 const MainContext = React.createContext({});
 
 /** Provides global data for react components. */
-const MainProvider = ({children}) => {
+const MainProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({});
@@ -20,6 +20,7 @@ const MainProvider = ({children}) => {
   const [loadingComments, setLoadingComments] = useState(true);
   const [deleteUpdate, setDeleteUpdate] = useState(false);
   const [updateAvatar, setUpdateAvatar] = useState(false);
+  const [relogging, setRelogging] = useState(false);
 
   const [loaded] = useFonts({
     AdventPro: require("../assets/fonts/AdventPro.ttf"),
@@ -61,6 +62,8 @@ const MainProvider = ({children}) => {
         setDeleteUpdate,
         updateAvatar,
         setUpdateAvatar,
+        relogging,
+        setRelogging,
       }}
     >
       {children}
@@ -72,4 +75,4 @@ MainProvider.propTypes = {
   children: PropTypes.node,
 };
 
-export {MainContext, MainProvider};
+export { MainContext, MainProvider };
