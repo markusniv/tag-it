@@ -228,9 +228,10 @@ const useMedia = (update) => {
     }
   }
 
-  const getUserMedia = async (id) => {
+  const getUserMedia = async (user) => {
     const token = await AsyncStorage.getItem('userToken');
     const url = apiUrl + "media/";
+    console.log(user);
 
     const options = {
       method: 'GET',
@@ -240,7 +241,7 @@ const useMedia = (update) => {
     };
 
     try {
-      const response = await fetch(`${url}user/${id}`, options);
+      const response = await fetch(`${url}user/${user.user_id}`, options);
       const array = await response.json();
       let json = await Promise.all(
         array.map(async (item) => {
@@ -253,7 +254,7 @@ const useMedia = (update) => {
           else tags = tags[0].tag.split("_")[1];
 
           // Adding user data to the JSON object
-          json.user = user.username;
+          json.user = user.user;
           json.user_email = user.email;
           json.user_id = user.user_id;
           json.tag = tags;
