@@ -23,11 +23,11 @@ const Login = ({navigation}) => {
           <View style={styles.form}>
 
             <ImageBackground source={require('../images/mobile_background2_tagit.png')}
-                             style={styles.background}
-                             resizeMode={'cover'}/>
+              style={styles.background}
+              resizeMode={'cover'} />
 
 
-            <LoginForm navigation={navigation}/>
+            <LoginForm navigation={navigation} />
 
           </View>
         </ScrollView>

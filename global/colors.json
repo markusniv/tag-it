@@ -6,7 +6,7 @@
   "light_mode_bg": "white",
   "light_mode_header": "#e9ebfa",
   "light_mode_header_tint": "black",
-  "light_mode_header_faded": "#FFFFFF99",
+  "light_mode_header_faded": "#FFFFFF50",
   "highlight_color": "red",
   "highlight_color_faded": "#eb403499",
   "own_comment_color": "rgba(128, 38, 50, 0.5)",

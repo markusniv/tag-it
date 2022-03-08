@@ -12,38 +12,42 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import colors from "../global/colors.json";
 import ConfirmModal from './ConfirmModal';
 
+const getColors = () => {
+  const {darkMode} = useContext(MainContext);
+
+  let bgColor,
+    headerColor,
+    headerTintColor,
+    searchColor,
+    highlightColor = colors.highlight_color,
+    ownCommentColor = colors.own_comment_color,
+    bgColorFaded;
+
+  if (darkMode) {
+    bgColor = colors.dark_mode_bg;
+    headerColor = colors.dark_mode_header;
+    headerTintColor = colors.dark_mode_header_tint;
+    searchColor = colors.light_mode_bg;
+    bgColorFaded = colors.dark_mode_bg_faded
+  } else {
+    bgColor = colors.light_mode_bg;
+    headerColor = colors.light_mode_header;
+    headerTintColor = colors.light_mode_header_tint;
+    searchColor = colors.dark_mode_bg;
+    bgColorFaded = colors.light_mode_header_faded
+  }
+  return {bgColor, headerColor, headerTintColor, highlightColor, searchColor, bgColorFaded, ownCommentColor};
+};
 
 
 const CommentListItem = ({singleComment}) => {
-  const {darkMode, isLoggedIn, user, loadingComments} = useContext(MainContext);
+  const colors = getColors();
+  const {isLoggedIn, user, loadingComments} = useContext(MainContext);
   const {likeMedia, removeLike, getFavourites, deleteMedia} = useMedia();
   const [currentLikes, setCurrentLikes] = useState(0);
   const [comment, setComment] = useState(singleComment);
   const [liked, setLiked] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
-
-  let bgColor,
-    headerColor,
-    headerTintColor,
-    bgColorFaded,
-    postLabelColor,
-    highlightColor = colors.highlight_color,
-    ownCommentColor = colors.own_comment_color;
-
-
-  if (darkMode) {
-    bgColor = colors.dark_mode_bg;
-    headerColor = colors.dark_mode_header;
-    bgColorFaded = colors.dark_mode_bg_faded;
-    postLabelColor = colors.light_mode_header_tint;
-    headerTintColor = colors.dark_mode_header_tint;
-  } else {
-    bgColor = colors.light_mode_bg;
-    headerColor = colors.light_mode_header;
-    bgColorFaded = colors.light_mode_header_faded;
-    postLabelColor = colors.dark_mode_header_tint;
-    headerTintColor = colors.light_mode_header_tint;
-  }
 
   // Removes or adds a like depending on the liked status.
   const toggleLike = async () => {
@@ -105,20 +109,20 @@ const CommentListItem = ({singleComment}) => {
               borderRadius: 5,
               padding: 10,
               margin: 5,
-              backgroundColor: singleComment.user === user.username ? ownCommentColor : bgColorFaded,
+              backgroundColor: singleComment.user === user.username ? colors.ownCommentColor : colors.bgColorFaded,
             }}
           >
             <View style={styles.commentText}>
               {singleComment.user && (
-                <Text style={{color: headerTintColor, fontFamily: 'AdventPro', fontSize: 12}}>
+                <Text style={{color: colors.headerTintColor, fontFamily: 'AdventPro', fontSize: 12}}>
                   Posted by /user/{singleComment.user}
                 </Text>
               )}
-              <Text style={{color: headerTintColor, fontFamily: 'AdventPro', fontSize: 16}}>{singleComment.description}</Text>
+              <Text style={{color: colors.headerTintColor, fontFamily: 'AdventPro', fontSize: 16}}>{singleComment.description}</Text>
             </View>
             <View style={styles.actions}>
               {singleComment.user === user.username &&
-                <MaterialCommunityIcons name="delete" color={headerTintColor} size={30} onPress={() => setConfirmVisible(true)} />
+                <MaterialCommunityIcons name="delete" color={colors.headerTintColor} size={25} onPress={() => setConfirmVisible(true)} />
               }
               {currentLikes >= 0 && isLoggedIn && (
                 <TouchableOpacity
@@ -127,12 +131,12 @@ const CommentListItem = ({singleComment}) => {
                 >
                   <MaterialCommunityIcons
                     name="arrow-up-bold-outline"
-                    color={liked ? highlightColor : headerTintColor}
+                    color={liked ? colors.highlightColor : colors.headerTintColor}
                     size={25}
                   />
                   <Text
                     style={{
-                      color: liked ? highlightColor : headerTintColor,
+                      color: liked ? colors.highlightColor : colors.headerTintColor,
                       fontSize: 15,
                       fontFamily: "AdventPro",
                     }}
@@ -147,12 +151,12 @@ const CommentListItem = ({singleComment}) => {
                 >
                   <MaterialCommunityIcons
                     name="arrow-up-bold-outline"
-                    color={headerTintColor}
+                    color={colors.headerTintColor}
                     size={25}
                   />
                   <Text
                     style={{
-                      color: headerTintColor,
+                      color: colors.headerTintColor,
                       fontSize: 15,
                       fontFamily: "AdventPro",
                     }}

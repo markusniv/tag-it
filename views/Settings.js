@@ -22,6 +22,9 @@ const Settings = ({navigation}) => {
     confirmLogout,
     setConfirmLogout,
   } = useContext(MainContext);
+  const darkBackgroundImage = require("../images/mobile_background3_tagit.png");
+  const lightBackgroundImage = require("../images/mobile_background3_tagit_light.png");
+
   const [confirmVisible, setConfirmVisible] = useState(false);
   let bgColor,
     headerColor,
@@ -67,7 +70,7 @@ const Settings = ({navigation}) => {
   return (
     <View>
       <ImageBackground
-        source={require("../images/mobile_background2_tagit.png")}
+        source={darkMode ? darkBackgroundImage : lightBackgroundImage}
         style={{
           width: "100%",
           height: "100%",
