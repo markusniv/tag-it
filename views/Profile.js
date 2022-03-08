@@ -46,9 +46,9 @@ const Profile = ({navigation, route}) => {
   const url = "https://media.mw.metropolia.fi/wbma/uploads/";
   const {update} = useContext(MainContext);
   const {userMediaArray} = useMedia(update);
-  const {getUserAvatar} = useMedia(update);
+  const {getUserAvatar, getUserMedia} = useMedia(update);
 
-  const [displayedMedia, setDisplayedMedia] = useState({});
+  const [displayedMedia, setDisplayedMedia] = useState([]);
   const [displayComments, setDisplayComments] = useState({});
   const [displayAvatar, setDisplayAvatar] = useState("");
 
@@ -65,8 +65,15 @@ const Profile = ({navigation, route}) => {
     console.log(displayAvatar);
   };
 
-  useEffect(() => {
-    if (Object.keys(userMediaArray).length > 0) {
+  useEffect(async () => {
+    if (showOtherUser) {
+      let media = await getUserMedia(route.params.user_id);
+      media = media.filter(
+        (item) => item.title !== "comment" && !item.title.includes("avatar")
+      );
+      setDisplayedMedia(media);
+      console.log(media);
+    } else if (Object.keys(userMediaArray).length > 0) {
       mediaArray = userMediaArray.filter(
         (item) => item.title !== "comment" && !item.title.includes("avatar")
       );
@@ -76,7 +83,7 @@ const Profile = ({navigation, route}) => {
       setDisplayedMedia(mediaArray);
       setDisplayComments(commentArray);
     }
-  }, [userMediaArray]);
+  }, [userMediaArray, route.params]);
 
   useEffect(() => {
     getAvatar();
@@ -90,12 +97,11 @@ const Profile = ({navigation, route}) => {
           position: "absolute",
           top: "-19%",
           left: "5%",
-          transform: [{rotateY: "180deg"}],
         }}
       >
         <Icon
           style={{height: 40, width: 40, zIndex: 10}}
-          name="arrow-forward"
+          name="arrow-back"
           color={"white"}
           size={40}
           onPress={() => navigation.navigate("Home")}
@@ -238,7 +244,6 @@ const Profile = ({navigation, route}) => {
               </View>
             )}
 
-            {!showOtherUser && (
               <View
                 style={{
                   width: "100%",
@@ -248,9 +253,8 @@ const Profile = ({navigation, route}) => {
                   marginHorizontal: 10,
                 }}
               >
-                <ProfileList navigation={navigation} />
+                <ProfileList navigation={navigation} media={displayedMedia} />
               </View>
-            )}
           </ScrollView>
         </SafeAreaView>
       </TouchableWithoutFeedback>
