@@ -88,7 +88,7 @@ const Profile = ({navigation, route}) => {
         style={{
           zIndex: 10,
           position: "absolute",
-          top: "-19%",
+          top: "-14.75%",
           left: "5%",
           transform: [{rotateY: "180deg"}],
         }}
@@ -104,7 +104,7 @@ const Profile = ({navigation, route}) => {
 
       {!showOtherUser && (
         <View
-          style={{zIndex: 10, position: "absolute", top: "-19%", right: "5%"}}
+          style={{zIndex: 10, position: "absolute", top: "-14.75%", right: "5%"}}
         >
           <Icon
             singleMedia={userMediaArray}
