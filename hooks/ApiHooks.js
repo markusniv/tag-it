@@ -91,7 +91,6 @@ const useMedia = (update) => {
       if (firstFetch) {
         console.log("loading media", false);
         await setFirstFetch(false);
-        return;
       }
       await setRelogging(false);
       await setLoadingMedia(false);
@@ -213,6 +212,7 @@ const useMedia = (update) => {
     try {
       const response = await fetch(`${apiUrl}media/user`, options);
       const array = await response.json();
+    
       let json = await Promise.all(
         array.map(async (item) => {
           const response = await fetch(url + item.file_id);
@@ -220,11 +220,12 @@ const useMedia = (update) => {
           const userAvatar = await getUserAvatar(item.user_id);
           let tags = await getMediaTags(item.file_id);
           tags = tags.filter(
-            (t) => t.tag !== "tagit_" && !t.tag.includes("tagit_avatar")
+            (t) => t.tag !== "tagit_" && !t.tag.includes("tagit_avatar") && t.tag.includes("tagit_")
           );
+     
           if (tags[0] == undefined) return;
           else tags = tags[0].tag.split("_")[1];
-
+      
           // Adding user data to the JSON object
           json.user = user.username;
           json.user_email = user.email;
