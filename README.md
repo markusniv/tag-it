@@ -30,9 +30,6 @@ The application consists of several views, with each having their own purpose. T
 
 The main view of the application, which contains one of the main functionalities. Here, the user can browse posts created by other users. It has two sub views, which display the most recent and popular posts. These lists change according to the tag the user has chosen. Tags can be searched by clicking the top right corner’s search icon and using the search view. 
 
-<!-- ![Image of home page](images/home-tagit.PNG)
-![Image of search view](images/search-tagit.PNG)
- -->
 <p>
   <img src="images/home-tagit.PNG" height="550" width="300">
   <img src="images/search-tagit.PNG" height="550" width="300">
@@ -46,12 +43,22 @@ The Settings view has a toggle for dark mode, as well as a login or logout butto
 
 The More view displays several mockup buttons, which don’t have any functionality in addition of adding design.
 
+<p>
+  <img src="images/profile-tagit.PNG" height="550" width="300">
+  <img src="images/profile-modify-tagit.PNG" height="550" width="300">
+  <img src="images/settings-tagit.PNG" height="550" width="300">
+  <img src="images/more-tagit.PNG" height="550" width="300">
+</p>
+
 
 ## Creation of posts
 Using the round red button on the middle of the navigation bar, the user can access the Create view, where the creation of posts happens. All the input fields are required: an image/video, a tag, title and a description for the post.
 
 Posts can be viewed in the Post view, which can be opened up by clicking any post the user chooses. In addition of the information displayed in the Post view, the user can see comments made by other users.
 
-
+<p>
+  <img src="images/create-tagit.PNG" height="550" width="300">
+  <img src="images/post-tagit.PNG" height="550" width="300">
+</p>
 
 
