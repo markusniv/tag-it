@@ -61,10 +61,16 @@ Posts can be viewed in the Post view, which can be opened up by clicking any pos
   <img src="images/post-tagit.png" height="500">
 </p>
 
+# How to use
+Clone this project via ``git pull https://gitlab.metropolia.fi/tag-it/mobile-app.git``
+
+Run ``npm install`` to get all dependencies installed
+
+Run either ``expo start`` or ``expo start --no-dev --minify`` depending on whether you want dev mode or not
 
 # Misc
 
-This was made as a group project for a web-based mobile application course @ [Metropolia UAS](https://www.metropolia.fi/en).
+This was a group project for a web based mobile application course @ [Metropolia UAS](https://www.metropolia.fi/en).
 
 # Authors
 
