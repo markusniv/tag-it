@@ -6,7 +6,7 @@ The main target audience varies, as it depends on which tag is being used. For e
 
 The project utilizes a simple media sharing service backend by [Metropolia UAS](https://www.metropolia.fi/en). Documentation for the API can be found [here](https://media.mw.metropolia.fi/wbma/docs/).
 
-[Demonstration](https://drive.google.com/file/d/1s4qOdOxkE8dbngSWTd8u481UntUv8QEw/view)
+[Demonstration video](https://drive.google.com/file/d/1s4qOdOxkE8dbngSWTd8u481UntUv8QEw/view) showing the app being used.
 # Features
 
 The accessable features depend whether the user is unregistered or registered. 
