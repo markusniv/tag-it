@@ -62,3 +62,20 @@ Posts can be viewed in the Post view, which can be opened up by clicking any pos
 </p>
 
 
+# Misc
+
+This was made as a group project for a web-based mobile application course @ [Metropolia UAS](https://www.metropolia.fi/en).
+
+# Authors
+
+_Markus Nivasalo_
+- Email: _markus.nivasalo (at) metropolia.fi_
+- Git: https://github.com/markusniv
+
+_Jani Salo_
+- Email: _jani.salo2 (at) metropolia.fi_
+- Git: https://github.com/janiksa
+
+_Oskari Arponen_
+- Email: _oskari.arponen (at) metropolia.fi_
+- Git: https://github.com/AOskari
