@@ -4,6 +4,8 @@ This project is written in JavaScript using React Native as well utilizing its l
 The project itself is a web-based mobile application, which lets the end user browse topics of his/her liking, as well  post thoughts, opinions, ideas, memes and whatever else they feel like. The purpose is to connect people, and help finding like minded people in tags that interest you.
 The main target audience varies, as it depends on which tag is being used. For example, the age range can vary from 15-years old gamers to 70-years old grandmothers.
 
+The project utilizes a simple media sharing service backend by [Metropolia UAS](https://www.metropolia.fi/en). Documentation for the API can be found [here](https://media.mw.metropolia.fi/wbma/docs/).
+
 [Demonstration](https://drive.google.com/file/d/1s4qOdOxkE8dbngSWTd8u481UntUv8QEw/view)
 # Features
 
@@ -71,7 +73,7 @@ Run either ``expo start`` or ``expo start --no-dev --minify`` depending on wheth
 
 # Misc
 
-This was a group project for a web based mobile application course @ [Metropolia UAS](https://www.metropolia.fi/en).
+This was a group project for a web based mobile application course @ [Metropolia UAS](https://www.metropolia.fi/en). 
 
 # Authors
 
