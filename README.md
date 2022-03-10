@@ -34,8 +34,8 @@ The main view of the application, which contains one of the main functionalities
 ![Image of search view](images/search-tagit.PNG)
  -->
 <p>
-  <img src="images/home-tagit.PNG" height="550" width="250">
-  <img src="images/search-tagit.PNG" height="550" width="250">
+  <img src="images/home-tagit.PNG" height="550" width="300">
+  <img src="images/search-tagit.PNG" height="550" width="300">
 </p>
 
 ## Profile, Settings and More
