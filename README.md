@@ -17,7 +17,7 @@ Features unregistered users are able to access:
 -	View other users profiles
 -	Search for tags
 -	Use settings
--	login
+-	Login
 
 Features registerd users can access (in addition of unregistered user features):
 -	Upload and delete own posts
