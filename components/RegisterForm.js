@@ -53,11 +53,11 @@ const RegisterForm = ({navigation}) => {
           name='arrow-forward'
           color={'white'}
           size={40}
-          onPress={() => navigation.navigate("Welcome")}/>
+          onPress={() => navigation.navigate("Welcome")} />
       </View>
 
 
-      <Image resizeMode='contain' source={require('../images/logo.png')} style={styles.logo}/>
+      <Image resizeMode='contain' source={require('../images/logo.png')} style={styles.logo} />
 
       <View style={styles.inputForm}>
 
@@ -173,21 +173,21 @@ const RegisterForm = ({navigation}) => {
       <Text onPress={login} style={styles.loginHere} navigation={navigation}>Already a user? Login here!</Text>
       <Button title="Register"
 
-              onPress={handleSubmit(onSubmit)}
-              buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}}
-              titleStyle={{
-                fontSize: 22,
-                fontFamily: 'AdventPro',
-              }}
-              containerStyle={{
-                position: 'absolute',
-                borderRadius: 10,
-                margin: 10,
-                bottom: '5%',
-                alignSelf: 'center',
-                width: '90%',
-                height: 70,
-              }}/>
+        onPress={handleSubmit(onSubmit)}
+        buttonStyle={{backgroundColor: '#FB4E4E', width: '100%', height: '100%'}}
+        titleStyle={{
+          fontSize: 22,
+          fontFamily: 'AdventPro',
+        }}
+        containerStyle={{
+          position: 'absolute',
+          borderRadius: 10,
+          margin: 10,
+          bottom: '5%',
+          alignSelf: 'center',
+          width: '90%',
+          height: 70,
+        }} />
     </View>
   );
 };

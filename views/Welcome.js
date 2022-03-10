@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {
   SafeAreaView,
   View,
@@ -6,19 +6,18 @@ import {
   ImageBackground,
   Dimensions,
 } from "react-native";
-import { Image, Text } from "react-native-elements";
-import { MainContext } from "../contexts/MainContext";
+import {Image, Text} from "react-native-elements";
+import {MainContext} from "../contexts/MainContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useUser } from "../hooks/ApiHooks";
-import { useLogin } from "../hooks/ApiHooks";
-
-const Welcome = ({ navigation }) => {
-  const { setUser, setIsLoggedIn, setDarkMode, setUpdate } =
+import {useUser} from "../hooks/ApiHooks";
+// Initial starting screen, allowing users to login/register or skip to use guest user
+const Welcome = ({navigation}) => {
+  const {setUser, setIsLoggedIn, setDarkMode, setUpdate} =
     useContext(MainContext);
-  const { postLogin } = useLogin();
+  const {postLogin} = useUser();
 
   const checkToken = async () => {
-    const { getUserByToken } = useUser();
+    const {getUserByToken} = useUser();
     try {
       const token = await AsyncStorage.getItem("userToken");
       console.log(token);
@@ -105,7 +104,7 @@ const Welcome = ({ navigation }) => {
         <Image
           source={require("../images/logo.png")}
           resizeMode={"contain"}
-          style={{ width: "100%", height: "100%" }}
+          style={{width: "100%", height: "100%"}}
         />
       </View>
       <View style={styles.bottom}>

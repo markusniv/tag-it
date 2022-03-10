@@ -11,6 +11,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import colors from "../global/colors.json";
 import {Icon} from 'react-native-elements/dist/icons/Icon';
 
+// Post creation screen
 const Create = ({navigation}) => {
   const {darkMode} = useContext(MainContext);
 
@@ -20,6 +21,7 @@ const Create = ({navigation}) => {
 
   const [keyboardShown, setKeyboardShown] = useState(false);
 
+  // State following whether or not post uploading button should be enabled
   const [activated, setActivated] = useState({
     tag: false,
     title: false,
@@ -42,6 +44,7 @@ const Create = ({navigation}) => {
 
   useFocusEffect(React.useCallback(() => reset(), []));
 
+  // Reset all the fields
   const reset = () => {
     setTagInput('');
     setTitleInput('');
@@ -111,6 +114,7 @@ const Create = ({navigation}) => {
     }
   }
 
+  // File selection for posts
   const selectFile = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,

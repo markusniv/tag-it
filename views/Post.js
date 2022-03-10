@@ -17,6 +17,7 @@ import {useFocusEffect} from "@react-navigation/native";
 import ConfirmModal from '../components/ConfirmModal';
 import LottieView from "lottie-react-native";
 
+// Get colors for both dark and light modes
 const getColors = () => {
   const {darkMode} = useContext(MainContext);
 
@@ -44,6 +45,7 @@ const getColors = () => {
   return {bgColor, buttonColor, headerColor, headerTintColor, highlightColor, searchColor, bgColorFaded};
 };
 
+// Screen displaying a singular post
 const Post = ({navigation, route}) => {
   const colors = getColors();
   const darkBackgroundImage = require("../images/mobile_background2_tagit.png");
@@ -59,8 +61,6 @@ const Post = ({navigation, route}) => {
   const {control, handleSubmit, getValues, formState: {errors}} = useForm({
     mode: 'onBlur',
   });
-
-
 
   const [commentInput, setCommentInput] = useState('');
   const [activated, setActivated] = useState(false);

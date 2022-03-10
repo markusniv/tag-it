@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import {ImageBackground, View, StyleSheet, Image} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {MainContext} from '../contexts/MainContext';
-import {useLogin} from '../hooks/ApiHooks';
+import {useUser} from '../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Button, Input, Text, Icon} from 'react-native-elements';
 import PropTypes from "prop-types";
@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 
 const LoginForm = ({navigation, previousScreen}) => {
   const {setIsLoggedIn, setUser, setUpdate, setRelogging, firstFetch} = useContext(MainContext);
-  const {postLogin} = useLogin();
+  const {postLogin} = useUser();
   const register = () => navigation.navigate("Register");
   const backbutton = () => {
     navigation.goBack();

@@ -12,6 +12,7 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import colors from "../global/colors.json";
 import ConfirmModal from './ConfirmModal';
 
+// Get colors for both dark and light modes
 const getColors = () => {
   const {darkMode} = useContext(MainContext);
 
@@ -39,7 +40,7 @@ const getColors = () => {
   return {bgColor, headerColor, headerTintColor, highlightColor, searchColor, bgColorFaded, ownCommentColor};
 };
 
-
+// The singular list item element which displays a singular comment in the post comment sections
 const CommentListItem = ({singleComment}) => {
   const colors = getColors();
   const {isLoggedIn, user, loadingComments} = useContext(MainContext);
@@ -58,6 +59,7 @@ const CommentListItem = ({singleComment}) => {
     setCurrentLikes(newLikes.amount);
   }
 
+  // Clean up element
   const cleanUp = () => {
     setCurrentLikes(0)
     setLiked(false)
