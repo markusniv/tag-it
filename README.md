@@ -30,11 +30,8 @@ The application consists of several views, with each having their own purpose. T
 
 The main view of the application, which contains one of the main functionalities. Here, the user can browse posts created by other users. It has two sub views, which display the most recent and popular posts. These lists change according to the tag the user has chosen. Tags can be searched by clicking the top right corner’s search icon and using the search view. 
 
-<p>
-  <img src="https://gitlab.metropolia.fi/tag-it/mobile-app/-/blob/master/images/home-tagit.PNG" height="550" width="250">
-  <img src="https://gitlab.metropolia.fi/tag-it/mobile-app/-/blob/master/images/search-tagit.PNG" height="550" width="250">
-</p>
-
+![Image of home page](images/home-tagit.PNG)
+![Image of search view](images/search-tagit.PNG)
 
 ## Profile, Settings and More
 
